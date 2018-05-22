@@ -1,4 +1,4 @@
-website/settings.py
+
 *.egg-info
 *.pot
 *.py[co]

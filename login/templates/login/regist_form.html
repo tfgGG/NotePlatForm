@@ -1,0 +1,15 @@
+<h3>Register Page</h3>
+{% block body %}
+<ul class="messages">
+    {% for message in messages %}
+    <H4 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</H4>
+    {% endfor %}
+</ul>
+<form action='' method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ user_form.as_p}}
+  {{ profile_form.as_p }}
+  <button type="submit">submit</button>
+</form>
+
+{% endblock %}

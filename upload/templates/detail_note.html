@@ -1,0 +1,49 @@
+<head>
+  {% load static %}
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <script>
+
+    var simplemde;
+    /*svar text = "{{ notetext }}";
+    text = text.replace(/&quot;/g,'"');
+    text = JSON.parse(text);
+    console.log(text);*/
+    $(document).ready(function(){
+
+        simplemde = new SimpleMDE({ element: document.getElementById("MyID") });
+        //simplemde.value("{{ notetext.0 }}");
+
+
+
+    });
+    function change(index){
+      //simplemde.value(""+text[index-1].fields.note+"");
+      simplemde.value(index);
+    }
+  </script>
+
+   <!--<link rel="stylesheet" href="./explain.css">-->
+  <title>detail</title>
+</head>
+
+{% block body %}
+<button onclick="location.href='/upload/main/{{notelist.0.noteid}}/'" type="button">Edit</button>
+<div class="ui ordered list" id='root'>
+{% for n in notelist %}
+    <div class="item one"s onclick='change("{{ n.note }}")'>
+      <a>{{ n.list_text }}</a>
+    </div>
+{% endfor %}
+</div>
+
+
+<textarea id="MyID" style="width:600px;"></textarea>
+
+
+{% endblock %}

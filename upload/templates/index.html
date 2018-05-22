@@ -1,0 +1,14 @@
+
+<h2>Note Page</h2>
+{% block body %}
+
+{% for n in note %}
+<div style="margin:10px; border:1px solid;">
+  <span><b>User: </b>{{n.user.username}}</span>
+  <h4>{{n.title}}</h4>
+  <span><b>Intro: </b>{{n.intro}} </span>
+  <button onclick="location.href='../detail/{{ n.idnote }}/'" type="button">deatil</button>
+</div>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,88 @@
+<head>
+  {% load static %}
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <script>
+    var simplemde;
+    var current=0;
+    $(document).ready(function(){
+
+        simplemde = new SimpleMDE({ element: document.getElementById("MyID") });
+
+
+        setInterval(function(){
+          $('#id_form-'+current+'-note').val(simplemde.value()); }, 1000);
+
+
+    });
+    function change(index,classn)
+    {
+      $("#title").text(index);
+      current = classn.charAt(5);
+      simplemde.value($('#id_form-'+current+'-note').val());
+    }
+  </script>
+
+   <!--<link rel="stylesheet" href="./explain.css">-->
+  <title>Site</title>
+</head>
+<body>
+  {% if messages %}
+      {% for message in messages %}
+          <p>{{ message }}</p>
+      {% endfor %}
+  {% endif %}
+
+  {% if note_formset.non_field_errors %}
+      <ul class='form-errors'>
+          {% for error in note_formset.non_field_errors %}
+              <li>{{ error }}</li>
+          {% endfor %}
+      </ul>
+  {% endif %}
+  {% block content %}
+
+  <form action='' method="post" enctype="multipart/form-data">
+     {% csrf_token %}
+    <div class="left" style="width:300px; display:inline-block;vertical-align:top;">
+
+      <div class="ui ordered list" id='root'>
+        {{ note_formset.management_form }}
+        {% for link_form in note_formset %}
+            <div class="link-formset">
+              <div class="item one" id="list1">
+                <a onclick="change($(this).children().val(), $(this).children().attr('name'))">{{ link_form.list_text }}</a>
+              </div>
+                {{ link_form.note }}
+            </div>
+
+        {% endfor %}
+      </div>
+
+    </div>
+    <div class="right" style="width:600px; display:inline-block;">
+        <H4 id='title'></h4>
+          <textarea id="MyID" style="width:600px;" onchange="save();">
+          </textarea>
+    </div>
+    <input type="submit" value="submit" class="button"/>
+  </form>
+
+
+  <script src="{% static 'js/add.js' %}"></script>
+  <script src="{% static 'js/jquery.formset.js' %}"></script>
+  <img src="{% static 'pic/img_lights.jpg' %}">
+  <script>
+      $('.link-formset').formset({
+          addText: 'add link',
+          deleteText: 'remove'
+      });
+  </script>
+
+  {% endblock %}
+</body>

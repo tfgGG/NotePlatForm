@@ -1,0 +1,17 @@
+{% block body %}
+<ul>
+  <h3>Hi {{ request.user.username }} </h3>
+  <button onclick="location.href='/upload/index/'" type="button">Note Page</button>
+  <!--{% for pet in allpet %}
+  <li><a href="#"></a>{{pet.id}} {{pet.owner}}{{pet.name}}</li>
+  {% endfor %}-->
+  {% for p in profile %}
+  <p>{{ p.school }}</p>
+  <p>{{ p.birth }}</p>
+  <p>{{ p.intro }}</p>
+  {% endfor %}
+
+</ul>
+<button onclick="location.href='/login/logout/'" type="button">Logout</button>
+
+{% endblock %}

@@ -118,6 +118,46 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
+class Note(models.Model):
+    idnote = models.AutoField(primary_key=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
+    title = models.CharField(max_length=45, blank=True, null=True)
+    field = models.CharField(max_length=10)
+    subjects = models.CharField(max_length=10)
+    textbook = models.CharField(max_length=10)
+    intro = models.CharField(max_length=45, blank=True, null=True)
+    permission = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'note'
+
+
+class NoteList(models.Model):
+    idnote_list = models.AutoField(primary_key=True)
+    list_text = models.CharField(max_length=45, blank=True, null=True)
+    list_num = models.PositiveIntegerField(blank=True, null=True)
+    note = models.CharField(max_length=100, blank=True, null=True)
+    noteid = models.ForeignKey(Note, models.DO_NOTHING, db_column='noteid', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'note_list'
+
+
+class Notebook(models.Model):
+    id = models.IntegerField(primary_key=True)
+    field = models.CharField(max_length=10)
+    subjects = models.CharField(max_length=10)
+    textbook = models.CharField(max_length=10)
+    introduction = models.TextField()
+    permission = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'notebook'
+
+
 class Pet(models.Model):
     name = models.CharField(max_length=20, blank=True, null=True)
     owner = models.CharField(max_length=20, blank=True, null=True)
@@ -130,3 +170,27 @@ class Pet(models.Model):
     class Meta:
         managed = False
         db_table = 'pet'
+
+
+class PollsDocument(models.Model):
+    iddoc = models.IntegerField(primary_key=True)
+    notelistid = models.ForeignKey(NoteList, models.DO_NOTHING, db_column='notelistid', blank=True, null=True)
+    document = models.CharField(max_length=100)
+    uploaded_at = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'polls_document'
+
+
+class Profile(models.Model):
+    idprofile = models.AutoField(db_column='idProfile', primary_key=True)  # Field name made lowercase.
+    school = models.CharField(max_length=20, blank=True, null=True)
+    grade = models.IntegerField(blank=True, null=True)
+    birth = models.DateField(blank=True, null=True)
+    intro = models.TextField(blank=True, null=True)
+    user_id = models.PositiveIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'profile'

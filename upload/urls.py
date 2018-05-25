@@ -7,4 +7,6 @@ urlpatterns = [
     re_path(r'^index/$', views.index, name="index"),
     path('detail/<int:note_id>/',views.detail, name="detail"),
     path('main/<int:note_id>/',views.main, name="main"),
+    path('post/',views.post, name="post"),
+    path('post/index2/',views.note, name="note"),
 ]

@@ -8,6 +8,7 @@ from django.views.generic import View
 from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
+from upload.models import Note
 # Create your views here.
 
 
@@ -107,3 +108,29 @@ def main(request,note_id):
     }
 
     return render(request, "uplaod_note.html", context)
+
+def post(request):
+    if request.method == "POST":
+        user_id = request.POST['user_id']
+        title = request.POST['title']
+        field = request.POST['field']
+        subjects = request.POST['subjects']
+        textbook = request.POST['textbook']
+        intro = request.POST['introduction']
+        permission = request.POST['permission']
+        num=(Note.objects.all().count()) + 1
+
+        unit = Note.objects.create(field=field, subjects=subjects,textbook=textbook
+        ,intro=intro,permission=permission,idnote=num,
+        user_id=user_id,title=title)
+        unit.save()
+        return redirect('../post/index2/')
+    else:
+        message = '請輸入資料(資料不作驗證)'
+    return render(request,"post.html",locals())
+
+def note(request):
+    note_list = Note.objects.all()
+    return render(request, 'index2.html', {
+        'note_list': note_list,
+    })

@@ -18,16 +18,14 @@ from django.http import JsonResponse
 def index(request):
     html = "hahah"
     note = Note.objects.all();
-    newindex =  1
     #Sort/Search algorithm #
-    return render(request,'upload/index.html',{"note":note,"newindex":newindex})
+    return render(request,'upload/index.html',{"note":note})
 
 #Detail Page will contain comment in the future
 def detail(request,note_id):
     # TODO: Change to RESTFUL in the future
     notelist= NoteList.objects.filter(noteid = note_id).order_by("list_num")
-
-    return render(request,'upload/detail_note.html',{"notelist":notelist})
+    return render(request,'upload/detail_note.html',{"notelist":notelist,"noteid":note_id})
 
 
 def ajaxpic(request):
@@ -93,7 +91,7 @@ def edit(request,note_id):
         'note_formset': note_formset,
     }
 
-    return render(request, "edit_note.html", context)
+    return render(request, "upload/edit_note.html", context)
 
 def post(request):
     if request.method == "POST":
@@ -109,7 +107,7 @@ def post(request):
         ,intro=intro,permission=permission,idnote=num,
         user_id=request.user.id,title=title)
         unit.save()
-        return redirect('../post/index2/')
+        return redirect('upload/index/')
     else:
         message = '請輸入資料(資料不作驗證)'
     return render(request,"upload/create_note.html",locals())

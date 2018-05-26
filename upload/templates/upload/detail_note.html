@@ -33,7 +33,7 @@
 </head>
 
 {% block body %}
-<button onclick="location.href='/upload/main/{{notelist.0.noteid}}/'" type="button">Edit</button>
+<button onclick="location.href='/upload/edit/{{noteid}}/'" type="button">Edit</button>
 <div class="ui ordered list" id='root'>
 {% for n in notelist %}
     <div class="item one"s onclick='change("{{ n.note }}")'>

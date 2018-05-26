@@ -36,7 +36,7 @@
             var formData = new FormData(form);
 
             $.ajax({
-              url: '/upload/ajaxdoc/',
+              url: '/upload/ajaxpic/',
               data: formData,
               type:'POST',
               contentType: false,
@@ -77,6 +77,11 @@
 
   {% if note_formset.non_field_errors %}
       <ul class='form-errors'>
+          {% for field in note_formset %}
+            {% for error in field.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          {% endfor %}
           {% for error in note_formset.non_field_errors %}
               <li>{{ error }}</li>
           {% endfor %}

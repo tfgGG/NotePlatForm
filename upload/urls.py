@@ -9,5 +9,5 @@ urlpatterns = [
     path('edit/<int:note_id>/',views.edit, name="main"),
     path('post/',views.post, name="post"),
     path('post/index2/',views.note, name="note"),
-    path('ajaxpic/',views.ajaxpic, name="doc"),
+    path('ajaxpic/',views.ajaxpic, name="ajaxpic"),
 ]

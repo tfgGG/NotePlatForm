@@ -14,7 +14,7 @@
 
           simplemde = new SimpleMDE({
           element: document.getElementById("MyID"),
-          toolbar: [
+          toolbar: ["bold", "italic", "heading", "|", "quote","preview","side-by-side","fullscreen",
                       {
                         name: "custom",
                         action: function (el) {
@@ -25,6 +25,7 @@
                       },
            ],
         });
+        simplemde.value($('#id_form-'+current+'-note').val());
 
 
         setInterval(function(){  $('#id_form-'+current+'-note').val(simplemde.value()); }, 1000);
@@ -35,7 +36,7 @@
             var formData = new FormData(form);
 
             $.ajax({
-              url: '/upload/doc/',
+              url: '/upload/ajaxdoc/',
               data: formData,
               type:'POST',
               contentType: false,
@@ -44,7 +45,7 @@
                   alert(data.uploaded_url);
                   pos = simplemde.codemirror.getCursor();
                   simplemde.codemirror.setSelection(pos, pos);
-                  simplemde.codemirror.replaceSelection("![](http://127.0.0.1"+data.uploaded_url+")");
+                  simplemde.codemirror.replaceSelection("![](http://127.0.0.1:8000"+data.uploaded_url+")");
               },
               error: function(data){
                 console.log("Errorlog"+ data);

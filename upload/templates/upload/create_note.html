@@ -7,7 +7,6 @@
 <body>
     <form action="." method="POST" name="form1">
         {% csrf_token %}  <!-- 啟動CSRF防護，保護伺服器避免被攻擊 -->
-        <div>使用者:   <input type="text" name="user_id"></div>
         <div>標題：    <input type="text" name="title"></div>
         <div>領域：    <input type="text" name="field"></div>
         <div>科目：    <input type="text" name="subjects"></div>

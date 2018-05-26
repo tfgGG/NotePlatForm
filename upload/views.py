@@ -20,17 +20,17 @@ def index(request):
     note = Note.objects.all();
     newindex =  1
     #Sort/Search algorithm #
-    return render(request,'index.html',{"note":note,"newindex":newindex})
+    return render(request,'upload/index.html',{"note":note,"newindex":newindex})
 
 #Detail Page will contain comment in the future
 def detail(request,note_id):
     # TODO: Change to RESTFUL in the future
     notelist= NoteList.objects.filter(noteid = note_id).order_by("list_num")
 
-    return render(request,'detail_note.html',{"notelist":notelist,})
+    return render(request,'upload/detail_note.html',{"notelist":notelist})
 
 
-def doc(request):
+def ajaxpic(request):
     if request.method == 'POST':
         myfile = request.FILES.get("myfile")
         fs = FileSystemStorage()
@@ -46,7 +46,7 @@ def doc(request):
     return JsonResponse(data)
 
 
-def main(request,note_id):
+def edit(request,note_id):
     # Create the formset, specifying the form and formset we want to use.
     NoteFormSet = formset_factory(NoteListForm, formset=BaseNoteFormSet)
 
@@ -93,11 +93,10 @@ def main(request,note_id):
         'note_formset': note_formset,
     }
 
-    return render(request, "uplaod_note.html", context)
+    return render(request, "edit_note.html", context)
 
 def post(request):
     if request.method == "POST":
-        user_id = request.POST['user_id']
         title = request.POST['title']
         field = request.POST['field']
         subjects = request.POST['subjects']
@@ -108,12 +107,12 @@ def post(request):
 
         unit = Note.objects.create(field=field, subjects=subjects,textbook=textbook
         ,intro=intro,permission=permission,idnote=num,
-        user_id=user_id,title=title)
+        user_id=request.user.id,title=title)
         unit.save()
         return redirect('../post/index2/')
     else:
         message = '請輸入資料(資料不作驗證)'
-    return render(request,"post.html",locals())
+    return render(request,"upload/create_note.html",locals())
 
 def note(request):
     note_list = Note.objects.all()

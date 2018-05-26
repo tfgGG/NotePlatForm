@@ -31,7 +31,6 @@ def detail(request,note_id):
 
 
 def doc(request):
-
     if request.method == 'POST':
         myfile = request.FILES.get("myfile")
         fs = FileSystemStorage()
@@ -41,13 +40,9 @@ def doc(request):
         data = {"uploaded_url":uploaded_url}
         return JsonResponse(data)
     else:
-        if(request.FILES.get('myfile', False)):
-            data = { 'uploaded_url': "file exist"  }
-        else:
-            data = { 'uploaded_url': "Not file exist"  }
+        data={"uploaded_url":"There is some error occuring"}
         return JsonResponse(data)
 
-    data = { 'uploaded_url': "Endoffunc"  }
     return JsonResponse(data)
 
 

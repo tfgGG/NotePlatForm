@@ -12,7 +12,19 @@
     var current=0;
     $(document).ready(function(){
 
-        simplemde = new SimpleMDE({ element: document.getElementById("MyID") });
+          simplemde = new SimpleMDE({
+          element: document.getElementById("MyID"),
+          toolbar: [
+                      {
+                        name: "custom",
+                        action: function (el) {
+                          $("#myfile").trigger('click');
+                        },
+                        className: "fa fa-star",
+                        title: "Custom Button",
+                      },
+           ],
+        });
 
 
         setInterval(function(){  $('#id_form-'+current+'-note').val(simplemde.value()); }, 1000);
@@ -30,13 +42,17 @@
               processData: false,
               success: function (data) {
                   alert(data.uploaded_url);
+                  pos = simplemde.codemirror.getCursor();
+                  simplemde.codemirror.setSelection(pos, pos);
+                  simplemde.codemirror.replaceSelection("![](http://127.0.0.1"+data.uploaded_url+")");
               },
               error: function(data){
                 console.log("Errorlog"+ data);
               }
             });
+            form.reset();
 
-   });
+          });
 
 
     });
@@ -71,9 +87,9 @@
 
     <form method="post" enctype="multipart/form-data" id='file_upload'>
       {% csrf_token %}
-      <input type="file" name="myfile" id="myfile">
-      <button type="submit">Upload</button>
+      <input type="file" name="myfile" id="myfile" hidden>
     </form>
+
 
 
   <form action='' method="post" enctype="multipart/form-data">

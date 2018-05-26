@@ -9,6 +9,9 @@ from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
 from upload.models import Note
+
+from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -26,39 +29,27 @@ def detail(request,note_id):
 
     return render(request,'detail_note.html',{"notelist":notelist,})
 
-'''
-class main(View):
-    #model = Note
-    #template_name = 'upload_note.html'
-    #form_class = NoteListForm
-    #note_id = 1
 
-    def get_from_kwargs(self):
-        kwargs = super(main, self).get_form_kwargs()
-        kwargs.update({'note_id': self.note_id})
-        return kwargs
+def doc(request):
 
-    def get(self,request):
-        #note = Note.objects.get(pk=self.note_id)
-        note_form = NoteListForm()
-        for field_name in note_form.fields:
-            if field_name.startswith('note'):
-                yield note_form[field_name]
-        return render(request,"upload_note.html",{'note_form': note_form})
-'''
+    if request.method == 'POST':
+        myfile = request.FILES.get("myfile")
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        print('Filename :'+ filename);
+        uploaded_url = fs.url(filename)
+        data = {"uploaded_url":uploaded_url}
+        return JsonResponse(data)
+    else:
+        if(request.FILES.get('myfile', False)):
+            data = { 'uploaded_url': "file exist"  }
+        else:
+            data = { 'uploaded_url': "Not file exist"  }
+        return JsonResponse(data)
 
-'''
-class main(View):
+    data = { 'uploaded_url': "Endoffunc"  }
+    return JsonResponse(data)
 
-    def get(self,request):
-        #note = Note.objects.get(pk=self.note_id)
-        note_form = NoteListForm()
-        return render(request,"uplaod_note.html",{'note_form': note_form})
-
-    #def post(self,request):
-    #    return render(request,"upload_note.html",{'note_form': note_form})
-
-'''
 
 def main(request,note_id):
     # Create the formset, specifying the form and formset we want to use.

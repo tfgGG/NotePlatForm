@@ -9,4 +9,5 @@ urlpatterns = [
     path('main/<int:note_id>/',views.main, name="main"),
     path('post/',views.post, name="post"),
     path('post/index2/',views.note, name="note"),
+    path('doc/',views.doc, name="doc"),
 ]

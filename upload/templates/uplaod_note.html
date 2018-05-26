@@ -15,8 +15,28 @@
         simplemde = new SimpleMDE({ element: document.getElementById("MyID") });
 
 
-        setInterval(function(){
-          $('#id_form-'+current+'-note').val(simplemde.value()); }, 1000);
+        setInterval(function(){  $('#id_form-'+current+'-note').val(simplemde.value()); }, 1000);
+
+        $("#myfile").change(function () {
+            var form= $('#file_upload').get(0);
+            console.log(form);
+            var formData = new FormData(form);
+
+            $.ajax({
+              url: '/upload/doc/',
+              data: formData,
+              type:'POST',
+              contentType: false,
+              processData: false,
+              success: function (data) {
+                  alert(data.uploaded_url);
+              },
+              error: function(data){
+                console.log("Errorlog"+ data);
+              }
+            });
+
+   });
 
 
     });
@@ -47,10 +67,19 @@
   {% endif %}
   {% block content %}
 
+<!--  Upload Area -->
+
+    <form method="post" enctype="multipart/form-data" id='file_upload'>
+      {% csrf_token %}
+      <input type="file" name="myfile" id="myfile">
+      <button type="submit">Upload</button>
+    </form>
+
+
   <form action='' method="post" enctype="multipart/form-data">
      {% csrf_token %}
+     <!--List Area-->
     <div class="left" style="width:300px; display:inline-block;vertical-align:top;">
-
       <div class="ui ordered list" id='root'>
         {{ note_formset.management_form }}
         {% for link_form in note_formset %}
@@ -63,8 +92,8 @@
 
         {% endfor %}
       </div>
-
     </div>
+    <!--Editor Area-->
     <div class="right" style="width:600px; display:inline-block;">
         <H4 id='title'></h4>
           <textarea id="MyID" style="width:600px;" onchange="save();">
@@ -76,7 +105,6 @@
 
   <script src="{% static 'js/add.js' %}"></script>
   <script src="{% static 'js/jquery.formset.js' %}"></script>
-  <img src="{% static 'pic/img_lights.jpg' %}">
   <script>
       $('.link-formset').formset({
           addText: 'add link',

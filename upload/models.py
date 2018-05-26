@@ -26,3 +26,13 @@ class NoteList(models.Model):
     class Meta:
         managed = False
         db_table = 'note_list'
+
+class PollsDocument(models.Model):
+    iddoc = models.IntegerField(primary_key=True)
+    notelistid = models.ForeignKey(NoteList, models.DO_NOTHING, db_column='notelistid', blank=True, null=True)
+    document = models.FileField(max_length=100)
+    uploaded_at = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'polls_document'

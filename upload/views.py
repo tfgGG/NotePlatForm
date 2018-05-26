@@ -8,58 +8,43 @@ from django.views.generic import View
 from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
+from upload.models import Note
+
+from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
 # Create your views here.
 
 
 def index(request):
     html = "hahah"
     note = Note.objects.all();
-    newindex =  1
     #Sort/Search algorithm #
-    return render(request,'index.html',{"note":note,"newindex":newindex})
+    return render(request,'upload/index.html',{"note":note})
 
 #Detail Page will contain comment in the future
 def detail(request,note_id):
     # TODO: Change to RESTFUL in the future
     notelist= NoteList.objects.filter(noteid = note_id).order_by("list_num")
+    return render(request,'upload/detail_note.html',{"notelist":notelist,"noteid":note_id})
 
-    return render(request,'detail_note.html',{"notelist":notelist,})
 
-'''
-class main(View):
-    #model = Note
-    #template_name = 'upload_note.html'
-    #form_class = NoteListForm
-    #note_id = 1
+def ajaxpic(request):
+    if request.method == 'POST':
+        myfile = request.FILES.get("myfile")
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        print('Filename :'+ filename);
+        uploaded_url = fs.url(filename)
+        data = {"uploaded_url":uploaded_url}
+        return JsonResponse(data)
+    else:
+        data={"uploaded_url":"There is some error occuring"}
+        return JsonResponse(data)
 
-    def get_from_kwargs(self):
-        kwargs = super(main, self).get_form_kwargs()
-        kwargs.update({'note_id': self.note_id})
-        return kwargs
+    return JsonResponse(data)
 
-    def get(self,request):
-        #note = Note.objects.get(pk=self.note_id)
-        note_form = NoteListForm()
-        for field_name in note_form.fields:
-            if field_name.startswith('note'):
-                yield note_form[field_name]
-        return render(request,"upload_note.html",{'note_form': note_form})
-'''
 
-'''
-class main(View):
-
-    def get(self,request):
-        #note = Note.objects.get(pk=self.note_id)
-        note_form = NoteListForm()
-        return render(request,"uplaod_note.html",{'note_form': note_form})
-
-    #def post(self,request):
-    #    return render(request,"upload_note.html",{'note_form': note_form})
-
-'''
-
-def main(request,note_id):
+def edit(request,note_id):
     # Create the formset, specifying the form and formset we want to use.
     NoteFormSet = formset_factory(NoteListForm, formset=BaseNoteFormSet)
 
@@ -106,4 +91,29 @@ def main(request,note_id):
         'note_formset': note_formset,
     }
 
-    return render(request, "uplaod_note.html", context)
+    return render(request, "upload/edit_note.html", context)
+
+def post(request):
+    if request.method == "POST":
+        title = request.POST['title']
+        field = request.POST['field']
+        subjects = request.POST['subjects']
+        textbook = request.POST['textbook']
+        intro = request.POST['introduction']
+        permission = request.POST['permission']
+        num=(Note.objects.all().count()) + 1
+
+        unit = Note.objects.create(field=field, subjects=subjects,textbook=textbook
+        ,intro=intro,permission=permission,idnote=num,
+        user_id=request.user.id,title=title)
+        unit.save()
+        return redirect('upload/index/')
+    else:
+        message = '請輸入資料(資料不作驗證)'
+    return render(request,"upload/create_note.html",locals())
+
+def note(request):
+    note_list = Note.objects.all()
+    return render(request, 'index2.html', {
+        'note_list': note_list,
+    })

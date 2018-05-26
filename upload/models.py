@@ -3,9 +3,13 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Note(models.Model):
     idnote = models.IntegerField(primary_key=True)
-    title = models.CharField(max_length=45, blank=True, null=True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    title = models.CharField(max_length=45, blank=True, null=True)
+    field = models.CharField(max_length=10)
+    subjects = models.CharField(max_length=10)
+    textbook = models.CharField(max_length=10)
     intro = models.CharField(max_length=45, blank=True, null=True)
+    permission = models.IntegerField()
 
     class Meta:
         managed = False
@@ -22,3 +26,13 @@ class NoteList(models.Model):
     class Meta:
         managed = False
         db_table = 'note_list'
+
+class PollsDocument(models.Model):
+    iddoc = models.IntegerField(primary_key=True)
+    notelistid = models.ForeignKey(NoteList, models.DO_NOTHING, db_column='notelistid', blank=True, null=True)
+    document = models.FileField(max_length=100)
+    uploaded_at = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'polls_document'

@@ -18,7 +18,7 @@ class BaseNoteFormSet(BaseFormSet):
     def clean(self):
 
         if any(self.errors):
-            return
+            return self.errors
 
         list_text = []
         note = []
@@ -40,6 +40,7 @@ class BaseNoteFormSet(BaseFormSet):
                     raise forms.ValidationError("text Null")
                 else:
                     list_text.append(text)
+
 
         return self.cleaned_data
 

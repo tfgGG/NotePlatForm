@@ -9,7 +9,6 @@ from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
 from upload.models import Note
-
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 # Create your views here.
@@ -26,6 +25,8 @@ def detail(request,note_id):
     # TODO: Change to RESTFUL in the future
     notelist= NoteList.objects.filter(noteid = note_id).order_by("list_num")
     return render(request,'upload/detail_note.html',{"notelist":notelist,"noteid":note_id})
+
+
 
 
 def ajaxpic(request):
@@ -107,13 +108,34 @@ def post(request):
         ,intro=intro,permission=permission,idnote=num,
         user_id=request.user.id,title=title)
         unit.save()
-        return redirect('upload/index/')
+        return redirect('../index/')
     else:
         message = '請輸入資料(資料不作驗證)'
     return render(request,"upload/create_note.html",locals())
 
 def note(request):
     note_list = Note.objects.all()
-    return render(request, 'index2.html', {
+    return render(request, 'upload/update.html', {
         'note_list': note_list,
     })
+
+def update(request,note_id):
+    # TODO: Change to RESTFUL in the future
+    note_list = Note.objects.get(idnote=note_id)
+    if request.method == "POST":
+        title = request.POST['title']
+        field = request.POST['field']
+        subjects = request.POST['subjects']
+        textbook = request.POST['textbook']
+        intro = request.POST['introduction']
+        permission = request.POST['permission']
+        unit = Note.objects.filter(idnote=note_id)
+        unit.update(field=field, subjects=subjects,textbook=textbook
+        ,intro=intro,permission=permission,
+        title=title)
+        return redirect('http://127.0.0.1:8000/upload/index/')
+    else:
+        message = '請輸入資料(資料不作驗證)'
+    return render(request,'upload/update.html',{
+        'note_list': note_list,
+    },locals())

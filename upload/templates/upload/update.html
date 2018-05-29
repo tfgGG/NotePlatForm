@@ -6,9 +6,9 @@
 
 </head>
 <body>
-    <form action="." method="GET" name="form1">
+    <form action="." method="POST" name="form2">
         {% csrf_token %}  <!-- 啟動CSRF防護，保護伺服器避免被攻擊 -->
-        <div>標題：    <input type="text" name="title" value=" {{ note_list.title }} "></div>
+        <div>標題：    <input type="text" name="title" value="{{ note_list.title }}"> </div>
         <div>領域：    <input type="text" name="field" value="{{ note_list.field }}"></div>
         <div>科目：    <input type="text" name="subjects" value="{{note_list.subjects}}"></div>
         <div>教科書：  <input type="text" name="textbook" value="{{note_list.textbook}}"></div>

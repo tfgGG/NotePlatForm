@@ -1,14 +1,20 @@
 
 <h2>Note Page</h2>
-<button onclick="location.href='../post/'" type="button">upload</button>
+<button onclick="location.href='../post/'" type="button">Create New Note</button>
 {% block body %}
 
-{% for n in note %}
+{% for note in note %}
 <div style="margin:10px; border:1px solid;">
-  <span><b>User: </b>{{n.user.username}}</span>
-  <h4>{{n.title}}</h4>
-  <span><b>Intro: </b>{{n.intro}} </span>
-  <button onclick="location.href='../detail/{{ n.idnote }}/'" type="button">deatil</button>
+  <ul>
+      <li>使用者:{{note.user.username}}</li>
+      <li>標題:{{note.title}}</li>
+      <li>領域:{{note.field}}</li>
+      <li>科目:{{note.subjects}}</li>
+      <li>教科書:{{note.textbook}}</li>
+      <li>簡介:{{ note.intro }}</li>
+      <li>權限:{{ note.permission }}</li>
+  </ul>
+  <button onclick="location.href='../detail/{{ note.idnote }}/'" type="button">deatil</button>
 </div>
 {% endfor %}
 

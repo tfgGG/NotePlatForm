@@ -16,7 +16,13 @@
     console.log(text);*/
     $(document).ready(function(){
 
-        simplemde = new SimpleMDE({ element: document.getElementById("MyID") });
+        simplemde = new SimpleMDE({
+          element: document.getElementById("MyID"),
+          toolbar:false
+        });
+
+        simplemde.togglePreview();
+        simplemde.value($('#id_form-'+current+'-note').val());
         //simplemde.value("{{ notetext.0 }}");
 
 

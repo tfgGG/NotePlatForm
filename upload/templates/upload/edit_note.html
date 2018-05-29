@@ -12,18 +12,18 @@
     var current=0;
     $(document).ready(function(){
 
-          simplemde = new SimpleMDE({
-          element: document.getElementById("MyID"),
-          toolbar: ["bold", "italic", "heading", "|", "quote","preview","side-by-side","fullscreen",
-                      {
-                        name: "custom",
-                        action: function (el) {
-                          $("#myfile").trigger('click');
+        simplemde = new SimpleMDE({
+            element: document.getElementById("MyID"),
+            toolbar: ["bold", "italic", "heading", "|", "quote","preview","side-by-side","fullscreen",
+                        {
+                          name: "custom",
+                          action: function (el) {
+                            $("#myfile").trigger('click');
+                          },
+                          className: "fa fa-star",
+                          title: "Custom Button",
                         },
-                        className: "fa fa-star",
-                        title: "Custom Button",
-                      },
-           ],
+             ],
         });
         simplemde.value($('#id_form-'+current+'-note').val());
 
@@ -31,8 +31,8 @@
         setInterval(function(){  $('#id_form-'+current+'-note').val(simplemde.value()); }, 1000);
 
         $("#myfile").change(function () {
+
             var form= $('#file_upload').get(0);
-            console.log(form);
             var formData = new FormData(form);
 
             $.ajax({
@@ -52,11 +52,16 @@
               }
             });
             form.reset();
-
           });
 
+          $(".CodeMirror").on('click','img',function(){
+            console.log($(this));
+            $('.modal #originalImg').attr("src",$(this).attr('src'));
+            $('.modal').modal('show');
+          });
 
     });
+
     function change(index,classn)
     {
       $("#title").text(index);
@@ -65,10 +70,11 @@
     }
   </script>
 
-   <!--<link rel="stylesheet" href="./explain.css">-->
   <title>Site</title>
 </head>
 <body>
+
+<!--Error file-->
   {% if messages %}
       {% for message in messages %}
           <p>{{ message }}</p>
@@ -89,13 +95,13 @@
   {% endif %}
   {% block content %}
 
-<!--  Upload Area -->
+<!--  Upload File -->
 
     <form method="post" enctype="multipart/form-data" id='file_upload'>
       {% csrf_token %}
       <input type="file" name="myfile" id="myfile" hidden>
     </form>
-
+<!---->
 
 
   <form action='' method="post" enctype="multipart/form-data">
@@ -123,6 +129,19 @@
     </div>
     <input type="submit" value="submit" class="button"/>
   </form>
+  <!---->
+
+  <!--Modal area-->
+  <button onclick=" ">This is a button</button>
+  <div class="ui modal">
+    <div class="header">hahaha this is modal</div>
+    <div class="content">
+      <img id="originalImg" src=''>
+      <p>this is content</p>
+      <img src="" >
+    </div>
+  </div>
+  <!---->
 
 
   <script src="{% static 'js/add.js' %}"></script>
@@ -132,6 +151,7 @@
           addText: 'add link',
           deleteText: 'remove'
       });
+
   </script>
 
   {% endblock %}

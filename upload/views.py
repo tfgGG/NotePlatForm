@@ -18,8 +18,9 @@ def index(request):
     html = "hahah"
     note = Note.objects.all();
     #Sort/Search algorithm #
-    return render(request,'upload/index.html',{"note":note})
-
+    return render(request,'upload/index.html',{
+        "note":note,
+    })
 #Detail Page will contain comment in the future
 def detail(request,note_id):
     # TODO: Change to RESTFUL in the future
@@ -46,6 +47,7 @@ def ajaxpic(request):
 
 
 def edit(request,note_id):
+
     # Create the formset, specifying the form and formset we want to use.
     NoteFormSet = formset_factory(NoteListForm, formset=BaseNoteFormSet)
 
@@ -122,20 +124,22 @@ def note(request):
 def update(request,note_id):
     # TODO: Change to RESTFUL in the future
     note_list = Note.objects.get(idnote=note_id)
-    if request.method == "POST":
-        title = request.POST['title']
-        field = request.POST['field']
-        subjects = request.POST['subjects']
-        textbook = request.POST['textbook']
-        intro = request.POST['introduction']
-        permission = request.POST['permission']
-        unit = Note.objects.filter(idnote=note_id)
-        unit.update(field=field, subjects=subjects,textbook=textbook
-        ,intro=intro,permission=permission,
-        title=title)
-        return redirect('http://127.0.0.1:8000/upload/index/')
+    if note_list.permission == 1 or note_list.user_id == request.user.id:
+        if request.method == "POST":
+            title = request.POST['title']
+            field = request.POST['field']
+            subjects = request.POST['subjects']
+            textbook = request.POST['textbook']
+            intro = request.POST['introduction']
+            permission = request.POST['permission']
+            unit = Note.objects.filter(idnote=note_id)
+            unit.update(field=field, subjects=subjects,textbook=textbook
+            ,intro=intro,permission=permission,
+            title=title)
+            return redirect('http://127.0.0.1:8000/upload/index/')
     else:
-        message = '請輸入資料(資料不作驗證)'
+        return redirect('http://127.0.0.1:8000/upload/index/')
+
     return render(request,'upload/update.html',{
         'note_list': note_list,
     },locals())

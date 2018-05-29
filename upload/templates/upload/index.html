@@ -9,7 +9,9 @@
   <h4>{{n.title}}</h4>
   <span><b>Intro: </b>{{n.intro}} </span>
   <button onclick="location.href='../detail/{{ n.idnote }}/'" type="button">deatil</button>
+  {% if n.permission == 1 or n.user_id == request.user.id%}
   <button onclick="location.href='../update/{{ n.idnote }}/'" type="button">edit</button>
+  {% endif %}
 </div>
 {% endfor %}
 

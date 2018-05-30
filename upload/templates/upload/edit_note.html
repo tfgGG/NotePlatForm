@@ -7,6 +7,11 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
   <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+  <link rel="stylesheet" href="{% static 'css/main.css' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/jquery.Jcrop.min.css' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/demos.css' %}"></script>
+
   <script>
     var simplemde;
     var current=0;
@@ -55,10 +60,42 @@
           });
 
           $(".CodeMirror").on('click','img',function(){
-            console.log($(this));
-            $('.modal #originalImg').attr("src",$(this).attr('src'));
+
+          //  $('.modal #originalImg').css("display","inline-block");
             $('.modal').modal('show');
+            $('.modal #originalImg').Jcrop({
+                onChange: showCoords,
+                onSelect: showCoords
+            });
+            $('.jcrop-holder img').attr("src",$(this).attr('src'));
+            $('.modal #originalImg').attr("src",$(this).attr('src'));
+            function showCoords(c)
+            {
+              jQuery('#id_x').val(c.x);
+              jQuery('#id_y').val(c.y);
+              jQuery('#id_width').val(c.w);
+              jQuery('#id_height').val(c.h);
+            };
           });
+
+
+          $('#cropbtn').click(function(){
+
+            var form= $('#photoform').get(0);
+            var formData = new FormData(form);
+            formData.append('file',$('.jcrop-holder img').attr('src'))
+            $.ajax({
+              url: '/upload/cropphoto/',
+              data: formData,
+              type:'POST',
+              contentType: false,
+              processData: false,
+              success: function (data) {
+                alert(data.file);
+              }
+            });
+
+          })
 
     });
 
@@ -93,7 +130,6 @@
           {% endfor %}
       </ul>
   {% endif %}
-  {% block content %}
 
 <!--  Upload File -->
 
@@ -101,7 +137,7 @@
       {% csrf_token %}
       <input type="file" name="myfile" id="myfile" hidden>
     </form>
-<!---->
+
 
 
   <form action='' method="post" enctype="multipart/form-data">
@@ -129,30 +165,36 @@
     </div>
     <input type="submit" value="submit" class="button"/>
   </form>
-  <!---->
+
 
   <!--Modal area-->
   <button onclick=" ">This is a button</button>
   <div class="ui modal">
     <div class="header">hahaha this is modal</div>
     <div class="content">
-      <img id="originalImg" src=''>
       <p>this is content</p>
-      <img src="" >
+      <img id="originalImg" src='' width="400" height="300">
+      <button id="cropbtn">CropPhoto</button>
     </div>
   </div>
+
+  <form action="" method="post" id="photoform">
+    {% csrf_token %}
+    {{ photoform.as_p }}
+  </form>
   <!---->
 
 
   <script src="{% static 'js/add.js' %}"></script>
   <script src="{% static 'js/jquery.formset.js' %}"></script>
+  <script src="{% static 'js/jquery.Jcrop.min.js' %}"></script>
   <script>
       $('.link-formset').formset({
           addText: 'add link',
           deleteText: 'remove'
       });
 
+
   </script>
 
-  {% endblock %}
 </body>

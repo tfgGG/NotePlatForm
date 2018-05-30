@@ -3,17 +3,18 @@ from django.template import loader
 from .models import Note,NoteList
 from django.core import serializers
 from django.contrib.auth import authenticate
-from .form import NoteListForm,BaseNoteFormSet
+from .form import NoteListForm,BaseNoteFormSet,PhotoForm
 from django.views.generic import View
 from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
-from upload.models import Note
 
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
-# Create your views here.
 
+from PIL import Image
+
+from django.conf import settings
 
 def index(request):
     html = "hahah"
@@ -21,7 +22,7 @@ def index(request):
     #Sort/Search algorithm #
     return render(request,'upload/index.html',{"note":note})
 
-#Detail Page will contain comment in the future
+# TODO: Detail Page will contain comment in the future
 def detail(request,note_id):
     # TODO: Change to RESTFUL in the future
     notelist= NoteList.objects.filter(noteid = note_id).order_by("list_num")
@@ -45,10 +46,8 @@ def ajaxpic(request):
 
 
 def edit(request,note_id):
-    # Create the formset, specifying the form and formset we want to use.
-    NoteFormSet = formset_factory(NoteListForm, formset=BaseNoteFormSet)
 
-    # Get our existing link data for this user.  This is used as initial data.
+    NoteFormSet = formset_factory(NoteListForm, formset=BaseNoteFormSet)
 
     if request.method == 'POST':
         note_formset = NoteFormSet(request.POST)
@@ -80,6 +79,7 @@ def edit(request,note_id):
                 messages.error(request, 'There was an error saving your ntoe.')
         else:
             messages.error(request, 'There was an error filed.')
+    # end of if
 
 
     notelist = NoteList.objects.filter(noteid = note_id ).order_by('list_text')
@@ -87,11 +87,15 @@ def edit(request,note_id):
                     for l in notelist]
     note_formset = NoteFormSet(initial=link_data)
 
+    photoform = PhotoForm()
     context = {
         'note_formset': note_formset,
+        'photoform':photoform
     }
 
     return render(request, "upload/edit_note.html", context)
+
+
 
 def post(request):
     if request.method == "POST":
@@ -112,8 +116,23 @@ def post(request):
         message = '請輸入資料(資料不作驗證)'
     return render(request,"upload/create_note.html",locals())
 
-def note(request):
-    note_list = Note.objects.all()
-    return render(request, 'index2.html', {
-        'note_list': note_list,
-    })
+
+def cropphoto(request):
+
+        if request.method == 'POST':
+            x = int(request.POST.get('x'))
+            y = int(request.POST.get('y'))
+            width = int(request.POST.get('width'))
+            height = int(request.POST.get('height'))
+            file= request.POST.get('file')
+            file = settings.BASE_DIR+"\\media\\" + file[28:len(file)]
+
+            print(file)
+            image = Image.open(file)
+            cropped_image = image.crop((x, y, width+x, height+y))
+            resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
+            resized_image.save(settings.BASE_DIR+"\\media\\crop"+ file[28:len(file)],"JPEG")
+
+            data = {'file': "success"}
+
+        return JsonResponse(data,safe=False);

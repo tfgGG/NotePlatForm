@@ -75,10 +75,14 @@ def edit(request,note_id):
                     # And notify our users that it worked
                     messages.success(request, 'You have updated your note.')
 
-            except IntegrityError: #If the transaction failed
+            except IntegrityError as e: #If the transaction failed
                 messages.error(request, 'There was an error saving your ntoe.')
+                print("!!!!IntegrityError!!!!"+ e)
         else:
             messages.error(request, 'There was an error filed.')
+            for dict in note_formset.errors:
+                for error,k in dict.values:
+                    print("!!!Form not Valid!!!"+ error)
     # end of if
 
 
@@ -99,13 +103,12 @@ def post(request):
         textbook = request.POST['textbook']
         intro = request.POST['introduction']
         permission = request.POST['permission']
-        num=(Note.objects.all().count()) + 1
 
         unit = Note.objects.create(field=field, subjects=subjects,textbook=textbook
-        ,intro=intro,permission=permission,idnote=num,
+        ,intro=intro,permission=permission,
         user_id=request.user.id,title=title)
         unit.save()
-        return redirect('upload/index/')
+        return redirect('/upload/index/')
     else:
         message = '請輸入資料(資料不作驗證)'
     return render(request,"upload/create_note.html",locals())

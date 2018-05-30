@@ -33,7 +33,7 @@
         simplemde.value($('#id_form-'+current+'-note').val());
 
 
-        setInterval(function(){  $('#id_form-'+current+'-note').val(simplemde.value()); }, 1000);
+        setInterval(function(){  $('#id_form-'+current+'-note').val(simplemde.value()); }, 500);
 
         $("#myfile").change(function () {
 
@@ -172,7 +172,6 @@
 
 
   <!--Modal area-->
-  <button onclick=" ">This is a button</button>
   <div class="ui modal">
     <div class="header">hahaha this is modal</div>
     <div class="content">
@@ -184,10 +183,10 @@
 
   <form action="" method="post" id="photoform">
     {% csrf_token %}
-    <input type="text"  id="x" name="x" hidden />
-    <input type="text"  id="y" name="y" hidden/>
-    <input type="text"  id="width" name="width" hidden />
-    <input type="text"  id="height" name="height" hidden/>
+    <input   id="x" name="x" hidden />
+    <input   id="y" name="y" hidden/>
+    <input   id="width" name="width" hidden />
+    <input   id="height" name="height" hidden/>
   </form>
   <!---->
 

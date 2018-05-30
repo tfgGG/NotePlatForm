@@ -7,23 +7,28 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
   <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+  <link rel="stylesheet" href="{% static 'css/main.css' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/jquery.Jcrop.min.css' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/demos.css' %}"></script>
+
   <script>
     var simplemde;
     var current=0;
     $(document).ready(function(){
 
-          simplemde = new SimpleMDE({
-          element: document.getElementById("MyID"),
-          toolbar: ["bold", "italic", "heading", "|", "quote","preview","side-by-side","fullscreen",
-                      {
-                        name: "custom",
-                        action: function (el) {
-                          $("#myfile").trigger('click');
+        simplemde = new SimpleMDE({
+            element: document.getElementById("MyID"),
+            toolbar: ["bold", "italic", "heading", "|", "quote","preview","side-by-side","fullscreen",
+                        {
+                          name: "custom",
+                          action: function (el) {
+                            $("#myfile").trigger('click');
+                          },
+                          className: "fa fa-star",
+                          title: "Custom Button",
                         },
-                        className: "fa fa-star",
-                        title: "Custom Button",
-                      },
-           ],
+             ],
         });
         simplemde.value($('#id_form-'+current+'-note').val());
 
@@ -31,8 +36,8 @@
         setInterval(function(){  $('#id_form-'+current+'-note').val(simplemde.value()); }, 1000);
 
         $("#myfile").change(function () {
+
             var form= $('#file_upload').get(0);
-            console.log(form);
             var formData = new FormData(form);
 
             $.ajax({
@@ -52,11 +57,48 @@
               }
             });
             form.reset();
+          });
 
+          $(".CodeMirror").on('click','img',function(){
+
+          //  $('.modal #originalImg').css("display","inline-block");
+            $('.modal').modal('show');
+            $('.modal #originalImg').Jcrop({
+                onChange: showCoords,
+                onSelect: showCoords
+            });
+            $('.jcrop-holder img').attr("src",$(this).attr('src'));
+            $('.modal #originalImg').attr("src",$(this).attr('src'));
+            function showCoords(c)
+            {
+              jQuery('#id_x').val(c.x);
+              jQuery('#id_y').val(c.y);
+              jQuery('#id_width').val(c.w);
+              jQuery('#id_height').val(c.h);
+            };
           });
 
 
+          $('#cropbtn').click(function(){
+
+            var form= $('#photoform').get(0);
+            var formData = new FormData(form);
+            formData.append('file',$('.jcrop-holder img').attr('src'))
+            $.ajax({
+              url: '/upload/cropphoto/',
+              data: formData,
+              type:'POST',
+              contentType: false,
+              processData: false,
+              success: function (data) {
+                alert(data.file);
+              }
+            });
+
+          })
+
     });
+
     function change(index,classn)
     {
       $("#title").text(index);
@@ -65,10 +107,11 @@
     }
   </script>
 
-   <!--<link rel="stylesheet" href="./explain.css">-->
   <title>Site</title>
 </head>
 <body>
+
+<!--Error file-->
   {% if messages %}
       {% for message in messages %}
           <p>{{ message }}</p>
@@ -87,9 +130,8 @@
           {% endfor %}
       </ul>
   {% endif %}
-  {% block content %}
 
-<!--  Upload Area -->
+<!--  Upload File -->
 
     <form method="post" enctype="multipart/form-data" id='file_upload'>
       {% csrf_token %}
@@ -125,14 +167,34 @@
   </form>
 
 
+  <!--Modal area-->
+  <button onclick=" ">This is a button</button>
+  <div class="ui modal">
+    <div class="header">hahaha this is modal</div>
+    <div class="content">
+      <p>this is content</p>
+      <img id="originalImg" src='' width="400" height="300">
+      <button id="cropbtn">CropPhoto</button>
+    </div>
+  </div>
+
+  <form action="" method="post" id="photoform">
+    {% csrf_token %}
+    {{ photoform.as_p }}
+  </form>
+  <!---->
+
+
   <script src="{% static 'js/add.js' %}"></script>
   <script src="{% static 'js/jquery.formset.js' %}"></script>
+  <script src="{% static 'js/jquery.Jcrop.min.js' %}"></script>
   <script>
       $('.link-formset').formset({
           addText: 'add link',
           deleteText: 'remove'
       });
+
+
   </script>
 
-  {% endblock %}
 </body>

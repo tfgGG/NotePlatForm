@@ -69,12 +69,16 @@
             });
             $('.jcrop-holder img').attr("src",$(this).attr('src'));
             $('.modal #originalImg').attr("src",$(this).attr('src'));
+            $('.modal #originalImg').attr("width",$(this).clientWidth);
+            $('.modal #originalImg').attr("height",$(this).clientHeight);
+            //$('.jcrop-holder img').attr("width",$(this).clientWidth);
+            //$('.jcrop-holder img').attr("height",$(this).clientHeight);
             function showCoords(c)
             {
-              jQuery('#id_x').val(c.x);
-              jQuery('#id_y').val(c.y);
-              jQuery('#id_width').val(c.w);
-              jQuery('#id_height').val(c.h);
+              jQuery('#x').val(c.x);
+              jQuery('#y').val(c.y);
+              jQuery('#width').val(c.w);
+              jQuery('#height').val(c.h);
             };
           });
 
@@ -173,14 +177,17 @@
     <div class="header">hahaha this is modal</div>
     <div class="content">
       <p>this is content</p>
-      <img id="originalImg" src='' width="400" height="300">
+      <img id="originalImg" src='' width="" height="">
       <button id="cropbtn">CropPhoto</button>
     </div>
   </div>
 
   <form action="" method="post" id="photoform">
     {% csrf_token %}
-    {{ photoform.as_p }}
+    <input type="text"  id="x" name="x" hidden />
+    <input type="text"  id="y" name="y" hidden/>
+    <input type="text"  id="width" name="width" hidden />
+    <input type="text"  id="height" name="height" hidden/>
   </form>
   <!---->
 

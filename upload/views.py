@@ -3,7 +3,7 @@ from django.template import loader
 from .models import Note,NoteList
 from django.core import serializers
 from django.contrib.auth import authenticate
-from .form import NoteListForm,BaseNoteFormSet,PhotoForm
+from .form import NoteListForm,BaseNoteFormSet
 from django.views.generic import View
 from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
@@ -87,13 +87,7 @@ def edit(request,note_id):
                     for l in notelist]
     note_formset = NoteFormSet(initial=link_data)
 
-    photoform = PhotoForm()
-    context = {
-        'note_formset': note_formset,
-        'photoform':photoform
-    }
-
-    return render(request, "upload/edit_note.html", context)
+    return render(request, "upload/edit_note.html", context = {'note_formset': note_formset,})
 
 
 
@@ -130,7 +124,7 @@ def cropphoto(request):
             print(file)
             image = Image.open(file)
             cropped_image = image.crop((x, y, width+x, height+y))
-            resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
+            resized_image = cropped_image.resize((width, height), Image.ANTIALIAS)
             resized_image.save(settings.BASE_DIR+"\\media\\crop"+ file[28:len(file)],"JPEG")
 
             data = {'file': "success"}

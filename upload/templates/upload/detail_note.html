@@ -44,7 +44,7 @@
 <button onclick="location.href='/upload/edit/{{noteid}}/'" type="button">Edit</button>
 <div class="ui ordered list" id='root'>
 {% for n in notelist %}
-    <div class="item one" onclick="var str = '{{n.note}}'; change(str.replace(/(?:\r\n|\r|\n)/g, '<br>'))">
+    <div class="item one" onclick="change('{{ n.note }}')">
       <a>{{ n.list_text }}</a>
     </div>
 {% endfor %}

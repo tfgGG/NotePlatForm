@@ -30,10 +30,15 @@
                         },
              ],
         });
-        simplemde.value($('#id_form-'+current+'-note').val());
+        $.each($(".edit .link-formset").children("input"),function(){
+          var newv = $(this).val().replace(/(?:<br>)/g, '\r\n');
+          $(this).val(newv);
+          //console.log(newv+"\n");
+        })
+        simplemde.value($('#id_form-'+current+'-note').val()); //Initialize with list one content
 
 
-        setInterval(function(){  $('#id_form-'+current+'-note').val(simplemde.value()); }, 500);
+        setInterval(function(){  $('#id_form-'+current+'-note').val(simplemde.value()); }, 500); //Autosave to hidden input
 
         $("#myfile").change(function () {
 
@@ -101,6 +106,21 @@
 
           })
 
+
+          //  console.log($(".edit .link-formset").children("input").value());
+          $(".edit").submit(function(){
+
+            $.each($(".edit .link-formset").children("input"),function(){
+              var newv = $(this).val().replace(/(?:\r\n|\r|\n)/g, '<br>');
+              $(this).val(newv);
+              //console.log(newv+"\n");
+            })
+            //console.log($(".edit .link-formset").children("input"));
+          //  event.preventDefault();
+
+          })
+
+
     });
 
     function change(index,classn)
@@ -108,6 +128,8 @@
       $("#title").text(index);
       current = classn.charAt(5);
       simplemde.value($('#id_form-'+current+'-note').val());
+      var newvalue = simplemde.value();
+      console.log(newvalue.replace(/(?:\r\n|\r|\n)/g, '<br>'));
     }
   </script>
 
@@ -144,7 +166,7 @@
 
 
 
-  <form action='' method="post" enctype="multipart/form-data">
+  <form action='' class="edit" method="post" enctype="multipart/form-data">
      {% csrf_token %}
      <!--List Area-->
     <div class="left" style="width:300px; display:inline-block;vertical-align:top;">

@@ -81,8 +81,8 @@ def edit(request,note_id):
         else:
             messages.error(request, 'There was an error filed.')
             for dict in note_formset.errors:
-                for error,k in dict.values:
-                    print("!!!Form not Valid!!!"+ error)
+                for errors in dict:
+                    print("!!!Form not Valid!!!"+ dict)
     # end of if
 
 

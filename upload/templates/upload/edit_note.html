@@ -36,7 +36,7 @@
           //console.log(newv+"\n");
         })
         simplemde.value($('#id_form-'+current+'-note').val()); //Initialize with list one content
-
+        $('#root .link-formset:last').remove();
 
         setInterval(function(){  $('#id_form-'+current+'-note').val(simplemde.value()); }, 500); //Autosave to hidden input
 

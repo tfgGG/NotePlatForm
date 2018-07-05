@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/tfgGG/django-note#readme",
   "dependencies": {
+    "redis": "^2.8.0",
     "simplemde": "^1.11.2"
   }
 }

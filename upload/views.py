@@ -13,12 +13,13 @@ from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 
 from PIL import Image
+import redis 
 
 from django.conf import settings
 
 def index(request):
     html = "hahah"
-    note = Note.objects.all();
+    note = Note.objects.all()
     #Sort/Search algorithm #
     return render(request,'upload/index.html',{"note":note})
 
@@ -34,7 +35,7 @@ def ajaxpic(request):
         myfile = request.FILES.get("myfile")
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
-        print('Filename :'+ filename);
+        print('Filename :'+ filename)
         uploaded_url = fs.url(filename)
         data = {"uploaded_url":uploaded_url}
         return JsonResponse(data)
@@ -132,4 +133,4 @@ def cropphoto(request):
 
             data = {'file': "success"}
 
-        return JsonResponse(data,safe=False);
+        return JsonResponse(data,safe=False)

@@ -131,6 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR,'media');
+STATIC_ROOT='/jsfile/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'node_modules')]
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'

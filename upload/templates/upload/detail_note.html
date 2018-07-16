@@ -16,21 +16,23 @@
     console.log(text);*/
     $(document).ready(function(){
 
-        simplemde = new SimpleMDE({
+       simplemde = new SimpleMDE({
           element: document.getElementById("MyID"),
           toolbar:false
         });
 
         simplemde.togglePreview();
-        simplemde.value($('#id_form-'+current+'-note').val());
+        //simplemde.value($('#id_form-'+current+'-note').val());
         //simplemde.value("{{ notetext.0 }}");
-
-
 
     });
     function change(index){
       //simplemde.value(""+text[index-1].fields.note+"");
-      simplemde.value(index);
+        //var simplemde = new SimpleMDE();
+        var parse = simplemde.options.previewRender(index);
+        console.log(parse);
+        //parse = parse.replace(/(?:\r\n|\r|\n)/g, '<br>');
+        $(".editor-preview").html(parse);
     }
   </script>
 
@@ -42,7 +44,7 @@
 <button onclick="location.href='/upload/edit/{{noteid}}/'" type="button">Edit</button>
 <div class="ui ordered list" id='root'>
 {% for n in notelist %}
-    <div class="item one"s onclick='change("{{ n.note }}")'>
+    <div class="item one" onclick="change('{{ n.note }}')">
       <a>{{ n.list_text }}</a>
     </div>
 {% endfor %}

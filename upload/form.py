@@ -32,7 +32,7 @@ class BaseNoteFormSet(BaseFormSet):
                 n = form.cleaned_data['note']
 
                 # Check that no two links have the same list_text or URL
-
+                '''
                 if n is None:
                     raise forms.ValidationError("Note Null")
                 else:
@@ -43,6 +43,6 @@ class BaseNoteFormSet(BaseFormSet):
                     raise forms.ValidationError("text Null")
                 else:
                     list_text.append(text)
-
+                '''
 
         return self.cleaned_data

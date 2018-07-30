@@ -74,6 +74,17 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class CaptchaCaptchastore(models.Model):
+    challenge = models.CharField(max_length=32)
+    response = models.CharField(max_length=32)
+    hashkey = models.CharField(unique=True, max_length=40)
+    expiration = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'captcha_captchastore'
+
+
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -116,6 +127,16 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
+
+
+class Message(models.Model):
+    id = models.IntegerField(primary_key=True)
+    note_id = models.IntegerField(blank=True, null=True)
+    message = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'message'
 
 
 class Note(models.Model):

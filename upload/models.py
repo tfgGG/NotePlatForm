@@ -36,3 +36,13 @@ class PollsDocument(models.Model):
     class Meta:
         managed = False
         db_table = 'polls_document'
+
+
+class Message(models.Model):
+    id = models.IntegerField(primary_key=True)
+    note_id = models.IntegerField(blank=True, null=True)
+    message = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'message'

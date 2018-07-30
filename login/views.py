@@ -9,6 +9,12 @@ from django.http import HttpResponse
 from .models import Pet,Profile
 from django.template import loader
 from django.contrib import messages
+
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+from login.serializers import SnippetSerializer
 # Create your views here.
 #from django.vierws import generic
 #from .models import pet
@@ -30,6 +36,11 @@ def index(request):
         html = html + "<h3>"+ pet.owner+" "+pet.name +"</h3>"
     return render(request, 'login/index.html', context)
 
+def now(request):
+    if request.method == 'GET':
+        profile = Profile.objects.filter(user_id = request.user.id)
+        serializer = SnippetSerializer(profile, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
 #Create a Account
 class UserFormView(View):
@@ -77,7 +88,7 @@ class LoginFormView(View):
                 messages.error(request, ('Please Enter valid password and username'))
             else:
                 login(request,user)
-                return redirect('/login/index/')
+                return redirect('/login/now/')
         else:
             messages.error(request, ('Form not valid'))
         return render(request,self.template_name, {'form': form })

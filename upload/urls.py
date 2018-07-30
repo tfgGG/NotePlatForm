@@ -9,6 +9,7 @@ urlpatterns = [
     path('update/<int:note_id>/',views.update, name="update"),
     path('edit/<int:note_id>/',views.edit, name="main"),
     path('post/',views.post, name="post"),
-    path('post/index2/',views.note, name="note"),
+    path('update/index2/',views.snippet_list, name="note"),
     path('ajaxpic/',views.ajaxpic, name="ajaxpic"),
+    path('refresh/<int:note_id>/',views.refresh, name="refresh"),
 ]

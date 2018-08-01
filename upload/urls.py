@@ -11,5 +11,7 @@ urlpatterns = [
     path('post/',views.post, name="post"),
     path('update/index2/',views.snippet_list, name="note"),
     path('ajaxpic/',views.ajaxpic, name="ajaxpic"),
-    path('refresh/<int:note_id>/',views.refresh, name="refresh"),
+    path('Comment/<int:note_id>/',views.comment, name="comment"),
+    path('addComment/<int:note_id>/',views.addComment, name="comment"),
+    #path('refresh/<int:note_id>/',views.refresh, name="refresh"),
 ]

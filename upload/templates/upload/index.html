@@ -12,6 +12,8 @@
   {% if n.permission == 1 or n.user_id == request.user.id%}
   <button onclick="location.href='../update/{{ n.idnote }}/'" type="button">edit</button>
   {% endif %}
+  <button onclick="location.href='../addComment/{{ n.idnote }}/'" type="button">addComment</button>
+  <button onclick="location.href='../Comment/{{ n.idnote }}/'" type="button">comment</button>
 </div>
 {% endfor %}
 

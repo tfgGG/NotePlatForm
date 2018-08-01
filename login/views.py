@@ -88,7 +88,7 @@ class LoginFormView(View):
                 messages.error(request, ('Please Enter valid password and username'))
             else:
                 login(request,user)
-                return redirect('/login/now/')
+                return redirect('/login/index/')
         else:
             messages.error(request, ('Form not valid'))
         return render(request,self.template_name, {'form': form })

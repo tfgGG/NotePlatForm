@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.template import loader
-from .models import Note,NoteList,Message
+from .models import Note,NoteList,UploadMessage2
 from django.core import serializers
 from django.contrib.auth import authenticate
 from .form import NoteListForm,BaseNoteFormSet
@@ -19,7 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 #from snippets.models import Snippet
-from upload.serializers import SnippetSerializer
+from upload.serializers import SnippetSerializer,CommentRESTAPI
 # Create your views here.
 
 
@@ -34,9 +34,41 @@ def index(request):
 def detail(request,note_id):
     # TODO: Change to RESTFUL in the future
     notelist= NoteList.objects.filter(noteid = note_id).order_by("list_num")
-    message = Message.objects.all()
-    return render(request,'upload/detail_note.html',{"notelist":notelist,"noteid":note_id,"message":message})
+    message = UploadMessage2.objects.all()
 
+    if request.method == "POST":
+        message = request.POST['message']
+        num=(UploadMessage2.objects.all().count()) + 1
+        unit = UploadMessage2.objects.create(id=num,note_id=note_id
+        ,message=message,user_id=request.user.id)
+        unit.save()
+        return redirect('http://127.0.0.1:8000/upload/index/')
+
+    return render(request,'upload/detail_note.html',{"notelist":notelist,"noteid":note_id,"UploadMessage2":UploadMessage2})
+
+def comment(request,note_id):
+    if request.method == 'GET':
+        comment = UploadMessage2.objects.filter(note_id = note_id)
+        commentRest = CommentRESTAPI(comment, many=True)
+        return JsonResponse(commentRest.data, safe=False)
+
+def addComment(request,note_id):
+    if request.method == "POST":
+        message = request.POST['message']
+        num=(UploadMessage2.objects.all().count()) + 1
+        data = {
+            'id' : num,
+            'note_id' : note_id,
+            'message' : message,
+            'user' : request.user.id,
+        }
+        mes = CommentRESTAPI(data=data)
+        if mes.is_valid():
+            mes.save()
+            return JsonResponse(mes.data, status=201)
+        return JsonResponse(mes.errors, status=400)
+    return render(request,"upload/addComment.html",locals())
+'''
 def refresh(request):
     #message = Message.objects.all()
     if request.method == "POST":
@@ -46,11 +78,9 @@ def refresh(request):
         unit = Message.objects.create(id=num,note_id=note_id
         ,message=message)
         unit.save()
+
         return JsonResponse( "{ message : "+ " ' "+ message + " ' " + "}" )
-
-
-
-
+'''
 def ajaxpic(request):
     if request.method == 'POST':
         myfile = request.FILES.get("myfile")
@@ -130,6 +160,7 @@ def post(request):
         mark = " ' "
         data = {
             'idnote' : num,
+            'user' : request.user.id,
             'title'  : title,
             'field'  : field,
             'subjects': subjects,
@@ -140,7 +171,8 @@ def post(request):
         unit = SnippetSerializer(data=data)
         if unit.is_valid():
             unit.save()
-        return JsonResponse(unit.data, status=201)
+            return JsonResponse(unit.data, status=201)
+        return JsonResponse(unit.errors, status=400)
         #return redirect('../index/')
     else:
         message = '請輸入資料(資料不作驗證)'

@@ -215,3 +215,14 @@ class Profile(models.Model):
     class Meta:
         managed = False
         db_table = 'profile'
+
+
+class UploadMessage2(models.Model):
+    id = models.IntegerField(primary_key=True)
+    note_id = models.IntegerField(blank=True, null=True)
+    message = models.CharField(max_length=100)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'upload_message2'

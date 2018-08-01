@@ -22,6 +22,7 @@
     }
 
   </script>
+  <!--
 <script type="text/javascript">
   $(function(){
       $("#submit").click(function(){
@@ -42,6 +43,7 @@
 
   });
 </script>
+-->
    <!--<link rel="stylesheet" href="./explain.css">-->
   <title>detail</title>
 </head>
@@ -72,9 +74,9 @@
 </form>
 
 {% block content %}
-<form method="POST" name="form2">
+<form action="." method="POST" name="form2" >
   {% csrf_token %}
-  <div>  <input type="text" id="message" name="message"/> </div>
-  <input id='submit' type="button" value="送出資料"/>
+  <div>  <input type="text" name="message"/> </div>
+  <input type="submit" value="送出資料"/>
 </form>
 {% endblock %}

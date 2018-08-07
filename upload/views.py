@@ -11,15 +11,14 @@ from django.db import IntegrityError,transaction
 from upload.models import Note,Message
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
-import time,os
-from selenium import webdriver
+
 
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 #from snippets.models import Snippet
-from upload.serializers import SnippetSerializer,CommentRESTAPI
+from upload.serializers import noteRest,CommentRESTAPI,detailRest
 # Create your views here.
 
 
@@ -31,20 +30,29 @@ def index(request):
         "note":note,
     })
 #Detail Page will contain comment in the future
+'''
 def detail(request,note_id):
     # TODO: Change to RESTFUL in the future
     notelist= NoteList.objects.filter(noteid = note_id).order_by("list_num")
-    message = UploadMessage2.objects.all()
 
-    if request.method == "POST":
-        message = request.POST['message']
-        num=(UploadMessage2.objects.all().count()) + 1
-        unit = UploadMessage2.objects.create(id=num,note_id=note_id
-        ,message=message,user_id=request.user.id)
-        unit.save()
-        return redirect('http://127.0.0.1:8000/upload/index/')
 
-    return render(request,'upload/detail_note.html',{"notelist":notelist,"noteid":note_id,"UploadMessage2":UploadMessage2})
+    #if request.method == "POST":
+    #    message = request.POST['message']
+    #    num=(UploadMessage2.objects.all().count()) + 1
+    #    unit = UploadMessage2.objects.create(id=num,note_id=note_id
+    #    ,message=message,user_id=request.user.id)
+    #    unit.save()
+    #    return redirect('http://127.0.0.1:8000/upload/index/')
+
+
+    return render(request,'upload/detail_note.html',{"notelist":notelist,"noteid":note_id})
+'''
+def detail(request,note_id):
+    if request.method == 'GET':
+        notelist= NoteList.objects.filter(noteid = note_id).order_by("list_num")
+        notelistRest = detailRest(notelist, many=True)
+        return JsonResponse(notelistRest.data, safe=False)
+#'''
 
 def comment(request,note_id):
     if request.method == 'GET':
@@ -147,7 +155,7 @@ def edit(request,note_id):
 
     return render(request, "upload/edit_note.html", context)
 
-def post(request):
+def create(request):
     if request.method == "POST":
         title = request.POST['title']
         field = request.POST['field']
@@ -168,7 +176,7 @@ def post(request):
             'intro'  : intro,
             'permission': permission
         }
-        unit = SnippetSerializer(data=data)
+        unit = noteRest(data=data)
         if unit.is_valid():
             unit.save()
             return JsonResponse(unit.data, status=201)
@@ -191,7 +199,7 @@ def snippet_list(request):
     """
     if request.method == 'GET':
         snippets = Note.objects.all()
-        serializer = SnippetSerializer(snippets, many=True)
+        serializer = noteRest(snippets, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
@@ -202,32 +210,8 @@ def snippet_list(request):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
-@csrf_exempt
-def snippet_detail(request, pk):
-    """
-    Retrieve, update or delete a code snippet.
-    """
-    try:
-        snippet = Note.objects.get(pk=pk)
-    except Snippet.DoesNotExist:
-        return HttpResponse(status=404)
 
-    if request.method == 'GET':
-        serializer = SnippetSerializer(snippet)
-        return JsonResponse(serializer.data)
-
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = SnippetSerializer(snippet, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
-
-    elif request.method == 'DELETE':
-        snippet.delete()
-        return HttpResponse(status=204)
-
+'''
 def update(request,note_id):
     # TODO: Change to RESTFUL in the future
     note_list = Note.objects.get(idnote=note_id)
@@ -250,3 +234,11 @@ def update(request,note_id):
     return render(request,'upload/update.html',{
         'note_list': note_list,
     },locals())
+
+'''
+
+def update(request,note_id):
+    if request.method == 'GET':
+        note_list = Note.objects.filter(idnote=note_id)
+        note_listRest = noteRest(note_list, many=True)
+        return JsonResponse(note_listRest.data, safe=False)

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1','IP']
 INSTALLED_APPS = [
     'upload.apps.UploadConfig',
     'login.apps.LoginConfig',
+    'person.apps.PersonConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',
-
 ]
 
 MIDDLEWARE= [

@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.template import loader
-from .models import Note,NoteList
+from .models import Note,NoteList,UploadMessage2
 from django.core import serializers
 from django.contrib.auth import authenticate
 from .form import NoteListForm,BaseNoteFormSet
@@ -8,6 +8,18 @@ from django.views.generic import View
 from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
+from upload.models import Note,Message
+from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
+
+
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+#from snippets.models import Snippet
+from upload.serializers import noteRest,CommentRESTAPI,detailRest
+# Create your views here.
 
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
@@ -28,6 +40,12 @@ def detail(request,note_id):
     # TODO: Change to RESTFUL in the future
     notelist= NoteList.objects.filter(noteid = note_id).order_by("list_num")
     return render(request,'upload/detail_note.html',{"notelist":notelist,"noteid":note_id})
+
+def RESTdetail(request,note_id):
+    if request.method == 'GET':
+        notelist= NoteList.objects.filter(noteid = note_id).order_by("list_num")
+        notelistRest = detailRest(notelist, many=True)
+        return JsonResponse(notelistRest.data, safe=False)
 
 def comment(request,note_id):
     if request.method == 'GET':

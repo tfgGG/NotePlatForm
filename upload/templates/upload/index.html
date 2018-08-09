@@ -1,10 +1,11 @@
 
 <h2>Note Page</h2>
-<button onclick="location.href='../post/'" type="button">Create New Note</button>
+<button onclick="location.href='../create/'" type="button">Create New Note</button>
 {% block body %}
 
 {% for note in note %}
 <div style="margin:10px; border:1px solid;">
+
   <ul>
       <li>使用者:{{note.user.username}}</li>
       <li>標題:{{note.title}}</li>
@@ -15,6 +16,17 @@
       <li>權限:{{ note.permission }}</li>
   </ul>
   <button onclick="location.href='../detail/{{ note.idnote }}/'" type="button">deatil</button>
+<!--
+  <span><b>User: </b>{{n.user.username}}</span>
+    <h4>{{n.title}}</h4>
+    <span><b>Intro: </b>{{n.intro}} </span>
+    <button onclick="location.href='../detail/{{ n.idnote }}/'" type="button">deatil</button>
+    {% if n.permission == 1 or n.user_id == request.user.id%}
+    <button onclick="location.href='../update/{{ n.idnote }}/'" type="button">edit</button>
+    {% endif %}
+    <button onclick="location.href='../addComment/{{ n.idnote }}/'" type="button">addComment</button>
+    <button onclick="location.href='../Comment/{{ n.idnote }}/'" type="button">comment</button>
+!-->
 </div>
 {% endfor %}
 

@@ -33,12 +33,14 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1','IP']
 INSTALLED_APPS = [
     'upload.apps.UploadConfig',
     'login.apps.LoginConfig',
+    'person.apps.PersonConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'captcha',
 ]
 
 MIDDLEWARE= [
@@ -85,7 +87,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'test',                       # Or path to database file if using sqlite3.
         'USER': 'root',                       # Not used with sqlite3.
-        'PASSWORD': 'root',               # Not used with sqlite3.
+        'PASSWORD': 'fr860816ed',               # Not used with sqlite3.
         'HOST': '',                           # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                           # Set to empty string for default. Not used with sqlite3.
     }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>修改資料</title>
+
+</head>
+
+<body>
+  {% if note_list.permission == 1 or note_list.user_id == request.user.id%}
+    <form action="." method="POST" name="form2">
+        {% csrf_token %}  <!-- 啟動CSRF防護，保護伺服器避免被攻擊 -->
+        <div>標題：    <input type="text" name="title" value="{{ note_list.title }}"> </div>
+        <div>領域：    <input type="text" name="field" value="{{ note_list.field }}"></div>
+        <div>科目：    <input type="text" name="subjects" value="{{note_list.subjects}}"></div>
+        <div>教科書：  <input type="text" name="textbook" value="{{note_list.textbook}}"></div>
+        <div>簡介：    <input type="text" name="introduction" value="{{note_list.intro}}"></div>
+        <div>權限      <input type="radio" name="permission" value="1" checked="checked"/>可共編
+                        <input type="radio" name="permission" value="0"/>不可共編 </div>
+        <input type="submit" value="送出資料">
+    </form>
+    {%else%}
+    無使用權限
+    {% endif %}
+
+</body>
+</html>

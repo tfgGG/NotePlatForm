@@ -13,7 +13,7 @@ from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 
 from PIL import Image
-import redis 
+import redis
 
 from django.conf import settings
 
@@ -29,6 +29,28 @@ def detail(request,note_id):
     notelist= NoteList.objects.filter(noteid = note_id).order_by("list_num")
     return render(request,'upload/detail_note.html',{"notelist":notelist,"noteid":note_id})
 
+def comment(request,note_id):
+    if request.method == 'GET':
+        comment = UploadMessage2.objects.filter(note_id = note_id)
+        commentRest = CommentRESTAPI(comment, many=True)
+        return JsonResponse(commentRest.data, safe=False)
+
+def addComment(request,note_id):
+    if request.method == "POST":
+        message = request.POST['message']
+        num=(UploadMessage2.objects.all().count()) + 1
+        data = {
+            'id' : num,
+            'note_id' : note_id,
+            'message' : message,
+            'user' : request.user.id,
+        }
+        mes = CommentRESTAPI(data=data)
+        if mes.is_valid():
+            mes.save()
+            return JsonResponse(mes.data, status=201)
+        return JsonResponse(mes.errors, status=400)
+    return render(request,"upload/addComment.html",locals())
 
 def ajaxpic(request):
     if request.method == 'POST':
@@ -96,7 +118,7 @@ def edit(request,note_id):
 
 
 
-def post(request):
+def create(request):
     if request.method == "POST":
         title = request.POST['title']
         field = request.POST['field']
@@ -104,16 +126,28 @@ def post(request):
         textbook = request.POST['textbook']
         intro = request.POST['introduction']
         permission = request.POST['permission']
+        num=(Note.objects.all().count()) + 1
 
-        unit = Note.objects.create(field=field, subjects=subjects,textbook=textbook
-        ,intro=intro,permission=permission,
-        user_id=request.user.id,title=title)
-        unit.save()
-        return redirect('/upload/index/')
+        mark = " ' "
+        data = {
+            'idnote' : num,
+            'user' : request.user.id,
+            'title'  : title,
+            'field'  : field,
+            'subjects': subjects,
+            'textbook': textbook,
+            'intro'  : intro,
+            'permission': permission
+        }
+        unit = noteRest(data=data)
+        if unit.is_valid():
+            unit.save()
+            return JsonResponse(unit.data, status=201)
+        return JsonResponse(unit.errors, status=400)
+        #return redirect('../index/')
     else:
         message = '請輸入資料(資料不作驗證)'
     return render(request,"upload/create_note.html",locals())
-
 
 def cropphoto(request):
 
@@ -134,3 +168,9 @@ def cropphoto(request):
             data = {'file': "success"}
 
         return JsonResponse(data,safe=False)
+
+def update(request,note_id):
+    if request.method == 'GET':
+        note_list = Note.objects.filter(idnote=note_id)
+        note_listRest = noteRest(note_list, many=True)
+        return JsonResponse(note_listRest.data, safe=False)

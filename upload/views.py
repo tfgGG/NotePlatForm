@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.db import IntegrityError,transaction
 from upload.models import Note,Message
 from django.core.files.storage import FileSystemStorage
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponseRedirect
 
 
 from django.http import HttpResponse, JsonResponse
@@ -22,12 +22,15 @@ from upload.serializers import noteRest,CommentRESTAPI,detailRest
 # Create your views here.
 
 from django.core.files.storage import FileSystemStorage
-from django.http import JsonResponse
 
 from PIL import Image
 import redis
+import hashlib
+
 
 from django.conf import settings
+
+note_url = "http://localhost:3000/"
 
 def index(request):
     html = "hahah"
@@ -144,11 +147,9 @@ def create(request):
         textbook = request.POST['textbook']
         intro = request.POST['introduction']
         permission = request.POST['permission']
-        num=(Note.objects.all().count()) + 1
 
         mark = " ' "
         data = {
-            'idnote' : num,
             'user' : request.user.id,
             'title'  : title,
             'field'  : field,
@@ -157,15 +158,22 @@ def create(request):
             'intro'  : intro,
             'permission': permission
         }
+        # Save to db via note rest
         unit = noteRest(data=data)
         if unit.is_valid():
+            #create a new note with info
             unit.save()
-            return JsonResponse(unit.data, status=201)
-        return JsonResponse(unit.errors, status=400)
+            # get the note id just created
+            lastid = Note.objects.last().idnote 
+            # convert note id into 8 digit hash num 
+            hashnum = int(hashlib.sha256(str(lastid).encode("utf-8")).hexdigest(), 16) % (10 ** 8)  
+            return HttpResponseRedirect(note_url+'note/'+ str(hashnum))
+        else:
+            message = '請輸入資料(資料不作驗證)'
+            return JsonResponse(unit.errors, status=400)
         #return redirect('../index/')
-    else:
-        message = '請輸入資料(資料不作驗證)'
-    return render(request,"upload/create_note.html",locals())
+    if request.method == "GET":    
+        return render(request,"upload/create_note.html",locals())
 
 def cropphoto(request):
 

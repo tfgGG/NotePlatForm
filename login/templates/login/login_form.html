@@ -1,23 +1,32 @@
-
-
-{% block body %}
-<h3>Login Page</h3>
-{% if form.non_field_errors %}
-    <ul class='form-errors'>
-        {% for error in form.non_field_errors %}
-            <li>{{ error }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-<form action='' method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {% include 'login/form_template.html' %}
-  <button type="submit">submit</button>
-</form>
-<button onclick="location.href='/login/register/'" type="button">Register</button>
-<ul class="messages">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endblock %}
+{% load staticfiles %}
+<html>
+  <head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+    <div class="register">
+      <h1>NotePlatForm<button onclick="location.href='/login/register/'" type="button">Register</button></h1>
+    </div>
+    {% if form.non_field_errors %}
+        <ul class='form-errors'>
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="box">
+      <form action='' method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include 'login/form_template.html' %}
+        <button type="submit">submit</button>
+      </form>
+      <ul class="messages">
+          {% for message in messages %}
+          <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+      </ul>
+    </div>
+  </body>
+</html>

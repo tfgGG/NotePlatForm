@@ -23,7 +23,7 @@ from upload.serializers import noteRest,CommentRESTAPI,detailRest
 
 from django.core.files.storage import FileSystemStorage
 
-from PIL import Image
+#from PIL import Image
 import redis
 import hashlib
 
@@ -164,15 +164,15 @@ def create(request):
             #create a new note with info
             unit.save()
             # get the note id just created
-            lastid = Note.objects.last().idnote 
-            # convert note id into 8 digit hash num 
-            hashnum = int(hashlib.sha256(str(lastid).encode("utf-8")).hexdigest(), 16) % (10 ** 8)  
+            lastid = Note.objects.last().idnote
+            # convert note id into 8 digit hash num
+            hashnum = int(hashlib.sha256(str(lastid).encode("utf-8")).hexdigest(), 16) % (10 ** 8)
             return HttpResponseRedirect(note_url+'note/'+ str(hashnum))
         else:
             message = '請輸入資料(資料不作驗證)'
             return JsonResponse(unit.errors, status=400)
         #return redirect('../index/')
-    if request.method == "GET":    
+    if request.method == "GET":
         return render(request,"upload/create_note.html",locals())
 
 def cropphoto(request):

@@ -1,15 +1,24 @@
-<h3>Register Page</h3>
-{% block body %}
-<ul class="messages">
-    {% for message in messages %}
-    <H4 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</H4>
-    {% endfor %}
-</ul>
-<form action='' method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ user_form.as_p}}
-  {{ profile_form.as_p }}
-  <button type="submit">submit</button>
-</form>
-
-{% endblock %}
+{% load staticfiles %}
+<html>
+<head>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+  <h1 class="reg">Welcome</h1>
+  <body>
+    <ul class="messages">
+        {% for message in messages %}
+        <H4 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</H4>
+        {% endfor %}
+    </ul>
+    <form action='' method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="regBox">
+        {{ user_form.as_p}}
+        {{ profile_form.as_p }}
+        <button type="submit">submit</button>
+      </div>
+    </form>
+  </body>
+</html>

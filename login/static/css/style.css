@@ -1,0 +1,100 @@
+body {
+  background: url("background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+h1 {
+  color: #FCA205;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  margin-left: 10%;
+}
+.reg {
+  font-size: 60px;
+  margin-left: 47%;
+  margin-bottom: 10px;
+}
+
+.box {
+  width:500px;
+  height:300px;
+  position:relative;
+  top:30%;
+  left:40%;
+}
+.regBox {
+  width:500px;
+  height:650px;
+  position:relative;
+  top:30%;
+  left:40%;
+}
+label {
+  color: #ffffff;
+  font-size: 25px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  padding-right: 20px;
+  width:140px;
+}
+input
+{
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 20px;
+  color : #ffffff;
+  background-color: transparent;
+  border-style:none;
+}
+.in label input div{
+  width:500px;
+  height:500px;
+  display: inline;
+}
+.in {
+  margin-bottom: 15px;
+  border:1px;
+  border-bottom-style: solid;
+  border-top-style: none;
+  border-left-style:none;
+  border-right-style:none;
+  color : #ffffff;
+}
+.register h1 button div textarea{
+  width:500px;
+  height:500px;
+  display: inline;
+}
+button {
+  background-color: transparent;
+  border-style:none;
+  float: right;
+  margin-right: 10%;
+}
+form button {
+  height: 40px;
+  width: 500px;
+  background-color: rgba(179, 179, 204,0.65);
+  border: 0px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 28px;
+  margin-top: 25px;
+  margin-right: 0%;
+}
+.regBox p {
+  border:1px;
+  border-bottom-style: solid;
+  border-top-style: none;
+  border-left-style:none;
+  border-right-style:none;
+  color : #ffffff;
+}
+h4 {
+  color: #ff0000;
+}
+li {
+  color: #ff0000;
+}
+textarea {
+  background-color: transparent;
+  border-style:none;
+  font-size: 20px;
+  height: 150px;
+}

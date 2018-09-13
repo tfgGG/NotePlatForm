@@ -4,10 +4,11 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>NotePlatForm</title>
   </head>
   <body>
-    <div class="register">
-      <h1>NotePlatForm<button onclick="location.href='/login/register/'" type="button">Register</button></h1>
+    <div class="reg">
+      <h1>NotePlatForm</h1>
     </div>
     {% if form.non_field_errors %}
         <ul class='form-errors'>
@@ -17,11 +18,18 @@
         </ul>
     {% endif %}
     <div class="box">
-      <form action='' method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% include 'login/form_template.html' %}
-        <button type="submit">submit</button>
-      </form>
+      <div class="buttonBox">
+        <button onclick="location.href='/login/login/'" type="button" style="background:#50c9ba;">Login
+          <button onclick="location.href='/login/register/'" type="button" style="background:#9ee6cf;">Register</button>
+        </button>
+      </div>
+      <div class="form">
+        <form action='' method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% include 'login/form_template.html' %}
+          <button type="submit">submit</button>
+        </form>
+      </div>
       <ul class="messages">
           {% for message in messages %}
           <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>

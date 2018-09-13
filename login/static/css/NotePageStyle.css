@@ -1,0 +1,16 @@
+body {
+  background: #f0eec9;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.notePage {
+  margin-left: 20%;
+  margin-right: 20%;
+}
+.note {
+  background: #4ba2ac;
+  border-radius: 8px;
+  border-style:solid;
+  border: 0px;
+  margin: 10px;
+}

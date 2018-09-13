@@ -1,18 +1,24 @@
-{% block body %}
-<ul>
-  <h3>Hi {{ request.user.username }} </h3>
-  <button onclick="location.href='/upload/index/'" type="button">Note Page</button>
-  <button onclick="location.href='/person/index/'" type="button">person</button>
-  <!--{% for pet in allpet %}
-  <li><a href="#"></a>{{pet.id}} {{pet.owner}}{{pet.name}}</li>
-  {% endfor %}-->
-  {% for p in profile %}
-  <p>{{ p.school }}</p>
-  <p>{{ p.birth }}</p>
-  <p>{{ p.intro }}</p>
-  {% endfor %}
+{% load staticfiles %}
+<html>
+  <head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>NotePlatForm</title>
+  </head>
+  <body>
+    <h3>{{ request.user.username }} </h3>
+    <ul>
+      <button onclick="location.href='/upload/index/'" type="button">Note Page</button>
+      <button onclick="location.href='/person/index/'" type="button">person</button>
 
-</ul>
-<button onclick="location.href='/login/logout/'" type="button">Logout</button>
+      {% for p in profile %}
+      <p>{{ p.school }}</p>
+      <p>{{ p.birth }}</p>
+      <p>{{ p.intro }}</p>
+      {% endfor %}
 
-{% endblock %}
+    </ul>
+    <button onclick="location.href='/login/logout/'" type="button">Logout</button>
+  </body>
+</html>

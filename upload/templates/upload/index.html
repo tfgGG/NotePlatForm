@@ -1,30 +1,35 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/NotePageStyle.css' %}">
+    <title>NotePlatForm</title>
+  </head>
+  <h2>Note Page</h2>
+  <button onclick="location.href='../create/'" type="button">Create New Note</button>
+  <div class="notePage">
+    {% for note in note %}
+    <div class="note">
+      <ul>
+          <li>使用者:{{note.user.username}}</li>
+          <li>標題:{{note.title}}</li>
+          <li>領域:{{note.field}}</li>
+          <li>科目:{{note.subjects}}</li>
+          <li>教科書:{{note.textbook}}</li>
+          <li>簡介:{{ note.intro }}</li>
+          <li>權限:{{ note.permission }}</li>
+      </ul>
+      <button onclick="location.href='../detail/{{ note.idnote }}/'" type="button">deatil</button>
 
-<h2>Note Page</h2>
-<button onclick="location.href='../create/'" type="button">Create New Note</button>
-{% block body %}
-
-{% for note in note %}
-<div style="margin:10px; border:1px solid;">
-
-  <ul>
-      <li>使用者:{{note.user.username}}</li>
-      <li>標題:{{note.title}}</li>
-      <li>領域:{{note.field}}</li>
-      <li>科目:{{note.subjects}}</li>
-      <li>教科書:{{note.textbook}}</li>
-      <li>簡介:{{ note.intro }}</li>
-      <li>權限:{{ note.permission }}</li>
-  </ul>
-  <button onclick="location.href='../detail/{{ note.idnote }}/'" type="button">deatil</button>
-
-  <span><b>User: </b>{{n.user.username}}</span>
-    <h4>{{n.title}}</h4>
-    <span><b>Intro: </b>{{n.intro}} </span>
-    <button onclick="location.href='../RESTdetail/{{ note.idnote }}/'" type="button">RESTdeatil</button>
-    <button onclick="location.href='../update/{{ note.idnote }}/'" type="button">edit</button>
-    <button onclick="location.href='../addComment/{{ note.idnote }}/'" type="button">addComment</button>
-    <button onclick="location.href='../Comment/{{ note.idnote }}/'" type="button">comment</button>
-</div>
-{% endfor %}
-
-{% endblock %}
+      <span><b>User: </b>{{n.user.username}}</span>
+        <h4>{{n.title}}</h4>
+        <span><b>Intro: </b>{{n.intro}} </span>
+        <button onclick="location.href='../RESTdetail/{{ note.idnote }}/'" type="button">RESTdeatil</button>
+        <button onclick="location.href='../update/{{ note.idnote }}/'" type="button">edit</button>
+        <button onclick="location.href='../addComment/{{ note.idnote }}/'" type="button">addComment</button>
+        <button onclick="location.href='../Comment/{{ note.idnote }}/'" type="button">comment</button>
+    </div>
+    {% endfor %}
+  </div>
+</html>

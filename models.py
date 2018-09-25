@@ -211,6 +211,7 @@ class Profile(models.Model):
     birth = models.DateField(blank=True, null=True)
     intro = models.TextField(blank=True, null=True)
     user_id = models.PositiveIntegerField()
+    img = models.ImageField(upload_to='img')
 
     class Meta:
         managed = False

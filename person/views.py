@@ -37,3 +37,6 @@ def profile(request):
         profile = Profile.objects.filter(user_id = request.user.id)
         serializer = SnippetSerializer(profile, many=True)
         return JsonResponse(serializer.data, safe=False)
+
+#def favorite(request):
+#    if request.method == 'GET':

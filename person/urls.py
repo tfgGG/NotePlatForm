@@ -6,4 +6,5 @@ urlpatterns = [
     re_path(r'^index/$', views.index, name="index"),
     path('note/',views.note, name="note"),
     path('profile/',views.profile, name="profile"),
+    #path('favorite/',views.favorite, name="favorite"),
 ]

@@ -5,6 +5,18 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'css/NotePageStyle.css' %}">
     <title>NotePlatForm</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <style type="text/css">
+    .red
+    {
+      background: red;
+    }
+    </style>
+
   </head>
   <h2>Note Page</h2>
   <button onclick="location.href='../create/'" type="button">Create New Note</button>
@@ -29,11 +41,34 @@
         <button onclick="location.href='../update/{{ note.idnote }}/'" type="button">edit</button>
         <button onclick="location.href='../addComment/{{ note.idnote }}/'" type="button">addComment</button>
         <button onclick="location.href='../Comment/{{ note.idnote }}/'" type="button">comment</button>
-        <form action="../addLike/{{ note.idnote }}/" method="POST" name="form">
-          {% csrf_token %} 
-          <input type='submit' value="add Like">
+        <form>
+            {% csrf_token %}
+          <button  class="like" type="button" id='like_{{note.idnote}}'>add Like</button>
+        <!--  <input id="like" type='submit' value="add Like" onclick="style">-->
         </form>
+        <script src="https://code.jquery.com/jquery-1.11.2.js"></script>
+        <script>
+        $(document).ready(function(){
+            $('#like_{{note.idnote}}').click(function(){
+              $.ajax({
+                url: '/upload/addLike/{{ note.idnote }}/',
+                success: function(data) {
+                  if (data==1){
+                    $("#like_{{note.idnote}}").addClass("red");
+                    alert("success!");
+                  }
+                  else {
+                    $("#like_{{note.idnote}}").addClass("red");
+                    alert("already exist");
+                  }
+                }
+              });
+            });
+          })
+      </script>
+
     </div>
     {% endfor %}
   </div>
+
 </html>

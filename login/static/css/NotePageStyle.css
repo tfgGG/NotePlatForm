@@ -8,9 +8,16 @@ body {
   margin-right: 20%;
 }
 .note {
-  background: #4ba2ac;
+  background: #ffffff;
   border-radius: 8px;
   border-style:solid;
   border: 0px;
   margin: 10px;
 }
+button{
+  width: auto;
+  height: auto;
+  font-size: 15px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  border: 0px;
+ }

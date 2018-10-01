@@ -38,13 +38,18 @@ def index(request):
     #Sort/Search algorithm #
     return render(request,'upload/index.html',{"note":note})
 def addLike(request,note_id):
-    if request.method == 'POST':
+    if request.method == 'GET':
         user_id = request.user.id
         idnote = note_id
-        unit = Favorite.objects.create(user_id=user_id,idnote=idnote)
-        unit.save()
-        messages.info(request, 'add your favorite!')
-        return redirect('/upload/index/')
+        data=Favorite.objects.filter(user_id=user_id,idnote=idnote)
+        if(data):
+            data.delete()
+            return HttpResponse(0)
+        else:
+            unit = Favorite.objects.create(user_id=user_id,idnote=idnote)
+            unit.save()
+            return HttpResponse(1)
+        #return redirect('/upload/index/')
 
     return render(request,'upload/addLike.html')
 # TODO: Detail Page will contain comment in the future

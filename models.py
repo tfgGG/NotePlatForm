@@ -211,7 +211,7 @@ class Profile(models.Model):
     birth = models.DateField(blank=True, null=True)
     intro = models.TextField(blank=True, null=True)
     user_id = models.PositiveIntegerField()
-
+    img = models.CharField(max_length=100,blank=False,null=True)
     class Meta:
         managed = False
         db_table = 'profile'

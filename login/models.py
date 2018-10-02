@@ -25,7 +25,8 @@ class Profile(models.Model):
     grade = models.IntegerField(blank=True, null=True)
     birth = models.DateField(blank=True, null=True)
     intro = models.TextField(blank=True, null=True)
-
+    img = models.ImageField(upload_to='img')
+    
     class Meta:
         managed = False
         db_table = 'profile'

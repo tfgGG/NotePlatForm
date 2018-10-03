@@ -8,4 +8,4 @@ urlpatterns = [
     path('note/',views.note, name="note"),
     path('profile/',views.profile, name="profile"),
     path('upload/',views.uploadImg, name="upload"),
-] 
+]

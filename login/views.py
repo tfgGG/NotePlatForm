@@ -57,7 +57,7 @@ class UserFormView(View):
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
             user.set_password(user_form.cleaned_data.get('password'))
-            user.save();
+            user.save()
             profile = profile_form.save(commit=False)
             if profile.user_id is None:
                 profile.user_id = user.id

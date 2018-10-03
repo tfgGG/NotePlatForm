@@ -16,6 +16,7 @@ urlpatterns = [
     path('ajaxpic/',views.ajaxpic, name="ajaxpic"),
     path('Comment/<int:note_id>/',views.comment, name="comment"),
     path('addComment/<int:note_id>/',views.addComment, name="comment"),
+    path('addLike/<int:note_id>/',views.addLike, name="addLike"),
     path('RESTdetail/<int:note_id>/',views.RESTdetail, name="RESTdetail"),
     #path('refresh/<int:note_id>/',views.refresh, name="refresh"),
 

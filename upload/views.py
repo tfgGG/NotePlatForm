@@ -8,7 +8,7 @@ from django.views.generic import View
 from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
-from upload.models import Note,Message
+from upload.models import Note,Message,Favorite
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse,HttpResponseRedirect
 
@@ -37,7 +37,21 @@ def index(request):
     note = Note.objects.all()
     #Sort/Search algorithm #
     return render(request,'upload/index.html',{"note":note})
+def addLike(request,note_id):
+    if request.method == 'GET':
+        user_id = request.user.id
+        idnote = note_id
+        data=Favorite.objects.filter(user_id=user_id,idnote=idnote)
+        if(data):
+            data.delete()
+            return HttpResponse(0)
+        else:
+            unit = Favorite.objects.create(user_id=user_id,idnote=idnote)
+            unit.save()
+            return HttpResponse(1)
+        #return redirect('/upload/index/')
 
+    return render(request,'upload/addLike.html')
 # TODO: Detail Page will contain comment in the future
 def detail(request,note_id):
     # TODO: Change to RESTFUL in the future

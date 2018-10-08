@@ -8,7 +8,7 @@ from django.views.generic import View
 from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
-from upload.models import Note,Message,NoteList
+from upload.models import Note,Message,NoteList,Favorite
 from login.models import Profile
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
@@ -23,15 +23,15 @@ from upload.serializers import noteRest,CommentRESTAPI,detailRest
 from login.serializers import SnippetSerializer
 from login.models import Profile
 # Create your views here.
-def index(request):
+'''def index(request):
     #Sort/Search algorithm #
     return render(request,'person/index.html')
-
-def note(request):
-    if request.method == 'GET':
-        PersonNote = Note.objects.filter(user_id = request.user.id)
-        PersonNoteRest = noteRest(PersonNote, many=True)
-        return JsonResponse(PersonNoteRest.data, safe=False)
+'''
+def index(request):
+    PersonNote = Note.objects.filter(user_id = request.user.id)
+    '''PersonNoteRest = noteRest(PersonNote, many=True)
+        return JsonResponse(PersonNoteRest.data, safe=False)'''
+    return render(request,'person/index.html',{"note":PersonNote})
 
 def profile(request):
     if request.method == 'GET':
@@ -47,3 +47,9 @@ def uploadImg(request): # 图片上传函数
         filename = fs.save(img.name, img)
         unit.update(img=img)
     return render(request, 'person/uploadImg.html')
+
+def Myfavorite(request):
+    note = Note.objects.all()
+    fav = Favorite.objects.filter(user_id = request.user.id)
+    #fave = Note.objects.get(idnote=fav.objects.idnote[0])
+    return render(request,'person/Myfavorite.html',{"note":note , "fav":fav})

@@ -14,10 +14,15 @@
     </style>
 
   </head>
-  <h2>Note Page</h2>
-  <button onclick="location.href='../create/'" type="button">Create New Note</button>
+  <h2>{{request.user.username}}'s Note</h2>
+  <button onclick="location.href='/upload/create/'" type="button">Create New Note</button>
+  <button onclick="location.href='../upload/'" type="button">uploadPhoto</button>
+  <button onclick="location.href='../Myfavorite/'" type="button">Myfavorite</button>
   <div class="notePage">
     {% for note in note %}
+    {% for fav in fav %}
+    {% if fav.idnote == note.idnote %}
+    <div>{{fav.idnote}}</div>
     <div class="note">
       <ul>
           <li>使用者:{{note.user.username}}</li>
@@ -28,15 +33,15 @@
           <li>簡介:{{ note.intro }}</li>
           <li>權限:{{ note.permission }}</li>
       </ul>
-      <button onclick="location.href='../detail/{{ note.idnote }}/'" type="button">deatil</button>
+      <button onclick="location.href='/upload/detail/{{ note.idnote }}/'" type="button">deatil</button>
 
       <span><b>User: </b>{{n.user.username}}</span>
         <h4>{{n.title}}</h4>
         <span><b>Intro: </b>{{n.intro}} </span>
-        <button onclick="location.href='../RESTdetail/{{ note.idnote }}/'" type="button">RESTdeatil</button>
-        <button onclick="location.href='../update/{{ note.idnote }}/'" type="button">edit</button>
-        <button onclick="location.href='../addComment/{{ note.idnote }}/'" type="button">addComment</button>
-        <button onclick="location.href='../Comment/{{ note.idnote }}/'" type="button">comment</button>
+        <button onclick="location.href='/upload/RESTdetail/{{ note.idnote }}/'" type="button">RESTdeatil</button>
+        <button onclick="location.href='/upload/update/{{ note.idnote }}/'" type="button">edit</button>
+        <button onclick="location.href='/upload/addComment/{{ note.idnote }}/'" type="button">addComment</button>
+        <button onclick="location.href='/upload/Comment/{{ note.idnote }}/'" type="button">comment</button>
         <form>
             {% csrf_token %}
           <button  class="like" type="button" id='like_{{note.idnote}}'>add Like</button>
@@ -45,7 +50,7 @@
         <script src="https://code.jquery.com/jquery-1.11.2.js"></script>
         <script>
         $(document).ready(function(){
-            
+
             $('#like_{{note.idnote}}').click(function(){
               //var fav=document.getElementById("like_{{note.idnote}}");
               $.ajax({
@@ -65,6 +70,8 @@
       </script>
 
     </div>
+    {% endif %}
+    {% endfor %}
     {% endfor %}
   </div>
 

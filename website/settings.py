@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders'
     #'captcha',
 ]
 
@@ -50,6 +51,7 @@ MIDDLEWARE= [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'website.urls'
@@ -84,12 +86,12 @@ DATABASES = {
     #}
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'test',
+        'NAME': 'test2',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },                  # Or path to database file if using sqlite3.
         'USER': 'root',                       # Not used with sqlite3.
-        'PASSWORD': '',               # Not used with sqlite3.
+        'PASSWORD': 'root',               # Not used with sqlite3.
         'HOST': '',                           # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                           # Set to empty string for default. Not used with sqlite3.
     }
@@ -115,6 +117,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CORS_ORIGIN_WHITELIST = (
+    'google.com',
+    'hostname.example.com',
+    'localhost:3000',
+    '127.0.0.1:9000'
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/

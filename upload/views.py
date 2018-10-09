@@ -30,7 +30,7 @@ import hashlib
 
 from django.conf import settings
 
-note_url = "http://localhost:8000"
+note_url = "http://localhost:3000"
 
 def index(request):
     html = "hahah"
@@ -180,8 +180,16 @@ def create(request):
             # get the note id just created
             lastid = Note.objects.last().idnote
             # convert note id into 8 digit hash num
-            hashnum = int(hashlib.sha256(str(lastid).encode("utf-8")).hexdigest(), 16) % (10 ** 8)
-            return HttpResponseRedirect(note_url+'/upload/edit/'+ str(hashnum))
+            detaildata={
+                "list_text":"Edit Here",
+                "list_num":1,
+                "noteid":lastid
+            }
+            unitdetail = detailRest(data = detaildata)
+            if unitdetail.is_valid():
+                unitdetail.save()
+                hashnum = int(hashlib.sha256(str(lastid).encode("utf-8")).hexdigest(), 16) % (10 ** 8)
+                return HttpResponseRedirect(note_url+'/note/'+ str(hashnum)+'/'+ 'n1')
         else:
             message = '請輸入資料(資料不作驗證)'
             return JsonResponse(unit.errors, status=400)

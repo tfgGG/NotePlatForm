@@ -7,7 +7,6 @@ urlpatterns = [
     re_path(r'^index/$', views.index, name="index"),
     path('detail/<int:note_id>/',views.detail, name="detail"),
     path('update/<int:note_id>/',views.update, name="update"),
-    path('edit/<int:note_id>/',views.edit, name="main"),
     path('create/',views.create, name="create"),
     path('ajaxpic/',views.ajaxpic, name="ajaxpic"),
     path('cropphoto/',views.cropphoto, name="cropphoto"),

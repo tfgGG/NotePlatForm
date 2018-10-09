@@ -109,56 +109,6 @@ def ajaxpic(request):
     return JsonResponse(data)
 
 
-def edit(request,note_id):
-
-    NoteFormSet = formset_factory(NoteListForm, formset=BaseNoteFormSet)
-
-    if request.method == 'POST':
-        note_formset = NoteFormSet(request.POST)
-
-        if note_formset.is_valid():
-            print(note_formset.errors)
-            note_list = []
-            i= 1
-            for link_form in note_formset:
-                list_text = link_form.cleaned_data.get('list_text')
-                note = link_form.cleaned_data.get('note')
-
-                if list_text and note:
-                    note_list.append(NoteList(noteid=note_id, note=note, list_text=list_text,list_num=i))
-                else:
-                    messages.error(request, 'Cannot be null')
-                i=i+1
-
-            try:
-                with transaction.atomic():
-                    #Replace the old with the new
-                    NoteList.objects.filter(noteid = note_id).delete()
-                    NoteList.objects.bulk_create(note_list)
-
-                    # And notify our users that it worked
-                    messages.success(request, 'You have updated your note.')
-
-            except IntegrityError as e: #If the transaction failed
-                messages.error(request, 'There was an error saving your ntoe.')
-                print("!!!!IntegrityError!!!!"+ e)
-        else:
-            messages.error(request, 'There was an error filed.')
-            for dict in note_formset.errors:
-                for errors in dict:
-                    print("!!!Form not Valid!!!"+ dict)
-    # end of if
-
-
-    notelist = NoteList.objects.filter(noteid = note_id ).order_by('list_text')
-    link_data = [{'list_text': l.list_text, 'note': l.note}
-                    for l in notelist]
-    note_formset = NoteFormSet(initial=link_data)
-
-    return render(request, "upload/edit_note.html", context = {'note_formset': note_formset,})
-
-
-
 def create(request):
     if request.method == "POST":
         title = request.POST['title']

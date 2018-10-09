@@ -39,15 +39,22 @@ def hash(num):
     return hashnum
 
 def index(request):
-    html = "hahah"
+    array = []
     note = Note.objects.all()
+    fav = Favorite.objects.filter(user_id=request.user.id).values("idnote")
+    for favs in fav:
+        print(favs)
+        array.append(favs['idnote'])
     #Sort/Search algorithm #
-    return render(request,'upload/index.html',{"note":note})
-def addLike(request,note_id):
-    if request.method == 'GET':
+    return render(request,'upload/index.html',{"note":note,"fav":array})
+
+@csrf_exempt
+def addLike(request):
+    if request.method == 'POST':
         user_id = request.user.id
-        idnote = note_id
-        data=Favorite.objects.filter(user_id=user_id,idnote=idnote)
+        idnote = request.POST.get('id',None)
+        print(idnote)
+        data= Favorite.objects.filter(user_id=user_id,idnote=idnote)
         if(data):
             data.delete()
             return HttpResponse(0)
@@ -55,9 +62,7 @@ def addLike(request,note_id):
             unit = Favorite.objects.create(user_id=user_id,idnote=idnote)
             unit.save()
             return HttpResponse(1)
-        #return redirect('/upload/index/')
 
-    return render(request,'upload/addLike.html')
 # TODO: Detail Page will contain comment in the future
 def detail(request,note_id):
     # TODO: Change to RESTFUL in the future

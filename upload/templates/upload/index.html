@@ -10,17 +10,31 @@
     <script>
       $(document).ready(function(){
           
-          $('#like_{{note.idnote}}').click(function(){
+          $('.like').click(function(){
             //var fav=document.getElementById("like_{{note.idnote}}");
+            console.log("Click")
+            var noteid = $(this).attr("id")
+            var text = ".like#"+noteid+" .liketext"
+            var btn = ".like#"+noteid
             $.ajax({
-              url: '/upload/addLike/{{ note.idnote }}/',
+              url: '/upload/addLike/',
+              type: "POST",
+              data: {"id": noteid },
+              dataType: 'json',
               success: function(data) {
                 if (data==1){
+                  
+                  console.log(text)
+                  $(text).text("已收藏")
+                  $(btn).removeClass("Basic")
+                  $(btn).addClass("Blue")
                   alert("success!");
                 }
                 else {
-                  //$("#like_{{note.idnote}}").addClass("red");
-                  alert("already exist & remove it");
+                  console.log(data + "remove")
+                  $(text).text("收藏")
+                  $(btn).removeClass("Blue")
+                  $(btn).addClass("Basic")
                 }
               }
             });
@@ -62,13 +76,16 @@
               </div>
             </div>
             <div class="content">
-              <form class="left floated">
-                  {% csrf_token %}
-                <button class="ui right labeled icon button Mini Blue " id='like_{{note.idnote}}'>
-                    <i class="bookmark icon"></i>收藏
+                {%if note.idnote in fav %}
+                <button class="ui right labeled icon button Mini Blue left floated like" id='{{note.idnote}}'>
+                    <i class="bookmark icon"></i><span class="liketext">已收藏</span>
                 </button>
+                {% else %}
+                <button class="ui right labeled icon button Mini Basic left floated like" id='{{note.idnote}}'>
+                    <i class="bookmark icon"></i><span class="liketext">收藏</span>
+                </button>
+                {% endif %}
               <!--  <input id="like" type='submit' value="add Like" onclick="style">-->
-              </form>
               <div class="right floated">
                 {%ifequal note.permission 1  %}
                   <i class="globe icon"></i>公開
@@ -81,7 +98,7 @@
       </div>
 
     {% endfor %}
-</div>
 
+</div>
 
 </html>

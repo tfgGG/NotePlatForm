@@ -56,7 +56,12 @@ class UploadMessage2(models.Model):
     class Meta:
         managed = False
         db_table = 'upload_message2'
+
 class Favorite(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
     idnote = models.IntegerField(blank=True , null=True)
+    class Meta:
+        managed = False
+        db_table = 'upload_favorite'
+

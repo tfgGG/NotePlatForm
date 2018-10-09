@@ -1,71 +1,87 @@
 {% load staticfiles %}
 <html>
   <head>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'css/NotePageStyle.css' %}">
     <title>NotePlatForm</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script>
+      $(document).ready(function(){
+          
+          $('#like_{{note.idnote}}').click(function(){
+            //var fav=document.getElementById("like_{{note.idnote}}");
+            $.ajax({
+              url: '/upload/addLike/{{ note.idnote }}/',
+              success: function(data) {
+                if (data==1){
+                  alert("success!");
+                }
+                else {
+                  //$("#like_{{note.idnote}}").addClass("red");
+                  alert("already exist & remove it");
+                }
+              }
+            });
+          });
+        })
+    </script>
     <style type="text/css">
+       .note:hover{
+        top: -5px;
+       }
     </style>
 
   </head>
   <h2>Note Page</h2>
   <button onclick="location.href='../create/'" type="button">Create New Note</button>
-  <div class="notePage">
+
+<div class="notePage ui grid container">
     {% for note in note %}
-    <div class="note">
-      <ul>
-          <li>使用者:{{note.user.username}}</li>
-          <li>標題:{{note.title}}</li>
-          <li>領域:{{note.field}}</li>
-          <li>科目:{{note.subjects}}</li>
-          <li>教科書:{{note.textbook}}</li>
-          <li>簡介:{{ note.intro }}</li>
-          <li>權限:{{ note.permission }}</li>
-      </ul>
-      <button onclick="location.href='../detail/{{ note.idnote }}/'" type="button">deatil</button>
 
-      <span><b>User: </b>{{n.user.username}}</span>
-        <h4>{{n.title}}</h4>
-        <span><b>Intro: </b>{{n.intro}} </span>
-        <button onclick="location.href='../RESTdetail/{{ note.idnote }}/'" type="button">RESTdeatil</button>
-        <button onclick="location.href='../update/{{ note.idnote }}/'" type="button">edit</button>
-        <button onclick="location.href='../addComment/{{ note.idnote }}/'" type="button">addComment</button>
-        <button onclick="location.href='../Comment/{{ note.idnote }}/'" type="button">comment</button>
-        <form>
-            {% csrf_token %}
-          <button  class="like" type="button" id='like_{{note.idnote}}'>add Like</button>
-        <!--  <input id="like" type='submit' value="add Like" onclick="style">-->
-        </form>
-        <script src="https://code.jquery.com/jquery-1.11.2.js"></script>
-        <script>
-        $(document).ready(function(){
-            
-            $('#like_{{note.idnote}}').click(function(){
-              //var fav=document.getElementById("like_{{note.idnote}}");
-              $.ajax({
-                url: '/upload/addLike/{{ note.idnote }}/',
-                success: function(data) {
-                  if (data==1){
-                    alert("success!");
-                  }
-                  else {
-                    //$("#like_{{note.idnote}}").addClass("red");
-                    alert("already exist & remove it");
-                  }
-                }
-              });
-            });
-          })
-      </script>
+      <div class="four wide column">
+        <div class="note ui card" style="cursor:pointer;">
+            <div class="content">
+                <img class="ui avatar image" src="https://semantic-ui.com/images/avatar/large/elliot.jpg">
+                {{note.user.username}}
+                <div class="right floated meta">14h</div>
+            </div> 
+            <div class="content">
+                <h3 class="center aligned">{{note.title}}</h3>
 
-    </div>
+                <h5 class="center aligned">{{ note.intro }}</h5>
+            </div>
+            <div class="content">
+              <div class="list">
+                <div class = "item">
+                  {{note.field}}
+                </div>
+                <div clas="item">
+                  {{note.subjects}}</div>
+              </div>
+            </div>
+            <div class="content">
+              <form class="left floated">
+                  {% csrf_token %}
+                <button class="ui right labeled icon button Mini Blue " id='like_{{note.idnote}}'>
+                    <i class="bookmark icon"></i>收藏
+                </button>
+              <!--  <input id="like" type='submit' value="add Like" onclick="style">-->
+              </form>
+              <div class="right floated">
+                {%ifequal note.permission 1  %}
+                  <i class="globe icon"></i>公開
+                {% else %}
+                  <i class="user icon"></i>私人
+                {% endifequal %}
+              </div>
+            </div>
+        </div>
+      </div>
+
     {% endfor %}
-  </div>
+</div>
+
 
 </html>

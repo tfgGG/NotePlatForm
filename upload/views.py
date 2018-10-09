@@ -25,12 +25,18 @@ from django.core.files.storage import FileSystemStorage
 
 #from PIL import Image
 import redis
-import hashlib
-
+from hashids import Hashids
+hashids = Hashids()
 
 from django.conf import settings
 
 note_url = "http://localhost:3000"
+
+def hash(num):
+    #hashids = Hashids()
+    hashid = Hashids(min_length=6)
+    hashnum = hashid.encode(num)
+    return hashnum
 
 def index(request):
     html = "hahah"
@@ -179,7 +185,7 @@ def create(request):
             unit.save()
             # get the note id just created
             lastid = Note.objects.last().idnote
-            # convert note id into 8 digit hash num
+            
             detaildata={
                 "list_text":"Edit Here",
                 "list_num":1,
@@ -188,8 +194,9 @@ def create(request):
             unitdetail = detailRest(data = detaildata)
             if unitdetail.is_valid():
                 unitdetail.save()
-                hashnum = int(hashlib.sha256(str(lastid).encode("utf-8")).hexdigest(), 16) % (10 ** 8)
-                return HttpResponseRedirect(note_url+'/note/'+ str(hashnum)+'/'+ 'n1')
+                hashnum = hash(lastid)
+                hashnum2 = hash(lastid*10+1) 
+                return HttpResponseRedirect(note_url+'/note/n'+ str(hashnum)+'/'+ str(hashnum2))
         else:
             message = '請輸入資料(資料不作驗證)'
             return JsonResponse(unit.errors, status=400)

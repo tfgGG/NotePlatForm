@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders'
+    'corsheaders',
     #'captcha',
 ]
 
@@ -86,12 +86,12 @@ DATABASES = {
     #}
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'test2',
+        'NAME': 'test',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },                  # Or path to database file if using sqlite3.
         'USER': 'root',                       # Not used with sqlite3.
-        'PASSWORD': 'root',               # Not used with sqlite3.
+        'PASSWORD': '',               # Not used with sqlite3.
         'HOST': '',                           # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                           # Set to empty string for default. Not used with sqlite3.
     }
@@ -145,5 +145,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT='/jsfile/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'node_modules')]
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+MEDIA_URL2 = '/media2/'
+MEDIA_ROOT2 = os.path.join(BASE_DIR, 'media2')

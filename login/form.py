@@ -28,7 +28,7 @@ username = self.cleaned_data.get('username')
 class UserForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['school','grade','birth','intro','img']
+        fields = ['school','grade','birth','intro']
 
     def clean(self):
             return self.cleaned_data

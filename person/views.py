@@ -12,8 +12,8 @@ from upload.models import Note,Message,NoteList,Favorite
 from login.models import Profile
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
-
-
+from person.models import AuthUser
+#from NotePlatForm.models import AuthUser
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
@@ -42,10 +42,10 @@ def profile(request):
 def uploadImg(request): # 图片上传函数
     if request.method == 'POST':
         img = request.FILES.get('img')
-        unit = Profile.objects.filter(user_id=request.user.id)
+        unit = AuthUser.objects.filter(id=request.user.id)
         fs = FileSystemStorage()
         filename = fs.save(img.name, img)
-        unit.update(img=img)
+        unit.update(first_name=img)
     return render(request, 'person/uploadImg.html')
 
 def Myfavorite(request):

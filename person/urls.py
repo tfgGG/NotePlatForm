@@ -9,4 +9,4 @@ urlpatterns = [
     path('profile/',views.profile, name="profile"),
     path('upload/',views.uploadImg, name="upload"),
     path('Myfavorite/',views.Myfavorite, name="Myfavorite"),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

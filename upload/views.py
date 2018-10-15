@@ -12,7 +12,6 @@ from upload.models import Note,Message,Favorite
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse,HttpResponseRedirect
 
-
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
@@ -135,7 +134,7 @@ def create(request):
             unit.save()
             # get the note id just created
             lastid = Note.objects.last().idnote
-            
+
             detaildata={
                 "list_text":"Edit Here",
                 "list_num":1,
@@ -145,7 +144,7 @@ def create(request):
             if unitdetail.is_valid():
                 unitdetail.save()
                 hashnum = hash(lastid)
-                hashnum2 = hash(lastid*10+1) 
+                hashnum2 = hash(lastid*10+1)
                 return HttpResponseRedirect(note_url+'/note/n'+ str(hashnum)+'/'+ str(hashnum2))
         else:
             message = '請輸入資料(資料不作驗證)'

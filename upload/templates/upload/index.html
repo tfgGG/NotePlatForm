@@ -7,7 +7,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+      $(document).ready(function(){
 
+          $('.like').click(function(){
+            //var fav=document.getElementById("like_{{note.idnote}}");
+            console.log("Click")
+            var noteid = $(this).attr("id")
+            var text = ".like#"+noteid+" .liketext"
+            var btn = ".like#"+noteid
+            $.ajax({
+              url: '/upload/addLike/',
+              type: "POST",
+              data: {"id": noteid },
+              dataType: 'json',
+              success: function(data) {
+                if (data==1){
+
+                  console.log(text)
+                  $(text).text("已收藏")
+                  $(btn).removeClass("Basic")
+                  $(btn).addClass("Blue")
+                  alert("success!");
+                }
+                else {
+                  console.log(data + "remove")
+                  $(text).text("收藏")
+                  $(btn).removeClass("Blue")
+                  $(btn).addClass("Basic")
+                }
+              }
+            });
+          });
+        })
+    </script>
     <style type="text/css">
        .note:hover{
         top: -5px;
@@ -52,13 +85,16 @@
               </div>
             </div>
             <div class="content">
-              <form class="left floated">
-                  {% csrf_token %}
-                <button class="ui right labeled icon button Mini Blue " id='like_{{note.idnote}}'>
-                    <i class="bookmark icon"></i>收藏
+                {%if note.idnote in fav %}
+                <button class="ui right labeled icon button Mini Blue left floated like" id='{{note.idnote}}'>
+                    <i class="bookmark icon"></i><span class="liketext">已收藏</span>
                 </button>
+                {% else %}
+                <button class="ui right labeled icon button Mini Basic left floated like" id='{{note.idnote}}'>
+                    <i class="bookmark icon"></i><span class="liketext">收藏</span>
+                </button>
+                {% endif %}
               <!--  <input id="like" type='submit' value="add Like" onclick="style">-->
-              </form>
               <div class="right floated">
                 {%ifequal note.permission 1  %}
                   <i class="globe icon"></i>公開
@@ -67,7 +103,7 @@
                 {% endifequal %}
               </div>
             </div>
-            <script>
+        <!--    <script>
               $(document).ready(function(){
 
                   $('#like_{{note.idnote}}').click(function(){
@@ -86,12 +122,12 @@
                     });
                   });
                 })
-            </script>
+            </script> -->
         </div>
       </div>
 
     {% endfor %}
-</div>
 
+</div>
 
 </html>

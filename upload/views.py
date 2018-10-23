@@ -192,8 +192,9 @@ def update(request,note_id):
 @csrf_exempt
 def noteDetailList(request,note_id):
     if request.method == "POST":
-        list_text = request.POST['list_text']
-        note = request.POST['note']
+        list_text = request.POST.get('list_text',None)
+        note = request.POST.get('note',None)
+
         data = {
             "list_text": list_text,
             "list_num": list_num,

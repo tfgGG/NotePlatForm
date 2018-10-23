@@ -3,34 +3,45 @@
 <head>
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
   <title>Join us</title>
+  <script>
+    $(document).ready(function(){
+      $('input').addClass("form-control");
+      $('textarea').addClass("form-control");
+    })
+  </script>
 </head>
-  <div class="reg">
-    <h1>Welcome</h1>
+<body>
+  <div class="container">
+      <h1>Welcome</h1>
+      <div class="btn-group">
+        <button onclick="location.href='/login/login/'" type="button" class="btn btn-primary">Login</button>
+        <button onclick="location.href='/login/register/'" type="button" class="btn btn-primary">Register</button>
+      </div>
+      <div class="form-group">
+          <form action='' method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              {{ user_form.as_p}}
+              {{ profile_form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+      </div>
   </div>
-  <body>
-    <div class="box">
-      <div class="buttonBox">
-        <button onclick="location.href='/login/login/'" type="button" style="background:#9ee6cf;">Login
-          <button onclick="location.href='/login/register/'" type="button" style="background:#50c9ba;">Register</button>
-        </button>
-      </div>
-      <div class="form">
-        <form action='' method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="in">
-            {{ user_form.as_p}}
-            {{ profile_form.as_p }}
-          </div>
-          <button type="submit">next</button>
-        </form>
-      </div>
-    </div>
-    <ul class="messages">
-        {% for message in messages %}
-        <H4 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</H4>
-        {% endfor %}
-    </ul>
-  </body>
+      <ul class="messages">
+          {% for message in messages %}
+          <H4 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</H4>
+          {% endfor %}
+      </ul>
+  </div>
+</body>
 </html>

@@ -24,16 +24,10 @@ def index(request):
     if not request.user.is_authenticated:
         return redirect('/login/login/')
 
-    allpet = Pet.objects.all();
-
-    html=''
     profile = Profile.objects.filter(user_id = request.user.id)
     context ={
-        "allpet":allpet,
         "profile":profile,
     }
-    for pet in allpet:
-        html = html + "<h3>"+ pet.owner+" "+pet.name +"</h3>"
     return render(request, 'login/index.html', context)
 
 def now(request):

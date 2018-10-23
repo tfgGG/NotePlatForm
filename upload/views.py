@@ -153,8 +153,10 @@ def create(request):
             unitdetail = detailRest(data = detaildata)
             if unitdetail.is_valid():
                 unitdetail.save()
+                lastdetailid = NoteList.objects.last().idnote_list
                 hashnum = hash(lastid)
-                hashnum2 = hash(lastid*10+1)
+                hashnum2 = hash(lastdetailid)
+                print(lastdetailid)
                 return HttpResponseRedirect(note_url+'/note/'+ str(hashnum)+'/'+ str(hashnum2))
         else:
             message = '請輸入資料(資料不作驗證)'

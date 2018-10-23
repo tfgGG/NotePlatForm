@@ -14,8 +14,12 @@ from django.http import JsonResponse,HttpResponseRedirect
 
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import api_view
 #from snippets.models import Snippet
 from upload.serializers import noteRest,CommentRESTAPI,detailRest
 # Create your views here.
@@ -24,6 +28,7 @@ from django.core.files.storage import FileSystemStorage
 
 #from PIL import Image
 import redis
+import json
 from hashids import Hashids
 hashids = Hashids()
 
@@ -150,7 +155,7 @@ def create(request):
                 unitdetail.save()
                 hashnum = hash(lastid)
                 hashnum2 = hash(lastid*10+1)
-                return HttpResponseRedirect(note_url+'/note/n'+ str(hashnum)+'/'+ str(hashnum2))
+                return HttpResponseRedirect(note_url+'/note/'+ str(hashnum)+'/'+ str(hashnum2))
         else:
             message = '請輸入資料(資料不作驗證)'
             return JsonResponse(unit.errors, status=400)
@@ -183,8 +188,9 @@ def update(request,note_id):
         note_list = Note.objects.filter(idnote=note_id)
         note_listRest = noteRest(note_list, many=True)
         return JsonResponse(note_listRest.data, safe=False)
-
-def noteDetailList(request,note_id,list_num):
+'''
+@csrf_exempt
+def noteDetailList(request,note_id):
     if request.method == "POST":
         list_text = request.POST['list_text']
         note = request.POST['note']
@@ -202,3 +208,14 @@ def noteDetailList(request,note_id,list_num):
     #if request.method == "GET":
 
     return render(request,"upload/noteDetail.html",locals())
+'''
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def noteDetailList(request):
+    if request.method == 'POST':
+        serializer = detailRest(data=json.loads(request.body.decode('utf-8')))
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

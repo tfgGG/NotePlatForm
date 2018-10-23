@@ -183,11 +183,12 @@ def update(request,note_id):
         note_list = Note.objects.filter(idnote=note_id)
         note_listRest = noteRest(note_list, many=True)
         return JsonResponse(note_listRest.data, safe=False)
-
+@csrf_exempt
 def noteDetailList(request,note_id,list_num):
     if request.method == "POST":
-        list_text = request.POST['list_text']
-        note = request.POST['note']
+        list_text = request.POST.get('list_text',None)
+        note = request.POST.get('note',None)
+
         data = {
             "list_text": list_text,
             "list_num": list_num,
@@ -201,4 +202,4 @@ def noteDetailList(request,note_id,list_num):
         return JsonResponse(noteDetail.errors, status=400)
     #if request.method == "GET":
 
-    return render(request,"upload/noteDetail.html",locals())
+    #return render(request,"upload/noteDetail.html",locals())

@@ -1,6 +1,6 @@
 {% for note in note %}
 <div class="four wide column">
-  <div class="note ui card" style="cursor:pointer;">
+  <div class="note ui card" style="cursor:pointer;" onclick="location.href='http://localhost:3000/note/{{note.idnote}}/1/'">
       <div class="content">
         <script>
           var imgName = "{{note.user.first_name}}";
@@ -11,7 +11,7 @@
             document.write('<img class="ui avatar image" src="http://127.0.0.1:8000/media/{{note.user.first_name}}">');
           }
         </script>
-
+          {{note.idnote_list}}
           {{note.user.username}}
 
           <div class="right floated meta">14h</div>

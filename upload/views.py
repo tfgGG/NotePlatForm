@@ -8,6 +8,7 @@ from django.views.generic import View
 from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
+from django.db.models import Avg, Max, Min
 from upload.models import Note,Message,Favorite
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse,HttpResponseRedirect
@@ -155,7 +156,7 @@ def create(request):
                 unitdetail.save()
                 lastdetailid = NoteList.objects.last().idnote_list
                 hashnum = hash(lastid)
-                hashnum2 = hash(lastdetailid)
+                hashnum2 = hash(lastid*100 + 1)
                 print(lastdetailid)
                 return HttpResponseRedirect(note_url+'/note/'+ str(hashnum)+'/'+ str(hashnum2))
         else:

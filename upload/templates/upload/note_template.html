@@ -1,6 +1,6 @@
 {% for note in note %}
 <div class="four wide column">
-  <div class="note ui card" style="cursor:pointer;" onclick="location.href='http://localhost:3000/note/{{note.idnote}}/1/'">
+  <div class="note ui card" style="cursor:pointer;" >
       <div class="content">
         <script>
           var imgName = "{{note.user.first_name}}";
@@ -16,7 +16,7 @@
 
           <div class="right floated meta">14h</div>
       </div>
-      <div class="content">
+      <div class="content" onclick="location.href='http://localhost:3000/note/{{note.idnote}}/1/'">
           <h3 class="center aligned">{{note.title}}</h3>
 
           <h5 class="center aligned">{{ note.intro }}</h5>
@@ -42,6 +42,8 @@
           {% endif %}
         <!--  <input id="like" type='submit' value="add Like" onclick="style">-->
         <div class="right floated">
+          {% include 'upload/delete_template.html' %}<!-- 刪除筆記的button -->
+          <!--<button class="ui left floated button delete" id='{{note.idnote}}'>delete</button>-->
           {%ifequal note.permission 1  %}
             <i class="globe icon"></i>公開
           {% else %}

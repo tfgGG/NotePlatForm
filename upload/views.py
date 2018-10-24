@@ -223,3 +223,18 @@ def noteDetailList(request):
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#刪除筆記function
+@csrf_exempt
+def deleteNote(request):
+    if request.method == 'POST':
+        user_id = request.user.id
+        idnote = request.POST.get('id',None)
+        print(idnote)
+        data_list = NoteList.objects.filter(noteid=idnote)
+        data_list.delete()
+        fav_note = Favorite.objects.filter(idnote=idnote)
+        fav_note.delete()
+        data= Note.objects.get(idnote=idnote)
+        data.delete()
+        return HttpResponse(0)

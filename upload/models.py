@@ -4,11 +4,11 @@ from django.contrib.auth.models import User
 class Note(models.Model):
     idnote = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
-    title = models.CharField(max_length=45, blank=True, null=True)
-    field = models.CharField(max_length=10)
-    subjects = models.CharField(max_length=10)
-    textbook = models.CharField(max_length=10)
-    intro = models.CharField(max_length=45, blank=True, null=True)
+    title = models.CharField(max_length=100, blank=True, null=True)     #更改文字長度
+    field = models.CharField(max_length=100)
+    subjects = models.CharField(max_length=100)
+    textbook = models.CharField(max_length=100)
+    intro = models.CharField(max_length=100, blank=True, null=True)
     permission = models.IntegerField()
 
     class Meta:
@@ -64,4 +64,3 @@ class Favorite(models.Model):
     class Meta:
         managed = False
         db_table = 'upload_favorite'
-

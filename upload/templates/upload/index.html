@@ -1,15 +1,9 @@
+{% extends "upload/appbase.html" %}
 {% load staticfiles %}
-<html>
-  <head>
-    <link rel="stylesheet" href="{% static 'css/NotePageStyle.css' %}">
-    <title>NotePlatForm</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+{% block content %}
     <script>
       $(document).ready(function(){
-
+        
           $('.like').click(function(){
             //var fav=document.getElementById("like_{{note.idnote}}");
             console.log("Click")
@@ -55,4 +49,4 @@
   {% include 'upload/note_template.html' %}
 </div>
 
-</html>
+{% endblock %}

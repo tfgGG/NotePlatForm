@@ -1,10 +1,6 @@
+{% extends 'login/appbase.html' %}
 {% load staticfiles %}
-<html>
-  <head>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <title>NotePlatForm</title>
-  </head>
+{% block content %}
   <body>
     <h3>{{ request.user.username }} </h3>
     <ul>
@@ -20,4 +16,4 @@
     </ul>
     <button onclick="location.href='/login/logout/'" type="button">Logout</button>
   </body>
-</html>
+{% endblock %}

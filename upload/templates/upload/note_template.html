@@ -80,10 +80,16 @@
             document.write('<img class="ui avatar image" src="http://127.0.0.1:8000/media/{{note.user.first_name}}">');
           }
         </script>
-          {{note.idnote_list}}
-          {{note.user.username}}
 
-          <div class="right floated meta">14h</div>
+          {{note.user.username}}
+          <!-- 刪除筆記的button -->
+          <div class="right floated" style="margin-left: 5px;" >
+              {% include 'upload/delete_template.html' %}
+          </div>
+          <div class="right floated meta" style="margin-top: 4px;">
+            <span> 14h</span>
+          </div>    
+          
       </div>
       <div class="content" onclick="location.href='http://localhost:3000/note/{{note.idnote}}/1/'">
           <h3 class="center aligned">{{note.title}}</h3>
@@ -113,7 +119,7 @@
       
         <!--  <input id="like" type='submit' value="add Like" onclick="style">-->
         <div class="right floated">
-          {% include 'upload/delete_template.html' %}<!-- 刪除筆記的button -->
+          
           <!--<button class="ui left floated button delete" id='{{note.idnote}}'>delete</button>-->
           {%ifequal note.permission 1  %}
             <i class="globe icon"></i>公開

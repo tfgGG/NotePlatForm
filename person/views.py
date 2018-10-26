@@ -50,4 +50,4 @@ def uploadImg(request): # 图片上传函数
 
 def Myfavorite(request):
     note = Note.objects.filter(favorite__user= request.user)
-    return render(request,'person/Myfavorite.html',{"note":note })
+    return render(request,'person/index.html',{"note":note })

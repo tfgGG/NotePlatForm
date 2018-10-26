@@ -1,6 +1,75 @@
+<script>
+    $(document).ready(function(){
+      
+        $('.like').click(function(){
+          console.log("Click")
+          var noteid = $(this).attr("id")
+          var text = ".like#"+noteid+" .liketext"
+          var btn = ".like#"+noteid
+          $.ajax({
+            url: '/upload/addLike/',
+            type: "POST",
+            data: {"id": noteid },
+            dataType: 'json',
+            success: function(data) {
+              if (data==1){
+
+                console.log(text)
+                $(text).text("已收藏")
+                $(btn).removeClass("Basic")
+                $(btn).addClass("Blue")
+                alert("success!");
+              }
+              else {
+                if(window.location.href.indexOf("/person/Myfavorite") > -1)
+                {
+                  $("#"+noteid).closest('.removecard').remove()
+                  console.log("Removing")
+                  event.preventDefault()
+                  return;
+                }     
+                console.log(data + "remove")
+                $(text).text("收藏")
+                $(btn).removeClass("Blue")
+                $(btn).addClass("Basic")
+              }
+            }
+          });
+        });
+        // 刪除筆記
+        $('.delete').click(function(){
+          var delid =$(this).attr("id");
+        //  alert(delid)
+          $('.deleteTag').click(function(){
+            var tag = $(this).attr("id");
+            //alert(tag);
+            if(tag==1){
+              $.ajax({
+                url: '/upload/deleteNote/',
+                type: "POST",
+                data: {"id": delid },
+                dataType: 'json',
+                success: function(data) {
+                   location.reload();
+                }
+              })
+            }
+            else{
+              location.reload();
+            }
+          });
+        });
+      })
+  </script>
+  <style type="text/css">
+     .note:hover{
+      top: -5px;
+     }
+  </style>
+
 {% for note in note %}
-<div class="four wide column">
-  <div class="note ui card" style="cursor:pointer;" onclick="location.href='http://localhost:3000/note/{{note.idnote}}/1/'">
+<div class="four wide column removecard">
+  <div class="note ui card" style="cursor:pointer;" >
       <div class="content">
         <script>
           var imgName = "{{note.user.first_name}}";
@@ -16,7 +85,7 @@
 
           <div class="right floated meta">14h</div>
       </div>
-      <div class="content">
+      <div class="content" onclick="location.href='http://localhost:3000/note/{{note.idnote}}/1/'">
           <h3 class="center aligned">{{note.title}}</h3>
 
           <h5 class="center aligned">{{ note.intro }}</h5>
@@ -31,7 +100,8 @@
         </div>
       </div>
       <div class="content">
-          {%if note.idnote in fav %}
+          
+          {%if note.idnote in fav or request.path == "/person/Myfavorite/" %}
           <button class="ui right labeled icon button Mini Blue left floated like" id='{{note.idnote}}'>
               <i class="bookmark icon"></i><span class="liketext">已收藏</span>
           </button>
@@ -40,8 +110,11 @@
               <i class="bookmark icon"></i><span class="liketext">收藏</span>
           </button>
           {% endif %}
+      
         <!--  <input id="like" type='submit' value="add Like" onclick="style">-->
         <div class="right floated">
+          {% include 'upload/delete_template.html' %}<!-- 刪除筆記的button -->
+          <!--<button class="ui left floated button delete" id='{{note.idnote}}'>delete</button>-->
           {%ifequal note.permission 1  %}
             <i class="globe icon"></i>公開
           {% else %}

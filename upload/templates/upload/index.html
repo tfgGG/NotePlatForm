@@ -1,48 +1,13 @@
 {% extends "upload/appbase.html" %}
 {% load staticfiles %}
 {% block content %}
-    <script>
-      $(document).ready(function(){
-        
-          $('.like').click(function(){
-            //var fav=document.getElementById("like_{{note.idnote}}");
-            console.log("Click")
-            var noteid = $(this).attr("id")
-            var text = ".like#"+noteid+" .liketext"
-            var btn = ".like#"+noteid
-            $.ajax({
-              url: '/upload/addLike/',
-              type: "POST",
-              data: {"id": noteid },
-              dataType: 'json',
-              success: function(data) {
-                if (data==1){
 
-                  console.log(text)
-                  $(text).text("已收藏")
-                  $(btn).removeClass("Basic")
-                  $(btn).addClass("Blue")
-                  alert("success!");
-                }
-                else {
-                  console.log(data + "remove")
-                  $(text).text("收藏")
-                  $(btn).removeClass("Blue")
-                  $(btn).addClass("Basic")
-                }
-              }
-            });
-          });
-        })
-    </script>
-    <style type="text/css">
-       .note:hover{
-        top: -5px;
-       }
-    </style>
 
-  </head>
-  <h2>Note Page</h2>
+
+  <div class="ui icon input">
+    <input type="text">
+    <i class="search icon"></i>
+  </div>
   <button onclick="location.href='../create/'" type="button">Create New Note</button>
 
 <div class="notePage ui grid container">

@@ -1,78 +1,16 @@
-{% load staticfiles %}
-<html>
-  <head>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="{% static 'css/NotePageStyle.css' %}">
-    <title>NotePlatForm</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-    <style type="text/css">
-    </style>
+{% extends 'person/appbase.html' %}
 
-  </head>
-  <h2>{{request.user.username}}'s Note</h2>
+{% block content %}
+<script>
+
+</script>
   <button onclick="location.href='/upload/create/'" type="button">Create New Note</button>
   <button onclick="location.href='../upload/'" type="button">uploadPhoto</button>
   <button onclick="location.href='../Myfavorite/'" type="button">Myfavorite</button>
-  <div class="notePage">
-    {% for note in note %}
-    {% for fav in fav %}
-    {% if fav.idnote == note.idnote %}
-    <div>{{fav.idnote}}</div>
-    <div class="note">
-      <ul>
-          <li>使用者:{{note.user.username}}</li>
-          <li>標題:{{note.title}}</li>
-          <li>領域:{{note.field}}</li>
-          <li>科目:{{note.subjects}}</li>
-          <li>教科書:{{note.textbook}}</li>
-          <li>簡介:{{ note.intro }}</li>
-          <li>權限:{{ note.permission }}</li>
-      </ul>
-      <button onclick="location.href='/upload/detail/{{ note.idnote }}/'" type="button">deatil</button>
-
-      <span><b>User: </b>{{n.user.username}}</span>
-        <h4>{{n.title}}</h4>
-        <span><b>Intro: </b>{{n.intro}} </span>
-        <button onclick="location.href='/upload/RESTdetail/{{ note.idnote }}/'" type="button">RESTdeatil</button>
-        <button onclick="location.href='/upload/update/{{ note.idnote }}/'" type="button">edit</button>
-        <button onclick="location.href='/upload/addComment/{{ note.idnote }}/'" type="button">addComment</button>
-        <button onclick="location.href='/upload/Comment/{{ note.idnote }}/'" type="button">comment</button>
-        <form>
-            {% csrf_token %}
-          <button  class="like" type="button" id='like_{{note.idnote}}'>add Like</button>
-        <!--  <input id="like" type='submit' value="add Like" onclick="style">-->
-        </form>
-        <script src="https://code.jquery.com/jquery-1.11.2.js"></script>
-        <script>
-        $(document).ready(function(){
-
-            $('#like_{{note.idnote}}').click(function(){
-              //var fav=document.getElementById("like_{{note.idnote}}");
-              $.ajax({
-                url: '/upload/addLike/{{ note.idnote }}/',
-                success: function(data) {
-                  if (data==1){
-                    alert("success!");
-                  }
-                  else {
-                    //$("#like_{{note.idnote}}").addClass("red");
-                    alert("already exist & remove it");
-                  }
-                }
-              });
-            });
-          })
-      </script>
-
+  <div>
+    <div class="notePage ui grid container">
+      {% include 'upload/note_template.html' %}
     </div>
-    {% endif %}
-    {% endfor %}
-    {% endfor %}
   </div>
 
-</html>
+{% endblock %}

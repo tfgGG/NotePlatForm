@@ -8,7 +8,7 @@ from django.views.generic import View
 from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
-from upload.models import Note,Message,NoteList,Favorite
+from upload.models import Note,Favorite
 from login.models import Profile
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
@@ -49,7 +49,5 @@ def uploadImg(request): # 图片上传函数
     return render(request, 'person/uploadImg.html')
 
 def Myfavorite(request):
-    note = Note.objects.all()
-    fav = Favorite.objects.filter(user_id = request.user.id)
-    #fave = Note.objects.get(idnote=fav.objects.idnote[0])
-    return render(request,'person/Myfavorite.html',{"note":note , "fav":fav})
+    note = Note.objects.filter(favorite__user= request.user)
+    return render(request,'person/Myfavorite.html',{"note":note })

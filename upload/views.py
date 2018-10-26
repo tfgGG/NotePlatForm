@@ -46,25 +46,27 @@ def hash(num):
 def index(request):
     array = []
     note = Note.objects.all()
-    fav = Favorite.objects.filter(user_id=request.user.id).values("idnote")
-    for favs in fav:
-        print(favs)
-        array.append(favs['idnote'])
+    fav = Note.objects.filter(favorite__user_id= request.user.id).values('idnote')
+    for f in fav:
+        array.append(f['idnote'])
     #Sort/Search algorithm #
     return render(request,'upload/index.html',{"note":note,"fav":array})
 
 @csrf_exempt
 def addLike(request):
     if request.method == 'POST':
-        user_id = request.user.id
-        idnote = request.POST.get('id',None)
-        print(idnote)
-        data= Favorite.objects.filter(user_id=user_id,idnote=idnote)
+       
+        idnote = request.POST.get('id')
+        obj = Note.objects.get(pk=idnote)
+        
+        data= Note.objects.filter(favorite__user=request.user.id,pk=idnote)
+        print("~~~Afeter Filt~~~~"+ str(data.count()))
         if(data):
-            data.delete()
+            Favorite.objects.filter(user=request.user,idnote=obj).delete()
             return HttpResponse(0)
         else:
-            unit = Favorite.objects.create(user_id=user_id,idnote=idnote)
+            print("Inside Else")
+            unit = Favorite.objects.create(user=request.user,idnote=obj)
             unit.save()
             return HttpResponse(1)
 
@@ -223,3 +225,18 @@ def noteDetailList(request):
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#刪除筆記function
+@csrf_exempt
+def deleteNote(request):
+    if request.method == 'POST':
+        user_id = request.user.id
+        idnote = request.POST.get('id',None)
+        print(idnote)
+        data_list = NoteList.objects.filter(noteid=idnote)
+        data_list.delete()
+        fav_note = Favorite.objects.filter(idnote=idnote)
+        fav_note.delete()
+        data= Note.objects.get(idnote=idnote)
+        data.delete()
+        return HttpResponse(0)

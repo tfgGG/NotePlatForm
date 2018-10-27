@@ -3,11 +3,12 @@
 {% block content %}
 
 
-
-  <div class="ui icon input">
-    <input type="text">
-    <i class="search icon"></i>
+<form action="." method="POST">
+  <div class="ui action input">
+    <input type="text" placeholder="Search..." name='searchNote'>
+    <button class="ui button">Search</button>
   </div>
+</form>
   <button onclick="location.href='../create/'" type="button">Create New Note</button>
 
 <div class="notePage ui grid container">

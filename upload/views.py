@@ -49,7 +49,7 @@ def dec(h):
     hashnum = hashid.decode(h)
     print(hashnum)
     return hashnum
-
+@csrf_exempt
 def index(request):
     array = []
     note = Note.objects.all()
@@ -57,15 +57,20 @@ def index(request):
     for f in fav:
         array.append(f['idnote'])
     #Sort/Search algorithm #
+    if request.method == 'POST':
+        noteSearch = request.POST['searchNote']
+        note = Note.objects.filter(title__contains=noteSearch)
+        print(note)
+        return render(request,'upload/index.html',{"note":note,"fav":array})
     return render(request,'upload/index.html',{"note":note,"fav":array})
 
 @csrf_exempt
 def addLike(request):
     if request.method == 'POST':
-       
+
         idnote = request.POST.get('id')
         obj = Note.objects.get(pk=idnote)
-        
+
         data= Note.objects.filter(favorite__user=request.user.id,pk=idnote)
         print("~~~Afeter Filt~~~~"+ str(data.count()))
         if(data):
@@ -205,7 +210,7 @@ def update(request,note_id):
 #新增及更新筆記細項
 
 class DetailList(APIView):
-    
+
     def post(self,request):
         serializer = detailRest(data=json.loads(request.body.decode('utf-8')))
         print(serializer)

@@ -20,7 +20,7 @@ class NoteList(models.Model):
     idnote_list = models.AutoField(primary_key=True)
     list_text = models.CharField(max_length=45, blank=True, null=True)
     list_num = models.PositiveIntegerField(blank=True, null=True)
-    note = models.CharField(max_length=100, blank=True, null=True)
+    note = models.CharField(max_length=3000, blank=True, null=True)
     noteid = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:

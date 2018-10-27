@@ -1,5 +1,5 @@
 from django.test import TestCase
-
+'''
 # Create your tests here.
 def detail(request,note_id):
     # TODO: Change to RESTFUL in the future
@@ -14,3 +14,4 @@ def detail(request,note_id):
         ,message=message)
         unit.save()
     return render(request,'upload/detail_note.html',{"notelist":notelist,"noteid":note_id,"message":message})
+'''

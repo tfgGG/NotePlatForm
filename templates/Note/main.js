@@ -1,0 +1,8 @@
+$(function(){
+
+    $('.ui.dropdown').dropdown();
+    
+
+   
+})
+

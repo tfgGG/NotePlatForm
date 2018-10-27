@@ -36,9 +36,12 @@
             }
           });
         });
+
         // 刪除筆記
         $('.delete').click(function(){
           var delid =$(this).attr("id");
+          $('.deletemodal').modal('toggle');
+    
         //  alert(delid)
           $('.deleteTag').click(function(){
             var tag = $(this).attr("id");

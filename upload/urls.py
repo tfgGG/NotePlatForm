@@ -15,7 +15,8 @@ urlpatterns = [
     #path('ajaxpic/',views.ajaxpic, name="ajaxpic"),
     path('Comment/<int:note_id>/',views.comment, name="comment"),
     path('addComment/<int:note_id>/',views.addComment, name="addcomment"),
-    path('addnotedetail/',views.noteDetailList, name="note"),
+    path('addnotedetail/',views.DetailList.as_view()),
+    path('putdetail/<int:id>/<int:num>',views.DetailPut),
     path('addLike/',views.addLike, name="addLike"),
     path('deleteNote/',views.deleteNote, name="addLike"),                           #刪除筆記
     path('RESTdetail/<int:note_id>/',views.RESTdetail, name="RESTdetail"),

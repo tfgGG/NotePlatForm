@@ -21,6 +21,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 #from snippets.models import Snippet
 from upload.serializers import noteRest,CommentRESTAPI,detailRest
 # Create your views here.
@@ -41,6 +42,12 @@ def hash(num):
     #hashids = Hashids()
     hashid = Hashids(min_length=6)
     hashnum = hashid.encode(num)
+    return hashnum
+
+def dec(h):
+    hashid = Hashids(min_length=6)
+    hashnum = hashid.decode(h)
+    print(hashnum)
     return hashnum
 
 def index(request):
@@ -120,7 +127,7 @@ def ajaxpic(request):
 
     return JsonResponse(data)
 
-
+#新增筆記及第一項
 def create(request):
     if request.method == "POST":
         title = request.POST['title']
@@ -193,38 +200,37 @@ def update(request,note_id):
         note_list = Note.objects.filter(idnote=note_id)
         note_listRest = noteRest(note_list, many=True)
         return JsonResponse(note_listRest.data, safe=False)
-'''
-@csrf_exempt
-def noteDetailList(request,note_id):
-    if request.method == "POST":
-        list_text = request.POST.get('list_text',None)
-        note = request.POST.get('note',None)
 
-        data = {
-            "list_text": list_text,
-            "list_num": list_num,
-            "note" : note,
-            "noteid": note_id
-        }
-        noteDetail = detailRest(data = data)
-        if noteDetail.is_valid():
-            noteDetail.save()
-            return JsonResponse(noteDetail.data, status=201)
-        return JsonResponse(noteDetail.errors, status=400)
-    #if request.method == "GET":
 
-    return render(request,"upload/noteDetail.html",locals())
-'''
-@csrf_exempt
-@api_view(['GET', 'POST'])
-def noteDetailList(request):
-    if request.method == 'POST':
+#新增及更新筆記細項
+
+class DetailList(APIView):
+    
+    def post(self,request):
         serializer = detailRest(data=json.loads(request.body.decode('utf-8')))
         print(serializer)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+@api_view(['PUT'])
+def DetailPut(request,id,num):
+    if request.method == 'PUT':
+        notedetail = NoteList.objects.filter(noteid = id , list_num = num).first()
+        data = json.loads(request.body.decode('utf-8'))
+        print(data)
+        data['noteid'] = id
+        data['idnote_list'] = notedetail.idnote_list
+        serializer = detailRest(notedetail, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            print(str(serializer.data))
+            return Response(serializer.data)
+        else:
+            print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #刪除筆記function
 @csrf_exempt

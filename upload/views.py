@@ -134,11 +134,10 @@ def ajaxpic(request):
 
 #新增筆記及第一項
 def create(request):
-    if request.method == "POST":
+    if request.method == "POST":    
         title = request.POST['title']
         field = request.POST['field']
         subjects = request.POST['subjects']
-        textbook = request.POST['textbook']
         intro = request.POST['introduction']
         permission = request.POST['permission']
 
@@ -148,7 +147,6 @@ def create(request):
             'title'  : title,
             'field'  : field,
             'subjects': subjects,
-            'textbook': textbook,
             'intro'  : intro,
             'permission': permission
         }
@@ -178,7 +176,7 @@ def create(request):
             return JsonResponse(unit.errors, status=400)
         #return redirect('../index/')
     if request.method == "GET":
-        return render(request,"upload/create_note.html",locals())
+        return render(request,"person/index.html",locals())
 
 def cropphoto(request):
 

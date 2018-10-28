@@ -7,7 +7,7 @@ class Note(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)     #更改文字長度
     field = models.CharField(max_length=100)
     subjects = models.CharField(max_length=100)
-    textbook = models.CharField(max_length=100)
+    textbook = models.CharField(max_length=100,null=True)
     intro = models.CharField(max_length=100, blank=True, null=True)
     permission = models.IntegerField()
 

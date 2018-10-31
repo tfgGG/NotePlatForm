@@ -143,10 +143,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT='/jsfile/'
+STATIC_ROOT= os.path.join(BASE_DIR, 'jsfile')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 MEDIA_URL2 = '/media2/'
 MEDIA_ROOT2 = os.path.join(BASE_DIR, 'media2')
+
+DATA_PATH = os.path.join(BASE_DIR,'jsfile/cat.json')

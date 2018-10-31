@@ -16,8 +16,17 @@
             </div>
             <div class="field">
                 <label>Field</label>
-                <input type="text" name="field">
-                <!--<div class="ui fluid search dropdown" multiple=""></select>-->
+                <div class="ui fluid multiple selection dropdown">
+                    <input type="hidden" name="field" > 
+                    <div class="default text">Select Fields</div>
+                    <div class="menu">
+                    {% for f in field %}
+                        <div class="item" data-value="{{f.value}}">
+                            {{f.text}}
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
            </div> 
             <div class="field">
                 <label>Subjects:</label>

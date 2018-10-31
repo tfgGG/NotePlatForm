@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect
 from django.template import loader
+from django.conf import settings
 #from .models import Note,NoteList,UploadMessage2
+
 from django.core import serializers
 from django.contrib.auth import authenticate
 #from .form import NoteListForm,BaseNoteFormSet
 from django.views.generic import View
-from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
 from upload.models import Note,Favorite
@@ -19,19 +20,18 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 #from snippets.models import Snippet
-from upload.serializers import noteRest,CommentRESTAPI,detailRest
+
 from login.serializers import SnippetSerializer
 from login.models import Profile
+import json
 # Create your views here.
-'''def index(request):
-    #Sort/Search algorithm #
-    return render(request,'person/index.html')
-'''
+
 def index(request):
     PersonNote = Note.objects.filter(user_id = request.user.id)
-    '''PersonNoteRest = noteRest(PersonNote, many=True)
-        return JsonResponse(PersonNoteRest.data, safe=False)'''
-    return render(request,'person/index.html',{"note":PersonNote})
+    json_data = open(settings.DATA_PATH,encoding = 'utf8')
+    field = json.load(json_data)
+    json_data.close()
+    return render(request,'person/index.html',{"note":PersonNote,"field":field['field']})
 
 def profile(request):
     if request.method == 'GET':

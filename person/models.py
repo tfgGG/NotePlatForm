@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from upload.models import Note
 # Create your models here.
 class AuthUser(models.Model):
     password = models.CharField(max_length=128)
@@ -16,3 +17,42 @@ class AuthUser(models.Model):
     class Meta:
         managed = False
         db_table = 'auth_user'
+
+class Group(models.Model):
+    idgroup = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=45,blank=True,null=True)
+    creator = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'group'
+
+class Groupuser(models.Model):
+    idgroup = models.AutoField(primary_key=True)
+    userid = models.IntegerField(blank=True, null=True)
+    group = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'groupuser'
+
+class Plan(models.Model):
+    idplan = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=45,blank=True,null=True)
+    groupid = models.ForeignKey(Group, models.DO_NOTHING, db_column='groupid',blank=True,null=True)
+    
+    class Meta:
+        managed = False
+        db_table = 'plan'
+
+class Plandetail(models.Model):
+    idplandetail = models.AutoField(primary_key=True)
+    note = models.ForeignKey(Note, models.DO_NOTHING, db_column='note',blank=True,null=True)
+    assign = models.ForeignKey(User, models.DO_NOTHING, db_column='assign',blank=True,null=True)
+    start = models.DateField(blank=True,null=True)
+    end = models.DateField(blank=True,null=True)
+    plan = models.ForeignKey(Plan,models.DO_NOTHING,db_column='plan',blank=True,null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'plandetail'

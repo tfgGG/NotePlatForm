@@ -197,8 +197,9 @@ def cropphoto(request):
             data = {'file': "success"}
 
         return JsonResponse(data,safe=False)
-
-def update(request,note_id):
+        
+@csrf_exempt
+def note(request,note_id):
     if request.method == 'GET':
         note_list = Note.objects.filter(idnote=note_id)
         note_listRest = noteRest(note_list, many=True)

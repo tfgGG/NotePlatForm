@@ -1,0 +1,12 @@
+<div class="ui secondary vertical menu">
+  <a class="item" href="/person/CreateGroup/">
+    CreateGroup
+  </a>
+  <div class="ui divided selection list">
+    {% for group in group %}
+      <a class="item" href="/person/Team/{{group.idgroup}}">
+        {{group.name}}
+      </a>
+    {% endfor %}
+  </div>
+</div>

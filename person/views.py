@@ -43,9 +43,11 @@ def uploadImg(request): # 图片上传函数
     if request.method == 'POST':
         img = request.FILES.get('img')
         unit = AuthUser.objects.filter(id=request.user.id)
+        profileunit = Profile.objects.filter(user_id=request.user.id)
         fs = FileSystemStorage()
         filename = fs.save(img.name, img)
         unit.update(first_name=img)
+        profileunit.update(img=img)
     return render(request, 'person/uploadImg.html')
 
 def Myfavorite(request):

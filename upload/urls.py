@@ -13,8 +13,8 @@ urlpatterns = [
     path('create/',views.create, name="create"),                                    #POST create note
     #path('update/index2/',views.snippet_list, name="note"),
     #path('ajaxpic/',views.ajaxpic, name="ajaxpic"),
-    path('Comment/<int:note_id>/',views.comment, name="comment"),
-    path('addComment/<int:note_id>/',views.addComment, name="addcomment"),
+    path('comment/<int:note_id>/',views.comment, name="comment"),
+    path('addComment/',views.addComment, name="addcomment"),
     path('addnotedetail/',views.DetailList.as_view()),
     path('putdetail/<int:id>/<int:num>',views.DetailPut),
     path('addLike/',views.addLike, name="addLike"),

@@ -51,6 +51,9 @@ def dec(h):
     return hashnum
 @csrf_exempt
 def index(request):
+    json_data = open(settings.DATA_PATH,encoding = 'utf8')
+    field = json.load(json_data)
+
     array = []
     note = Note.objects.all()
     fav = Note.objects.filter(favorite__user_id= request.user.id).values('idnote')
@@ -58,11 +61,21 @@ def index(request):
         array.append(f['idnote'])
     #Sort/Search algorithm #
     if request.method == 'POST':
-        noteSearch = request.POST['searchNote']
-        note = Note.objects.filter(title__contains=noteSearch)
-        print(note)
-        return render(request,'upload/index.html',{"note":note,"fav":array})
-    return render(request,'upload/index.html',{"note":note,"fav":array})
+        #noteSearch = request.POST['searchNote']
+        #note = Note.objects.filter(title__contains=noteSearch)
+        noteSearch = request.POST['searchTags']
+        noteTag = noteSearch.split(",")
+        note = Note.objects.none()
+        for n in noteTag:
+            tmp = Note.objects.filter(field__contains=n)
+            if tmp:
+                note |= tmp
+
+        json_data.close()
+        return render(request,'upload/index.html',{"note":note,"fav":array,"subject":field['subject']})#field改成subject
+
+    json_data.close()
+    return render(request,'upload/index.html',{"note":note,"fav":array,"subject":field['subject']})
 
 @csrf_exempt
 def addLike(request):
@@ -134,7 +147,7 @@ def ajaxpic(request):
 
 #新增筆記及第一項
 def create(request):
-    if request.method == "POST":    
+    if request.method == "POST":
         title = request.POST['title']
         field = request.POST['field']
         subjects = request.POST['subjects']

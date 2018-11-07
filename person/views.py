@@ -32,7 +32,7 @@ def index(request):
     json_data = open(settings.DATA_PATH,encoding = 'utf8')
     field = json.load(json_data)
     json_data.close()
-    return render(request,'person/index.html',{"note":PersonNote,"field":field['field'] ,"group":group})
+    return render(request,'person/index.html',{"note":PersonNote,"subject":field['subject'] ,"group":group})
 
 def profile(request):
     if request.method == 'GET':

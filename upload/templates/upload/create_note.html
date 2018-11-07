@@ -12,12 +12,13 @@
             </div>
             <div class="field">
                     <label>Intro</label>
-                    <input type="text" name="introduction"> 
+                    <input type="text" name="introduction">
             </div>
             <div class="field">
                 <label>Field</label>
+                <!--
                 <div class="ui fluid multiple selection dropdown">
-                    <input type="hidden" name="field" > 
+                    <input type="hidden" name="field" >
                     <div class="default text">Select Fields</div>
                     <div class="menu">
                     {% for f in field %}
@@ -27,7 +28,23 @@
                     {% endfor %}
                     </div>
                 </div>
-           </div> 
+                -->
+                <!--暫時改-->
+                <div class="ui fluid multiple search selection dropdown">
+                  <input name="field" type="hidden">
+                  <i class="dropdown icon"></i>
+                  <div class="default text">Select Field</div>
+                    <div class="menu">
+                      {% for s in subject %}
+                        <div class="header">{{s.text}}</div>
+                        {% for b in s.field %}
+                          <div class="item" data-value="{{b.value}}">{{b.text}}</div>
+                        {% endfor %}
+                      {% endfor %}
+                    </div>
+                </div>
+                <!--    -->
+           </div>
             <div class="field">
                 <label>Subjects:</label>
                 <input type="text" name="subjects">
@@ -35,8 +52,8 @@
             <div class="fields">
                 <div class="field">
                     <label>Permission</label>
-                    
-                    <div class="ui selection dropdown" > 
+
+                    <div class="ui selection dropdown" >
                         <input type="hidden" name="permission">
                         <i class="dropdown icon"></i>
                         <div class="default text">Select Permission</div>
@@ -58,7 +75,7 @@
                 </div>
                 <div class="field">
                     <label>Group</label>
-                    <select class="ui dropdown" name="permission"> 
+                    <select class="ui dropdown" name="permission">
                             <option value="0">
                                 <i class="ban icon">i</i>Hide
                             </option>

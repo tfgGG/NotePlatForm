@@ -1,0 +1,24 @@
+
+
+<form action="." method="POST">
+  <div class="ui fluid multiple search selection dropdown">
+    <input name="searchTags" type="hidden">
+    <i class="dropdown icon"></i>
+    <div class="default text">Search from tags...</div>
+      <div class="menu">
+        {% for s in subject %}
+          <div class="header">{{s.text}}</div>
+          {% for b in s.field %}
+            <div class="item" data-value="{{b.value}}">{{b.text}}</div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  <!--  <div class="menu">
+      {% for f in field%}
+      <div class="item" id="{{f.value}}">{{f.text}}</div>
+      {% endfor %}
+    </div>
+  </div>-->
+  <button class="fluid ui button CreateTeam">Fits container</button>
+</form>

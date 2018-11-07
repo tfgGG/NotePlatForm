@@ -9,4 +9,6 @@ urlpatterns = [
     path('profile/',views.profile, name="profile"),
     path('upload/',views.uploadImg, name="upload"),
     path('Myfavorite/',views.Myfavorite, name="Myfavorite"),
+    path('CreateGroup/',views.CreateGroup,name="CreateGroup"),
+    path('Team/<int:teamid>/',views.Team,name="Team"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.template import loader
 from django.conf import settings
+from django.db.models import Q
 #from .models import Note,NoteList,UploadMessage2
 
 from django.core import serializers
@@ -28,7 +29,7 @@ import json
 
 def index(request):
     #group = Group.objects.all()
-    user = User.objects.all()
+    user = User.objects.filter(~Q(id = request.user.id)) #除掉自己
     group = Group.objects.filter(groupuser__userid = request.user.id)
 
     if request.path == "/person/Myfavorite/":

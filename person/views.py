@@ -40,7 +40,7 @@ def index(request):
     json_data = open(settings.DATA_PATH,encoding = 'utf8')
     field = json.load(json_data)
     json_data.close()
-    return render(request,'person/index.html',{"note":note,"subject":field['subject'] ,"group":group},"user":user)
+    return render(request,'person/index.html',{"note":note,"subject":field['subject'] ,"group":group,"user":user})
 
 def profile(request):
     if request.method == 'GET':

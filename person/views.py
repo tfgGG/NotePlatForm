@@ -13,7 +13,7 @@ from upload.models import Note,Favorite
 from login.models import Profile
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
-from person.models import AuthUser,Group,Groupuser
+from person.models import User,Group,Groupuser
 from person.models import Plandetail,Plan
 #from NotePlatForm.models import AuthUser
 from django.http import HttpResponse, JsonResponse
@@ -27,12 +27,20 @@ import json
 # Create your views here.
 
 def index(request):
-    group = Group.objects.all()
-    PersonNote = Note.objects.filter(user_id = request.user.id)
+    #group = Group.objects.all()
+    user = User.objects.all()
+    group = Group.objects.filter(groupuser__userid = request.user.id)
+
+    if request.path == "/person/Myfavorite/":
+        note = Note.objects.filter(favorite__user= request.user)
+    else:
+        note = Note.objects.filter(user_id = request.user.id)
+
     json_data = open(settings.DATA_PATH,encoding = 'utf8')
     field = json.load(json_data)
     json_data.close()
-    return render(request,'person/index.html',{"note":PersonNote,"field":field['field'] ,"group":group})
+
+    return render(request,'person/index.html',{"note":note,"field":field['field'] ,"group":group,"user":user})
 
 def profile(request):
     if request.method == 'GET':
@@ -49,25 +57,23 @@ def uploadImg(request): # 图片上传函数
         unit.update(first_name=img)
     return render(request, 'person/uploadImg.html')
 
-def Myfavorite(request):
-    note = Note.objects.filter(favorite__user= request.user)
-    return render(request,'person/index.html',{"note":note })
-@csrf_exempt
+
 def CreateGroup(request):
-    user = AuthUser.objects.all()
+    
     if request.method == 'POST':
         name = request.POST['groupName']
-        unit = Group.objects.create(name=name, creator=request.user.id)
+        createuser = User.objects.get(pk = request.user.id)
+        unit = Group.objects.create(name=name, creator=createuser)
         unit.save()
         memberid = request.POST['tags']
+        print(memberid)
         member = memberid.split(",")
-        groupid=Group.objects.get(name=name)
-        for member in member:
-            id = AuthUser.objects.get(username=member).id
-            memberunit = Groupuser.objects.create(userid=id,group=groupid.idgroup)
+        member.append(request.user.id)
+        for m in member:
+            id = User.objects.get(pk = m)
+            memberunit = Groupuser.objects.create(userid= m ,group=unit)
             memberunit.save()
-        return redirect('../Team/'+str(groupid.idgroup)+'/')
-    return render(request,'person/CreateGroup.html',{"user":user})
+        return redirect('../Team/'+str(unit.idgroup)+'/')
 
 def Team(request,teamid):
     if request.method == 'GET':
@@ -82,4 +88,4 @@ def Team(request,teamid):
 
         print(planteamdetail.values())
         #print(plandetail.start)
-        return render(request,'person/Team.html',{"plandetail":planteamdetail})
+        return render(request,'person/Calender.html',{"plandetail":planteamdetail})

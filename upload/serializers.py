@@ -1,6 +1,6 @@
 from rest_framework import serializers
 #from snippets.models import Snippet, LANGUAGE_CHOICES, STYLE_CHOICES
-from upload.models import Note,UploadMessage2,NoteList
+from upload.models import Note,Message,NoteList
 
 class noteRest(serializers.ModelSerializer):
     class Meta:
@@ -9,7 +9,7 @@ class noteRest(serializers.ModelSerializer):
 
 class CommentRESTAPI(serializers.ModelSerializer):
     class Meta:
-        model = UploadMessage2
+        model = Message
         fields = '__all__'
 
 class detailRest(serializers.ModelSerializer):

@@ -1,0 +1,29 @@
+<div class="ui small modal groupmodal">
+  <div class="header">
+    <h3 class="ui blue header">Create New Group</h3>
+  </div>
+  <div class="content">
+      <form action="/person/CreateGroup/" class="ui form" method="POST">
+        {% csrf_token %}
+        <label>Group Name:</label>
+        <div class="field">
+            <input type="text" placeholder="group name..." name="groupName">
+        </div>
+        <label>Select Members:</label>
+        <div class="field">
+          <div class="ui fluid multiple search selection dropdown">
+            <input name="tags" type="hidden">
+            <i class="dropdown icon"></i>
+            <div class="default text">Enter username</div>
+            <div class="menu">
+              {% for user in user%}
+              <div class="item" data-value="{{user.id}}">{{user.username}}</div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <br>
+        <button class="fluid ui blue button CreateTeam">Create</button>
+      </form>
+  </div>
+</div>

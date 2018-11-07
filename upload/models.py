@@ -39,23 +39,15 @@ class PollsDocument(models.Model):
 
 
 class Message(models.Model):
-    id = models.IntegerField(primary_key=True)
-    note_id = models.IntegerField(blank=True, null=True)
-    message = models.CharField(max_length=100)
+    id = models.AutoField(primary_key=True)
+    message = models.CharField(max_length=100, blank=True, null=True)
+    note = models.ForeignKey('Note', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    username = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'message'
-
-class UploadMessage2(models.Model):
-    id = models.IntegerField(primary_key=True)
-    note_id = models.IntegerField(blank=True, null=True)
-    message = models.CharField(max_length=100)
-    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'upload_message2'
 
 class Favorite(models.Model):
     id = models.AutoField(primary_key=True)

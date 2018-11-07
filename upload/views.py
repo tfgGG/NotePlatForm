@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.template import loader
-from .models import Note,NoteList,UploadMessage2
+from .models import Note,NoteList,Message
 from django.core import serializers
 from django.contrib.auth import authenticate
 from .form import NoteListForm,BaseNoteFormSet
@@ -56,7 +56,7 @@ def index(request):
 
     array = []
     note = Note.objects.all()
-    fav = Note.objects.filter(favorite__user_id= request.user.id).values('idnote')
+    fav = Note.objects.filter(favorite__user_id = request.user.id).values('idnote')
     for f in fav:
         array.append(f['idnote'])
     #Sort/Search algorithm #
@@ -109,26 +109,22 @@ def RESTdetail(request,note_id):
 
 def comment(request,note_id):
     if request.method == 'GET':
-        comment = UploadMessage2.objects.filter(note_id = note_id)
+        comment = Message.objects.select_related('user').filter(note = note_id)
         commentRest = CommentRESTAPI(comment, many=True)
+        print(commentRest)
         return JsonResponse(commentRest.data, safe=False)
 
-def addComment(request,note_id):
+@csrf_exempt
+def addComment(request):
     if request.method == "POST":
-        message = request.POST['message']
-        num=(UploadMessage2.objects.all().count()) + 1
-        data = {
-            'id' : num,
-            'note_id' : note_id,
-            'message' : message,
-            'user' : request.user.id,
-        }
-        mes = CommentRESTAPI(data=data)
-        if mes.is_valid():
-            mes.save()
-            return JsonResponse(mes.data, status=201)
-        return JsonResponse(mes.errors, status=400)
-    return render(request,"upload/addComment.html",locals())
+        serializer = CommentRESTAPI(data=json.loads(request.body.decode('utf-8')))
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        print(serializer.errors)
+        return JsonResponse(serializer.errors, status=400)
+
 
 def ajaxpic(request):
     if request.method == 'POST':
@@ -210,8 +206,9 @@ def cropphoto(request):
             data = {'file': "success"}
 
         return JsonResponse(data,safe=False)
-
-def update(request,note_id):
+        
+@csrf_exempt
+def note(request,note_id):
     if request.method == 'GET':
         note_list = Note.objects.filter(idnote=note_id)
         note_listRest = noteRest(note_list, many=True)

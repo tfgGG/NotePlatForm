@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from upload.models import Note
 # Create your models here.
-class AuthUser(models.Model):
+class User(models.Model):
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.IntegerField()
@@ -21,7 +21,7 @@ class AuthUser(models.Model):
 class Group(models.Model):
     idgroup = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45,blank=True,null=True)
-    creator = models.IntegerField(blank=True, null=True)
+    creator = models.ForeignKey(User, models.DO_NOTHING, db_column='creator', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -30,7 +30,7 @@ class Group(models.Model):
 class Groupuser(models.Model):
     idgroup = models.AutoField(primary_key=True)
     userid = models.IntegerField(blank=True, null=True)
-    group = models.IntegerField(blank=True, null=True)
+    group = models.ForeignKey(Group, models.DO_NOTHING, db_column='group', blank=True, null=True)
 
     class Meta:
         managed = False

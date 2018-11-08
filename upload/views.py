@@ -61,16 +61,17 @@ def index(request):
         array.append(f['idnote'])
     #Sort/Search algorithm #
     if request.method == 'POST':
-        #noteSearch = request.POST['searchNote']
-        #note = Note.objects.filter(title__contains=noteSearch)
-        noteSearch = request.POST['searchTags']
-        noteTag = noteSearch.split(",")
+        noteSearch = request.POST['searchNote']
+        searchTags = request.POST['searchTags']
         note = Note.objects.none()
-        for n in noteTag:
-            tmp = Note.objects.filter(field__contains=n)
-            if tmp:
-                note |= tmp
-
+        if searchTags != '':
+            noteTag = searchTags.split(",")
+            for n in noteTag:
+                tmp = Note.objects.filter(field__contains=n)
+                if tmp:
+                    note |= tmp
+        elif noteSearch != '':
+            note = Note.objects.filter(title__contains=noteSearch)
         json_data.close()
         return render(request,'upload/index.html',{"note":note,"fav":array,"subject":field['subject']})#field改成subject
 
@@ -206,7 +207,7 @@ def cropphoto(request):
             data = {'file': "success"}
 
         return JsonResponse(data,safe=False)
-        
+
 @csrf_exempt
 def note(request,note_id):
     if request.method == 'GET':

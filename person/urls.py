@@ -11,4 +11,5 @@ urlpatterns = [
     path('Myfavorite/',views.index, name="Myfavorite"),
     path('CreateGroup/',views.CreateGroup,name="CreateGroup"),
     path('Team/Calender/<int:teamid>/',views.Team,name="Team"),
+    path('Team/Planner/<int:teamid>/',views.Team,name="Plan"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

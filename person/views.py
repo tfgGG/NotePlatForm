@@ -79,15 +79,10 @@ def CreateGroup(request):
 
 def Team(request,teamid):
     if request.method == 'GET':
-        planteamdetail = Plandetail.objects.none()
-        print(planteamdetail.values())
         plan = Plan.objects.filter(groupid=teamid)
-        plandetail = Plandetail.objects.all()
-        for p1 in plandetail:
-            for p2 in plan:
-                if str(p2.idplan) == str(p1.plan.idplan):
-                    planteamdetail |= Plandetail.objects.filter(plan=p2.idplan)
+        planteamdetail = Plandetail.objects.filter(plan__groupid = teamid).order_by('plan')
+        note = Note.objects.filter(plandetail__plan__groupid = teamid)
+        plancard = list(zip(planteamdetail,note))
+        return render(request,'person/TeamIndex.html',{"plancard":plancard,"plan":plan})
 
-        print(planteamdetail.values())
-        #print(plandetail.start)
-        return render(request,'person/TeamIndex.html',{"plandetail":planteamdetail})
+

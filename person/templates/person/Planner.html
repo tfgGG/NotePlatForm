@@ -1,0 +1,17 @@
+
+<div class="ui grid">
+    {% for p in plan %}
+    <div class="three wide column">
+        <div class="ui card">
+            <h4 class="ui header">{{ p.name }}</h4>
+            <ul>
+                {% for pd,n in plancard %}
+                    {%if p.idplan == pd.plan_id %}
+                        <li>{{ pd.start}} , {{n.title}} </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+</div>

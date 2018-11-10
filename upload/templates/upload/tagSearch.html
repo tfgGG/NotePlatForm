@@ -1,6 +1,12 @@
 
 
 <form action="." method="POST">
+  <!-- title search -->
+  <div class="ui action input">
+    <input type="text" placeholder="Search..." name='searchNote'>
+    <button class="ui button">Search</button>
+  </div>
+  <!-- tag search  -->
   <div class="ui fluid multiple search selection dropdown">
     <input name="searchTags" type="hidden">
     <i class="dropdown icon"></i>
@@ -14,11 +20,5 @@
         {% endfor %}
       </div>
     </div>
-  <!--  <div class="menu">
-      {% for f in field%}
-      <div class="item" id="{{f.value}}">{{f.text}}</div>
-      {% endfor %}
-    </div>
-  </div>-->
   <button class="fluid ui button CreateTeam">Fits container</button>
 </form>

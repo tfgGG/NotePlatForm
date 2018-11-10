@@ -1,5 +1,5 @@
 {% extends 'person/appbase.html' %}
-
+{% load static %}
 {% block content %}
 
 <div class="ui two column grid centered">
@@ -20,7 +20,9 @@
     </div>
     <div class="ui basic segment">
       {%if "/person/Team/Calender/" in request.path %}
-      {%include "person/Calender.html" %}
+        {%include "person/Calender.html" %}
+      {%elif "/person/Team/Planner/" in request.path %}
+        {%include "person/Planner.html" %}
       {%endif%}
     </div>
   </div>

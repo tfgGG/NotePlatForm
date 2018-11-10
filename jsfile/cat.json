@@ -1,5 +1,5 @@
 {
-  	"field": [{ "text":"統計學","value":"st","color":"#B8DFD0"},{"text":"系統科學","value":"sy","color": "#FFE1AB"},{"text":"電腦科學","value":"sk","color":"#B5DBF1"}],
+  	"field": [{ "text":"統計學","value":"st","color":"#B8DFD0"},{"text":"系統科學","value":"sy","color": "#FFE1AB"},{"text":"電腦科學","value":"co","color":"#B5DBF1"}],
 	"subject":[
 
 		{"text":"統計學",

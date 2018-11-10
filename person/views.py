@@ -90,4 +90,4 @@ def Team(request,teamid):
 
         print(planteamdetail.values())
         #print(plandetail.start)
-        return render(request,'person/Calender.html',{"plandetail":planteamdetail})
+        return render(request,'person/TeamIndex.html',{"plandetail":planteamdetail})

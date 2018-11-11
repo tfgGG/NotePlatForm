@@ -1,24 +1,34 @@
 
 
-<form action="." method="POST">
-  <!-- title search -->
-  <div class="ui action input">
-    <input type="text" placeholder="Search..." name='searchNote'>
-    <button class="ui button">Search</button>
-  </div>
-  <!-- tag search  -->
-  <div class="ui fluid multiple search selection dropdown">
-    <input name="searchTags" type="hidden">
-    <i class="dropdown icon"></i>
-    <div class="default text">Search from tags...</div>
-      <div class="menu">
-        {% for s in subject %}
-          <div class="header">{{s.text}}</div>
-          {% for b in s.field %}
-            <div class="item" data-value="{{b.value}}">{{b.text}}</div>
-          {% endfor %}
-        {% endfor %}
+<form action="." method="POST" class="ui form">
+      <!-- title search -->
+    <div class="fields">
+      <label>關鍵字搜尋: </label>
+      <div class="three wide field">
+        
+        <div class="ui action input">
+          <input type="text" placeholder="Search..." name='searchNote'>
+          <button class="ui button">Search</button>
+        </div>
+      </div>
+      <!-- tag search  -->
+      <label>標籤搜尋: </label>
+      <div class="eleven wide field">
+          <div class="ui  multiple search selection dropdown">
+            <input name="searchTags" type="hidden">
+            <i class="dropdown icon"></i>
+            <div class="default text">Search from tags...</div>
+              <div class="menu">
+                {% for s in subject %}
+                  <div class="header">{{s.text}}</div>
+                  {% for b in s.field %}
+                    <div class="item" data-value="{{b.value}}">{{b.text}}</div>
+                  {% endfor %}
+                {% endfor %}
+              </div>
+          </div>
       </div>
     </div>
-  <button class="fluid ui button CreateTeam">Fits container</button>
+    
 </form>
+

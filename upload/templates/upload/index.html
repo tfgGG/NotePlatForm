@@ -1,11 +1,17 @@
 {% extends "upload/appbase.html" %}
-{% load staticfiles %}
+
 {% block content %}
 
-{% include 'upload/tagSearch.html' %}
 
-<div class="notePage ui grid stackable">
-  {% include 'upload/note_template.html' %}
+<div>
+    <div class="ui segment" style="margin-top:0px; border: 0px; padding: 30px;">
+        {% include 'upload/tagSearch.html' %}
+    </div>
+    <div class="notePage ui grid container stackable">
+        {% include 'upload/note_template.html' %}
+    </div>
+
 </div>
+
 
 {% endblock %}

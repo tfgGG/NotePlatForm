@@ -83,6 +83,6 @@ def Team(request,teamid):
         planteamdetail = Plandetail.objects.filter(plan__groupid = teamid).order_by('plan')
         note = Note.objects.filter(plandetail__plan__groupid = teamid)
         plancard = list(zip(planteamdetail,note))
-        return render(request,'person/TeamIndex.html',{"plancard":plancard,"plan":plan})
+        return render(request,'person/TeamIndex.html',{"plancard":plancard,"plan":plan,"teamid":teamid})
 
 

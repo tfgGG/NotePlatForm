@@ -3,11 +3,11 @@
 
   $(document).ready(function() {
 	var data = [
-  {% for plandetail in plandetail %}
+  {% for pd,n in plancard %}
         {
-          title : '{{plandetail.plan.name}}',
-          start : '{{plandetail.start}}',
-          end : '{{plandetail.end}}',
+          title : '{{pd.name}}'+ '_{{n.title}}',
+          start : '{{pd.start}}',
+          end : '{{pd.end}}',
         },
   {% endfor %}
       ];

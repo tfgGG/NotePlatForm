@@ -1,8 +1,0 @@
-$(function(){
-
-    $('.ui.dropdown').dropdown();
-    
-
-   
-})
-

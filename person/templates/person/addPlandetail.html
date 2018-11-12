@@ -1,0 +1,38 @@
+<div class="ui small modal plandetailmodal">
+  <div class="header">
+    <h3 class="ui blue header">Create</h3>
+  </div>
+  <div class="content">
+      <form action="/person/AddPlandetail/" class="ui form" method="POST">
+        {% csrf_token %}
+        <label>筆記</label>
+        <div class="field">
+          <div class="ui fluid search selection dropdown">
+            <input name="tags" type="hidden">
+            <i class="dropdown icon"></i>
+            <div class="default text">Note</div>
+            <div class="menu">
+              {% for n in note%}
+              <div class="item" data-value="{{n.idnote}}">{{n.title}}</div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <label>assign</label>
+        <div class="field">
+          <div class="ui fluid search selection dropdown">
+            <input name="tags" type="hidden">
+            <i class="dropdown icon"></i>
+            <div class="default text">Note</div>
+            <div class="menu">
+              {% for u in user%}
+              <div class="item" data-value="{{u.userid}}">{{u.userid}}</div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <br>
+        <button class="fluid ui blue button">Add</button>
+      </form>
+  </div>
+</div>

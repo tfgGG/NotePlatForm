@@ -30,6 +30,12 @@
       <a class="item ">
         Messege
       </a>
+      <div class="item">
+          <button class="positive ui button centered Big createnote" onclick="$('.planmodal').modal('show');" >
+          <i class="users icon"></i>
+           AddPlan
+          </button>
+      </div>
     </div>
     <div class="ui basic segment">
       {%if "/person/Team/Calender/" in request.path %}
@@ -42,4 +48,6 @@
 
 </div>
 {% include 'upload/create_note.html' %}
+{% include 'person/addPlan.html' %}
+{% include 'person/addPlandetail.html' %}
 {% endblock %}

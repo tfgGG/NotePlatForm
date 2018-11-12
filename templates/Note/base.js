@@ -6,6 +6,5 @@ $( document ).ready(function(){
     $( ".sortable" ).disableSelection();
     $('.ui.dropdown').dropdown();
 
-   
-})
 
+})

@@ -100,4 +100,15 @@ def AddPlan(request,teamid):
         return redirect('../Team/Planner/'+str(teamid)+'/')
 
 def AddPlandetail(request,teamid):
-    note = Note.objects.all()
+    if request.method == 'POST':
+        noteid = request.POST['noteid']
+        userid = request.POST['user']
+        planid = request.POST['plan']
+        start = request.POST['startDate']
+        end = request.POST['endDate']
+        note = Note.objects.get(pk = noteid)
+        assign = User.objects.get(pk = userid)
+        plan = Plan.objects.get(pk = planid)
+        unit = Plandetail.objects.create(note=note,assign=assign,start=start,end=end,plan=plan)
+        unit.save()
+        return redirect('/person/Team/Planner/'+str(teamid)+'/')

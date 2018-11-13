@@ -1,18 +1,17 @@
 
-<div class="ui grid">
+<div style="overflow: scroll; width: auto; white-space: nowrap;">
     {% for p in plan %}
-    <div class="four wide column">
+    <div style="width: 200px; display: inline-block; vertical-align:top; margin: 5px;">
         <div style="background-color: #D5DBDB;">
-
             <h2 class=" ui centered header" style="color: #34495E; background-color: dodgerblue; padding: 5px;">
               {{ p.name }}
               <!--<button class="mini ui button" onclick="$('.plandetailmodal').modal('show');">create</button>-->
             </h2>
 
-            <div class="ui grid container sortable sortlist" style="min-height: 60px;">
+            <div class="ui grid container sortable sortlist" style="min-height: 60px; ">
                 {% for pd,n in plancard %}
                     {%if p.idplan == pd.plan_id %}
-                     <div class="row" style=" background: white; padding-top:2px;">
+                     <div  style=" background: white; padding: 5px 0px 10px 0px; width:200px; margin: 0px;">
                         <div class="ui card StackedListItem--isDraggable">
                             <div class="content centered">
                                  <div class="header">{{n.title}}</div>

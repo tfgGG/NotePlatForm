@@ -30,14 +30,16 @@
       <a class="item ">
         Messege
       </a>
-      <div class="item">
-          <button class="positive ui button centered Big createnote" onclick="$('.planmodal').modal('show');" >
-          <i class="users icon"></i>
+      {%if "/person/Team/Planner/" in request.path %}
+      <div class="right floated item">
+          <button class="positive ui basic button centered" onclick="$('.planmodal').modal('show');" >
+          <i class="plus icon"></i>
            AddPlan
           </button>
       </div>
+      {% endif %}
     </div>
-    <div class="ui basic segment">
+    <div class="ui basic segment"  >
       {%if "/person/Team/Calender/" in request.path %}
         {%include "person/Calender.html" %}
       {%elif "/person/Team/Planner/" in request.path %}

@@ -32,10 +32,17 @@
       </a>
       {%if "/person/Team/Planner/" in request.path %}
       <div class="right floated item">
-          <button class="positive ui basic button centered" onclick="$('.planmodal').modal('show');" >
+          <button class="tiny ui teal basic button centered" onclick="$('.planmodal').modal('show');" >
           <i class="plus icon"></i>
-           AddPlan
+           Plan
           </button>
+      </div>
+      <div class="item">
+        
+        <button class="tiny ui teal basic button" onclick="$('.plandetailmodal').modal('show');">
+          <i class="plus icon"></i>
+            Card
+        </button>
       </div>
       {% endif %}
     </div>

@@ -94,10 +94,10 @@ def Team(request,teamid):
         plan = Plan.objects.filter(groupid=teamid)
         planteamdetail = Plandetail.objects.filter(plan__groupid = teamid).order_by('plan')
         note = Note.objects.filter(plandetail__plan__groupid = teamid)
+        group = Group.objects.filter(groupuser__userid = request.user.id)
         plancard = list(zip(planteamdetail,note))
         return render(request,'person/TeamIndex.html',{"plancard":plancard,
-        "plan":plan,"teamid":teamid,
-        "note":Allnote,"user":user})
+        "plan":plan,"teamid":teamid,"note":Allnote,"user":user,"group":group})
 
 def AddPlan(request,teamid):
     if request.method == 'POST':
@@ -108,4 +108,15 @@ def AddPlan(request,teamid):
         return redirect('../Team/Planner/'+str(teamid)+'/')
 
 def AddPlandetail(request,teamid):
-    note = Note.objects.all()
+    if request.method == 'POST':
+        noteid = request.POST['noteid']
+        userid = request.POST['user']
+        planid = request.POST['plan']
+        start = request.POST['startDate']
+        end = request.POST['endDate']
+        note = Note.objects.get(pk = noteid)
+        assign = User.objects.get(pk = userid)
+        plan = Plan.objects.get(pk = planid)
+        unit = Plandetail.objects.create(note=note,assign=assign,start=start,end=end,plan=plan)
+        unit.save()
+        return redirect('/person/Team/Planner/'+str(teamid)+'/')

@@ -1,0 +1,16 @@
+<div class="ui small modal planmodal">
+  <div class="header">
+    <h3 class="ui blue header">Create New Plan</h3>
+  </div>
+  <div class="content">
+      <form action="/person/AddPlan/{{teamid}}" class="ui form" method="POST">
+        {% csrf_token %}
+        <label>Plan Name:</label>
+        <div class="field">
+            <input type="text" placeholder="plan name..." name="planName">
+        </div>
+        <br>
+        <button class="fluid ui blue button">Add</button>
+      </form>
+  </div>
+</div>

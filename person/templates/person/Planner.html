@@ -3,9 +3,12 @@
     {% for p in plan %}
     <div class="four wide column">
         <div style="background-color: #D5DBDB;">
-            
-            <h2 class=" ui centered header" style="color: #34495E; background-color: dodgerblue; padding: 5px;">{{ p.name }}</h2>
-           
+
+            <h2 class=" ui centered header" style="color: #34495E; background-color: dodgerblue; padding: 5px;">
+              {{ p.name }}
+              <!--<button class="mini ui button" onclick="$('.plandetailmodal').modal('show');">create</button>-->
+            </h2>
+
             <div class="ui grid container sortable sortlist" style="min-height: 60px;">
                 {% for pd,n in plancard %}
                     {%if p.idplan == pd.plan_id %}
@@ -18,7 +21,7 @@
                             <div class="content">
                                 <div class="description"> Start:
                                     <a class="ui mini gray basic label">
-                                        
+
                                         <i class="calendar alternate outline icon"></i>
                                         {{pd.start}}
                                     </a> </div>
@@ -27,14 +30,14 @@
                                         <i class="calendar alternate icon"></i>
                                         {{pd.end}}
                                 </a> </div>
-                            </div>  
+                            </div>
                             <div class="extra content">
                                 <span class="right floated">
                                         <i class="user icon"></i>
                                         yyu
-                                </span> 
-                            </div> 
-                        </div>                  
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     {% endif %}
                 {% endfor %}

@@ -21,6 +21,8 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from selenium import webdriver
+
 #from snippets.models import Snippet
 
 from login.serializers import SnippetSerializer
@@ -87,10 +89,23 @@ def CreateGroup(request):
 
 def Team(request,teamid):
     if request.method == 'GET':
+        user = Groupuser.objects.filter(group=teamid)
+        Allnote = Note.objects.all()
         plan = Plan.objects.filter(groupid=teamid)
         planteamdetail = Plandetail.objects.filter(plan__groupid = teamid).order_by('plan')
         note = Note.objects.filter(plandetail__plan__groupid = teamid)
         plancard = list(zip(planteamdetail,note))
-        return render(request,'person/TeamIndex.html',{"plancard":plancard,"plan":plan,"teamid":teamid})
+        return render(request,'person/TeamIndex.html',{"plancard":plancard,
+        "plan":plan,"teamid":teamid,
+        "note":Allnote,"user":user})
 
+def AddPlan(request,teamid):
+    if request.method == 'POST':
+        planName = request.POST['planName']
+        tid = Group.objects.get(pk = teamid)
+        unit = Plan.objects.create(name=planName,groupid=tid)
+        unit.save()
+        return redirect('../Team/Planner/'+str(teamid)+'/')
 
+def AddPlandetail(request,teamid):
+    note = Note.objects.all()

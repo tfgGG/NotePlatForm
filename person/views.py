@@ -24,6 +24,7 @@ from rest_framework.parsers import JSONParser
 #from snippets.models import Snippet
 
 from login.serializers import SnippetSerializer
+from person.serializers import GroupRest
 import json
 # Create your views here.
 
@@ -47,6 +48,13 @@ def profile(request):
         profile = Profile.objects.filter(user_id = request.user.id)
         serializer = SnippetSerializer(profile, many=True)
         return JsonResponse(serializer.data, safe=False)
+
+def group(request,userid):
+    if request.method == 'GET':
+        group = Group.objects.filter(groupuser__userid = userid)
+        serializer = GroupRest(group,many = True)
+        return JsonResponse(serializer.data,safe=False)
+
 
 def uploadImg(request): # 图片上传函数
     if request.method == 'POST':

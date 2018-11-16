@@ -14,4 +14,5 @@ urlpatterns = [
     path('AddPlan/<int:teamid>',views.AddPlan,name="AddPlan"),
     path('Team/Calender/<int:teamid>/',views.Team,name="Team"),
     path('Team/Planner/<int:teamid>/',views.Team,name="Plan"),
+    path('deletePlandetail/',views.deletePlandetail,name="deletePlandetail"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -55,7 +55,7 @@ def index(request):
     field = json.load(json_data)
 
     array = []
-    note = Note.objects.all()
+    note = Note.objects.all().order_by('-idnote')
     fav = Note.objects.filter(favorite__user_id = request.user.id).values('idnote')
     for f in fav:
         array.append(f['idnote'])
@@ -71,7 +71,7 @@ def index(request):
                 if tmp:
                     note |= tmp
         elif noteSearch != '':
-            note = Note.objects.filter(title__contains=noteSearch)
+            note = Note.objects.filter(title__contains=noteSearch).order_by('-idnote')
         json_data.close()
         return render(request,'upload/index.html',{"note":note,"fav":array,"subject":field['subject']})#field改成subject
 

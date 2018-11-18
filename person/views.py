@@ -26,7 +26,7 @@ from selenium import webdriver
 #from snippets.models import Snippet
 
 from login.serializers import SnippetSerializer
-from person.serializers import GroupRest
+from person.serializers import GroupRest,PlanRest
 import json
 # Create your views here.
 
@@ -38,7 +38,7 @@ def index(request):
     if request.path == "/person/Myfavorite/":
         note = Note.objects.filter(favorite__user= request.user)
     else:
-        note = Note.objects.filter(user_id = request.user.id)
+        note = Note.objects.filter(user_id = request.user.id).order_by('-idnote')
 
     json_data = open(settings.DATA_PATH,encoding = 'utf8')
     field = json.load(json_data)
@@ -57,6 +57,11 @@ def group(request,userid):
         serializer = GroupRest(group,many = True)
         return JsonResponse(serializer.data,safe=False)
 
+def plan(requset,groupid):
+    if request.method == 'GET':
+        p = Plan.objects.filter(group = groupid)
+        serializer = PlanRest(p,many = True)
+        return JsonResponse(serializer.data,safe=False)
 
 def uploadImg(request): # 图片上传函数
     if request.method == 'POST':
@@ -85,7 +90,7 @@ def CreateGroup(request):
             id = User.objects.get(pk = m)
             memberunit = Groupuser.objects.create(userid= m ,group=unit)
             memberunit.save()
-        return redirect('../Team/'+str(unit.idgroup)+'/')
+        return redirect('../Team/Calender/'+str(unit.idgroup)+'/')
 
 def Team(request,teamid):
     if request.method == 'GET':

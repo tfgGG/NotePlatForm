@@ -51,7 +51,10 @@
         {%include "person/Calender.html" %}
       {%elif "/person/Team/Planner/" in request.path %}
         {%include "person/Planner.html" %}
+      {%else%}
+       <iframe src= 'http://localhost:3000/message/{{teamid}}'></iframe>
       {%endif%}
+      
     </div>
   </div>
 

@@ -28,7 +28,7 @@ def index(request):
     context ={
         "profile":profile,
     }
-    return render(request, 'login/index.html', context)
+    return redirect('/upload/index/')
 
 def now(request):
     if request.method == 'GET':

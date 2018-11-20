@@ -22,11 +22,11 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from selenium import webdriver
-
+from rest_framework.decorators import api_view
 #from snippets.models import Snippet
 
 from login.serializers import SnippetSerializer
-from person.serializers import GroupRest
+from person.serializers import GroupRest,PlanRest,ChatRest
 import json
 # Create your views here.
 
@@ -38,7 +38,7 @@ def index(request):
     if request.path == "/person/Myfavorite/":
         note = Note.objects.filter(favorite__user= request.user)
     else:
-        note = Note.objects.filter(user_id = request.user.id)
+        note = Note.objects.filter(user_id = request.user.id).order_by('-idnote')
 
     json_data = open(settings.DATA_PATH,encoding = 'utf8')
     field = json.load(json_data)
@@ -57,18 +57,22 @@ def group(request,userid):
         serializer = GroupRest(group,many = True)
         return JsonResponse(serializer.data,safe=False)
 
+def plan(requset,groupid):
+    if request.method == 'GET':
+        p = Plan.objects.filter(group = groupid)
+        serializer = PlanRest(p,many = True)
+        return JsonResponse(serializer.data,safe=False)
 
 def uploadImg(request): # 图片上传函数
     if request.method == 'POST':
         img = request.FILES.get('img')
-        unit = AuthUser.objects.filter(id=request.user.id)
+        unit = User.objects.filter(id=request.user.id)
         profileunit = Profile.objects.filter(user_id=request.user.id)
         fs = FileSystemStorage()
         filename = fs.save(img.name, img)
         unit.update(first_name=img)
         profileunit.update(img=img)
-    return render(request, 'person/uploadImg.html')
-
+        return redirect('/person/index/')
 
 def CreateGroup(request):
 
@@ -85,7 +89,7 @@ def CreateGroup(request):
             id = User.objects.get(pk = m)
             memberunit = Groupuser.objects.create(userid= m ,group=unit)
             memberunit.save()
-        return redirect('../Team/'+str(unit.idgroup)+'/')
+        return redirect('../Team/Calender/'+str(unit.idgroup)+'/')
 
 def Team(request,teamid):
     if request.method == 'GET':
@@ -120,3 +124,13 @@ def AddPlandetail(request,teamid):
         unit = Plandetail.objects.create(note=note,assign=assign,start=start,end=end,plan=plan)
         unit.save()
         return redirect('/person/Team/Planner/'+str(teamid)+'/')
+
+@api_view(['GET', 'POST'])
+def chat(request,groupid):
+    if request.method == 'POST':
+        serializer = ChatRest(data=json.loads(request.body.decode('utf-8')))
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

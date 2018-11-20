@@ -1,6 +1,12 @@
 
 <div class="ui secondary vertical menu">
   <div class="item">
+      <button class="positive ui button centered big createnote" onclick=" $('.imgmodal').modal('show');">
+          <i class="plus square icon"></i>
+          uploadImg
+      </button>
+    </div>
+  <div class="item">
       <button class="positive ui button centered big createnote" onclick=" $('.createmodal').modal('show');">
           <i class="plus square icon"></i>
           CreateNote
@@ -22,8 +28,8 @@
       <a class="item">Large</a>
     </div>
   </div>
- 
-</div>  
+
+</div>
 <div class="ui secondary vertical menu">
     <div class="item">
         <button class="positive ui button centered Big createnote" onclick="$('.groupmodal').modal('show');" >
@@ -31,7 +37,7 @@
          AddGroup
         </button>
     </div>
-  
+
     {% for group in group %}
         <a class="item" href="/person/Team/Calender/{{group.idgroup}}">
           <i class="hand point right outline icon"></i>

@@ -25,8 +25,7 @@ SECRET_KEY = 'l5=7_avx(#)4t#lv1%%)on4*vrzw@0feck9gb&+q#yde7173+0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = ['localhost','127.0.0.1','IP']
-ALLOWED_HOSTS = ['140.136.150.93']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','IP','140.136.150.93']
 # Application definition
 
 INSTALLED_APPS = [
@@ -91,7 +90,7 @@ DATABASES = {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },                  # Or path to database file if using sqlite3.
         'USER': 'root',                       # Not used with sqlite3.
-        'PASSWORD': 'root',               # Not used with sqlite3.
+        'PASSWORD': '',               # Not used with sqlite3.
         'HOST': '',                           # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                           # Set to empty string for default. Not used with sqlite3.
     }
@@ -153,4 +152,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL2 = '/media2/'
 MEDIA_ROOT2 = os.path.join(BASE_DIR, 'media2')
 
-DATA_PATH = os.path.join(BASE_DIR,'jsfile/cat.json')
+DATA_PATH = os.path.join(BASE_DIR,'jsonfile/cat.json')

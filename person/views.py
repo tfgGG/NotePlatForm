@@ -22,11 +22,11 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from selenium import webdriver
-
+from rest_framework.decorators import api_view
 #from snippets.models import Snippet
 
 from login.serializers import SnippetSerializer
-from person.serializers import GroupRest,PlanRest
+from person.serializers import GroupRest,PlanRest,ChatRest
 import json
 # Create your views here.
 
@@ -125,3 +125,13 @@ def AddPlandetail(request,teamid):
         unit = Plandetail.objects.create(note=note,assign=assign,start=start,end=end,plan=plan)
         unit.save()
         return redirect('/person/Team/Planner/'+str(teamid)+'/')
+
+@api_view(['GET', 'POST'])
+def chat(request,groupid):
+    if request.method == 'POST':
+        serializer = ChatRest(data=json.loads(request.body.decode('utf-8')))
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

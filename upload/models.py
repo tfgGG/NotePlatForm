@@ -41,7 +41,7 @@ class PollsDocument(models.Model):
 class Message(models.Model):
     id = models.AutoField(primary_key=True)
     message = models.CharField(max_length=100, blank=True, null=True)
-    note = models.ForeignKey(Note, models.DO_NOTHING, blank=True, null=True)
+    note = models.ForeignKey(Note,models.DO_NOTHING , blank=True, null=True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
     username = models.CharField(max_length=45, blank=True, null=True)
 

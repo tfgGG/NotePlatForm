@@ -9,6 +9,7 @@ urlpatterns = [
     path('profile/',views.profile, name="profile"),
     path('upload/',views.uploadImg, name="upload"),
     path('Group/<int:userid>/',views.group, name="upload"),
+    path('chat/<int:groupid>/',views.chat, name="upload"),
     path('Plan/<int:groupid>/',views.plan, name="upload"),
     path('Myfavorite/',views.index, name="Myfavorite"),
     path('CreateGroup/',views.CreateGroup,name="CreateGroup"),

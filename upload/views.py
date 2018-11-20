@@ -229,22 +229,36 @@ class DetailList(APIView):
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
-@api_view(['PUT'])
+@api_view(['PUT','PATCH'])
 def DetailPut(request,id,num):
     if request.method == 'PUT':
         notedetail = NoteList.objects.filter(noteid = id , list_num = num).first()
         data = json.loads(request.body.decode('utf-8'))
-        print(data)
+        #print(data)
         data['noteid'] = id
         data['idnote_list'] = notedetail.idnote_list
         serializer = detailRest(notedetail, data=data)
         if serializer.is_valid():
             serializer.save()
-            print(str(serializer.data))
+            #print(str(serializer.data))
             return Response(serializer.data)
         else:
             print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    if request.method == 'PATCH':
+        #print("Inside Patch"+ id +" "+num)
+        notedetail = NoteList.objects.filter(noteid = id , list_num = num).first()
+        data = json.loads(request.body.decode('utf-8'))
+        print(data)
+        serializer = detailRest(notedetail, data=data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 #刪除筆記function
 @csrf_exempt

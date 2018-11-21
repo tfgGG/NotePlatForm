@@ -18,3 +18,7 @@ label{
     color: #7A7A7A;
     font-weight: bold;
 }
+
+::-webkit-scrollbar { 
+    display: none; 
+}

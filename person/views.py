@@ -134,3 +134,11 @@ def chat(request,groupid):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@csrf_exempt
+def deletePlandetail(request):
+    if request.method == 'POST':
+        planid = request.POST.get('id',None)
+        print(planid)
+        plandetail = Plandetail.objects.get(idplandetail = planid)
+        plandetail.delete()
+        return HttpResponse(0)

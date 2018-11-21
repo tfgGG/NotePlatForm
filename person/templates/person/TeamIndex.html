@@ -51,10 +51,15 @@
             Card
         </button>
       </div>
+      <div class="item">
+        <button class="tiny ui teal button" onclick="">
+           UPDATE
+        </button>
+      </div>
       {% endif %}
     </div>
 
-    <div class="ui segment"  >
+    <div class="ui segment">
       {%if "/person/Team/Calender/" in request.path %}
         {%include "person/Calender.html" %}
       {%elif "/person/Team/Planner/" in request.path %}

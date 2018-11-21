@@ -1,6 +1,6 @@
 from django.urls import re_path,path
-from .import views
 from django.conf.urls.static import static
+from .import views
 from django.conf import settings
 app_name = 'person'
 urlpatterns = [
@@ -18,4 +18,5 @@ urlpatterns = [
     path('Team/Calender/<int:teamid>/',views.Team,name="Team"),
     path('Team/Planner/<int:teamid>/',views.Team,name="Plan"),
     path('Team/Message/<int:teamid>/',views.Team,name="Plan"),
+    path('deletePlandetail/',views.deletePlandetail,name="deletePlandetail"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

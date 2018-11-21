@@ -119,6 +119,7 @@ def AddPlandetail(request,teamid):
         unit = Plandetail.objects.create(note=note,assign=assign,start=start,end=end,plan=plan)
         unit.save()
         return redirect('/person/Team/Planner/'+str(teamid)+'/')
+
 @csrf_exempt
 def deletePlandetail(request):
     if request.method == 'POST':

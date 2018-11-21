@@ -74,16 +74,13 @@
 <div class="four wide column removecard">
   <div class="note ui card" style="cursor:pointer;" >
       <div class="content">
-        <script>
-          var imgName = "{{note.user.first_name}}";
-          if (imgName == ""){
-            document.write('<img class="ui avatar image" src="https://semantic-ui.com/images/avatar/large/elliot.jpg">');
-          }
-          else{
-            document.write('<img class="ui avatar image" src="http://127.0.0.1:8000/media/{{note.user.first_name}}">');
-          }
-        </script>
-
+        {% if note.user.first_name == '' %}
+            <img class="ui avatar image" src="https://semantic-ui.com/images/avatar/large/elliot.jpg">'
+          
+        {%else%}
+        <img class="ui avatar image" src="/media/{{note.user.first_name}}">
+        {%endif%}
+        
           {{note.user.username}}
           <!-- 刪除筆記的button -->
           <div class="right floated" style="margin-left: 5px;" >
@@ -94,7 +91,8 @@
           </div>    
           
       </div>
-      <div class="content" onclick="location.href='http://localhost:3000/note/{{note.idnote}}/1/'">
+   
+      <div class="content" onclick="location.href='http://140.136.150.93:3000/note/{{note.idnote}}/1/'">
           <h3 class="center aligned">{{note.title}}</h3>
 
           <h5 class="center aligned">{{ note.intro }}</h5>

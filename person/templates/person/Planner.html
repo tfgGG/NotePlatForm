@@ -1,3 +1,4 @@
+
 <script>
   $(document).ready(function(){
     $('.delete').click(function(){
@@ -26,8 +27,17 @@
     });
   })
 </script>
-<form action="/person/updatePlandetail/" method="post">
+{%if plan|length == 0 %}
+<h2 class="ui icon center aligned header" style="height: 80%; margin-top: 100px;">
+        <i class="columns icon"></i>
+        <div class="content">
+          Oops! You dont have any plan
+          <div class="sub header">Pleae click "+ Plan" to create a plan</div>
+        </div>
+</h2>
+{%else%}
 <div style="overflow: scroll; width: auto; white-space: nowrap;">
+
     {% for p in plan %}
     <div id="plan_{{p.idplan}}" name="plan_{{p.idplan}}" style="width: 200px; display: inline-block; vertical-align:top; margin: 5px;">
         <div style="background-color: #D5DBDB;">
@@ -76,5 +86,4 @@
     </div>
     {% endfor %}
 </div>
-<button>update</button>
-</form>
+{%endif%}

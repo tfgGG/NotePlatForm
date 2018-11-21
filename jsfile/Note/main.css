@@ -1,0 +1,20 @@
+.mycard{
+
+    border-radius: 0px;
+    background-color: white;
+    padding: 15px;
+    -moz-box-shadow: 0 0 15px 0px #DcDcDc;
+    -webkit-box-shadow: 0 0 15px 0px #DcDcDc;
+    box-shadow: 0 0 15px 0px #DcDcDc;
+}
+body{
+    background-color:#F2F2F2;
+}
+.ver{
+    vertical-align: middle;
+}
+
+label{
+    color: #7A7A7A;
+    font-weight: bold;
+}

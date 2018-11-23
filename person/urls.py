@@ -16,4 +16,5 @@ urlpatterns = [
     path('Team/Planner/<int:teamid>/',views.Team,name="Plan"),
     path('Team/Note/<int:teamid>/',views.Team,name="GroupNote"),
     path('deletePlandetail/',views.deletePlandetail,name="deletePlandetail"),
+    #path('updatePlandetail/',views.updatePlandetail,name="updatePlandetail")
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -95,11 +95,15 @@
           </div>
 
       </div>
+    {% ifequal note.permission 2 %}
       <div class="content" onclick="location.href='http://localhost:3000/note/{{note.idnote}}/1/'">
+    {% else %}
+      <div class="content">
+    {% endifequal %}
           <h3 class="center aligned">{{note.title}}</h3>
-
           <h5 class="center aligned">{{ note.intro }}</h5>
       </div>
+
       <div class="content">
         <div class="list">
           <div class = "item">

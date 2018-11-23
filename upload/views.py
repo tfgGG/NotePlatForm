@@ -12,7 +12,7 @@ from django.db.models import Avg, Max, Min
 from upload.models import Note,Message,Favorite
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse,HttpResponseRedirect
-
+from person.models import Group, Groupuser
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -54,8 +54,8 @@ def index(request):
     json_data = open(settings.DATA_PATH,encoding = 'utf8')
     field = json.load(json_data)
 
-    array = []
     note = Note.objects.all()
+    array = []
     fav = Note.objects.filter(favorite__user_id = request.user.id).values('idnote')
     for f in fav:
         array.append(f['idnote'])
@@ -150,7 +150,7 @@ def create(request):
         subjects = request.POST['subjects']
         intro = request.POST['introduction']
         permission = request.POST['permission']
-
+        group = request.POST['group']
         mark = " ' "
         data = {
             'user' : request.user.id,
@@ -158,7 +158,7 @@ def create(request):
             'field'  : field,
             'subjects': subjects,
             'intro'  : intro,
-            'permission': permission
+            'permission': permission+' '+group
         }
         # Save to db via note rest
         unit = noteRest(data=data)

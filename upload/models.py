@@ -9,7 +9,7 @@ class Note(models.Model):
     subjects = models.CharField(max_length=100)
     textbook = models.CharField(max_length=100,null=True)
     intro = models.CharField(max_length=100, blank=True, null=True)
-    permission = models.IntegerField()
+    permission = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = False

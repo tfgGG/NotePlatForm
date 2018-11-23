@@ -34,6 +34,12 @@ def index(request):
     #group = Group.objects.all()
     user = User.objects.filter(~Q(id = request.user.id)) #除掉自己
     group = Group.objects.filter(groupuser__userid = request.user.id)
+    array =[]
+    fav = Note.objects.filter(favorite__user_id = request.user.id).values('idnote')
+    for f in fav:
+        array.append(f['idnote'])
+
+
 
     if request.path == "/person/Myfavorite/":
         note = Note.objects.filter(favorite__user= request.user)
@@ -43,7 +49,8 @@ def index(request):
     json_data = open(settings.DATA_PATH,encoding = 'utf8')
     field = json.load(json_data)
     json_data.close()
-    return render(request,'person/index.html',{"note":note,"subject":field['subject'] ,"group":group,"user":user})
+    return render(request,'person/index.html',{"note":note,"subject":field['subject']
+                ,"group":group,"user":user,"fav":array})
 
 def profile(request):
     if request.method == 'GET':
@@ -95,8 +102,24 @@ def Team(request,teamid):
         note = Note.objects.filter(plandetail__plan__groupid = teamid)
         group = Group.objects.filter(groupuser__userid = request.user.id)
         plancard = list(zip(planteamdetail,note))
+
+        json_data = open(settings.DATA_PATH,encoding = 'utf8')
+        field = json.load(json_data)
+        json_data.close()
+
+        Groupnote = Note.objects.none()
+        GN = Note.objects.all()
+        for n in GN:
+            if n.permission.isdigit() == 0:
+                gp = n.permission.split(' ')
+                print(gp[1])
+                if gp[1] == str(teamid):
+                    print("here")
+                    Groupnote |= Note.objects.filter(permission=n.permission)
+
         return render(request,'person/TeamIndex.html',{"plancard":plancard,
-        "plan":plan,"teamid":teamid,"note":Allnote,"user":user,"group":group})
+        "plan":plan,"teamid":teamid,"note":Allnote,"user":user,"group":group,
+        "subject":field['subject'],"Groupnote":Groupnote })
 
 def AddPlan(request,teamid):
     if request.method == 'POST':
@@ -119,6 +142,7 @@ def AddPlandetail(request,teamid):
         unit = Plandetail.objects.create(note=note,assign=assign,start=start,end=end,plan=plan)
         unit.save()
         return redirect('/person/Team/Planner/'+str(teamid)+'/')
+
 @csrf_exempt
 def deletePlandetail(request):
     if request.method == 'POST':
@@ -127,3 +151,7 @@ def deletePlandetail(request):
         plandetail = Plandetail.objects.get(idplandetail = planid)
         plandetail.delete()
         return HttpResponse(0)
+
+def GroupNote(request,teamid):
+    if request.method == 'GET':
+        note = Note.objects.all()

@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function(){
-      
+
         $('.like').click(function(){
           console.log("Click")
           var noteid = $(this).attr("id")
@@ -27,7 +27,7 @@
                   console.log("Removing")
                   event.preventDefault()
                   return;
-                }     
+                }
                 console.log(data + "remove")
                 $(text).text("收藏")
                 $(btn).removeClass("Blue")
@@ -41,7 +41,7 @@
         $('.delete').click(function(){
           var delid =$(this).attr("id");
           $('.deletemodal').modal('toggle');
-    
+
         //  alert(delid)
           $('.deleteTag').click(function(){
             var tag = $(this).attr("id");
@@ -71,6 +71,7 @@
   </style>
 
 {% for note in note %}
+{% if note.permission == '1' or note.permission == '2' %}
 <div class="four wide column removecard">
   <div class="note ui card" style="cursor:pointer;" >
       <div class="content">
@@ -91,8 +92,8 @@
           </div>
           <div class="right floated meta" style="margin-top: 4px;">
             <span> 14h</span>
-          </div>    
-          
+          </div>
+
       </div>
       <div class="content" onclick="location.href='http://localhost:3000/note/{{note.idnote}}/1/'">
           <h3 class="center aligned">{{note.title}}</h3>
@@ -109,7 +110,7 @@
         </div>
       </div>
       <div class="content">
-          
+
           {%if note.idnote in fav or request.path == "/person/Myfavorite/" %}
           <button class="ui right labeled icon button Mini Blue left floated like" id='{{note.idnote}}'>
               <i class="bookmark icon"></i><span class="liketext">已收藏</span>
@@ -119,12 +120,12 @@
               <i class="bookmark icon"></i><span class="liketext">收藏</span>
           </button>
           {% endif %}
-      
+
         <!--  <input id="like" type='submit' value="add Like" onclick="style">-->
         <div class="right floated">
-          
+
           <!--<button class="ui left floated button delete" id='{{note.idnote}}'>delete</button>-->
-          {%ifequal note.permission 1  %}
+          {%ifequal note.permission '2'  %}
             <i class="globe icon"></i>公開
           {% else %}
             <i class="user icon"></i>私人
@@ -133,5 +134,5 @@
       </div>
   </div>
 </div>
-
+{% endif %}
 {% endfor %}

@@ -6,7 +6,7 @@ class Note(models.Model):
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)     #更改文字長度
     field = models.CharField(max_length=100)
-    subjects = models.CharField(max_length=100)
+    subjects = models.CharField(max_length=100,null=True)
     textbook = models.CharField(max_length=100,null=True)
     intro = models.CharField(max_length=100, blank=True, null=True)
     permission = models.CharField(max_length=10, blank=True, null=True)
@@ -20,7 +20,7 @@ class NoteList(models.Model):
     idnote_list = models.AutoField(primary_key=True)
     list_text = models.CharField(max_length=45, blank=True, null=True)
     list_num = models.PositiveIntegerField(blank=True, null=True)
-    note = models.CharField(max_length=3000, blank=True, null=True)
+    note = models.CharField(max_length=10000, blank=True, null=True)
     noteid = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
@@ -41,7 +41,7 @@ class PollsDocument(models.Model):
 class Message(models.Model):
     id = models.AutoField(primary_key=True)
     message = models.CharField(max_length=100, blank=True, null=True)
-    note = models.ForeignKey('Note', models.DO_NOTHING, blank=True, null=True)
+    note = models.ForeignKey(Note,models.DO_NOTHING , blank=True, null=True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
     username = models.CharField(max_length=45, blank=True, null=True)
 

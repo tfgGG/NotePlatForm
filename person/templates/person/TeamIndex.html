@@ -37,9 +37,17 @@
         Planner
       </a>
       {%endif%}
-      <a class="item ">
-        Messege
+
+      {%if "/person/Team/Message/" in request.path %}
+      <a class="item active" href="/person/Team/Message/{{teamid}}">
+        Message
       </a>
+      {%else%}
+      <a class="item" href="/person/Team/Message/{{teamid}}">
+        Message
+      </a>
+      {%endif%}
+
       {%if "/person/Team/Planner/" in request.path %}
       <div class="right floated item">
           <button class="tiny ui teal basic button centered" onclick="$('.planmodal').modal('show');" >
@@ -48,21 +56,28 @@
           </button>
       </div>
       <div class="item">
-
         <button class="tiny ui teal basic button" onclick="$('.plandetailmodal').modal('show');">
           <i class="plus icon"></i>
             Card
         </button>
       </div>
+      <div class="item">
+        <button class="tiny ui teal button" onclick="">
+           UPDATE
+        </button>
+      </div>
       {% endif %}
     </div>
-    <div class="ui basic segment"  >
+
+    <div class="ui segment">
       {%if "/person/Team/Calender/" in request.path %}
         {%include "person/Calender.html" %}
       {%elif "/person/Team/Planner/" in request.path %}
         {%include "person/Planner.html" %}
       {%elif "/person/Team/Note/" in request.path %}
         {%include "person/Note.html" %}
+      {%else%}
+         <iframe src= 'http://localhost:3000/message/{{teamid}}' width="800px" height="500px"></iframe>
       {%endif%}
     </div>
   </div>

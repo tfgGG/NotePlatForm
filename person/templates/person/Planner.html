@@ -1,3 +1,12 @@
+{%if plan|length == 0 %}
+<h2 class="ui icon center aligned header" style="height: 70%; margin-top: 100px;">
+        <i class="columns icon"></i>
+        <div class="content">
+          Oops! You dont have any plan
+          <div class="sub header">Pleae click "+ Plan" to create a plan</div>
+        </div>
+</h2>
+{%else%}
 <script>
   $(document).ready(function(){
     $('.delete').click(function(){
@@ -27,7 +36,7 @@
   })
 </script>
 <form action="/person/updatePlandetail/" method="post">
-<div style="overflow: scroll; width: auto; white-space: nowrap;">
+<div style="overflow-x: scroll; width: auto; white-space: nowrap; overflow-y:hidden; height: 80%;">
     {% for p in plan %}
     <div name="{{p.idplan}}" style="width: 200px; display: inline-block; vertical-align:top; margin: 5px;">
         <div style="background-color: #D5DBDB;">
@@ -40,7 +49,7 @@
                     {%if p.idplan == pd.plan_id %}
                      <div name="{{n.title}}" style=" background: white; padding: 5px 0px 10px 0px; width:200px; margin: 0px;">
                         <div class="ui card StackedListItem--isDraggable">
-                            <div class="content centered">
+                            <div class="content centered" style="overflow: hidden;">
                               <div class="right floated" style="margin-left: 5px;" >
                                 {% include 'person/deleteDetail_template.html' %}
                               </div>
@@ -76,5 +85,5 @@
     </div>
     {% endfor %}
 </div>
-<button>update</button>
+{%endif%}
 </form>

@@ -12,7 +12,7 @@ from django.db.models import Avg, Max, Min
 from upload.models import Note,Message,Favorite
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse,HttpResponseRedirect
-
+from person.models import Group, Groupuser
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -150,7 +150,7 @@ def create(request):
         subjects = request.POST['subjects']
         intro = request.POST['introduction']
         permission = request.POST['permission']
-
+        group = request.POST['group']
         mark = " ' "
         data = {
             'user' : request.user.id,
@@ -158,7 +158,7 @@ def create(request):
             'field'  : field,
             'subjects': subjects,
             'intro'  : intro,
-            'permission': permission
+            'permission': permission+' '+group
         }
         # Save to db via note rest
         unit = noteRest(data=data)
@@ -245,7 +245,7 @@ def DetailPut(request,id,num):
         else:
             print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     if request.method == 'PATCH':
         #print("Inside Patch"+ id +" "+num)
         notedetail = NoteList.objects.filter(noteid = id , list_num = num).first()

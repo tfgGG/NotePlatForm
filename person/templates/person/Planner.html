@@ -38,7 +38,7 @@
 <form action="/person/updatePlandetail/" method="post">
 <div style="overflow-x: scroll; width: auto; white-space: nowrap; overflow-y:hidden; height: 80%;">
     {% for p in plan %}
-    <div id="plan_{{p.idplan}}" name="plan_{{p.idplan}}" style="width: 200px; display: inline-block; vertical-align:top; margin: 5px; ">
+    <div name="{{p.idplan}}" style="width: 200px; display: inline-block; vertical-align:top; margin: 5px;">
         <div style="background-color: #D5DBDB;">
             <h2 class=" ui centered header" style="color: #34495E; background-color: dodgerblue; padding: 5px;">
               {{ p.name }}
@@ -47,7 +47,7 @@
             <div class="ui grid container sortable sortlist" style="min-height: 60px; ">
                 {% for pd,n in plancard %}
                     {%if p.idplan == pd.plan_id %}
-                     <div id="sub{{pd.idplandetail}}" style=" background: white; padding: 5px 0px 10px 0px; width:200px; margin: 0px;">
+                     <div name="{{n.title}}" style=" background: white; padding: 5px 0px 10px 0px; width:200px; margin: 0px;">
                         <div class="ui card StackedListItem--isDraggable">
                             <div class="content centered" style="overflow: hidden;">
                               <div class="right floated" style="margin-left: 5px;" >

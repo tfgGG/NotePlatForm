@@ -41,7 +41,7 @@ class Plan(models.Model):
     idplan = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45,blank=True,null=True)
     groupid = models.ForeignKey(Group, models.DO_NOTHING, db_column='groupid',blank=True,null=True)
-    
+
     class Meta:
         managed = False
         db_table = 'plan'
@@ -50,8 +50,8 @@ class Plandetail(models.Model):
     idplandetail = models.AutoField(primary_key=True)
     note = models.ForeignKey(Note, models.DO_NOTHING, db_column='note',blank=True,null=True)
     assign = models.ForeignKey(User, models.DO_NOTHING, db_column='assign',blank=True,null=True)
-    start = models.DateField(blank=True,null=True)
-    end = models.DateField(blank=True,null=True)
+    start = models.CharField(max_length=50,blank=True,null=True)
+    end = models.CharField(max_length=50,blank=True,null=True)
     plan = models.ForeignKey(Plan,models.DO_NOTHING,db_column='plan',blank=True,null=True)
 
     class Meta:

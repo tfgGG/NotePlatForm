@@ -71,7 +71,6 @@
   </style>
 
 {% for note in note %}
-{% if note.permission == '1' or note.permission == '2' %}
 <div class="four wide column removecard">
   <div class="note ui card" style="cursor:pointer;" >
       <div class="content">
@@ -95,11 +94,11 @@
           </div>
 
       </div>
-    {% ifequal note.permission 2 %}
+    {% if note.permission == '2' or note.user_id == request.user.id %}
       <div class="content" onclick="location.href='http://localhost:3000/note/{{note.idnote}}/1/'">
     {% else %}
       <div class="content">
-    {% endifequal %}
+    {% endif %}
           <h3 class="center aligned">{{note.title}}</h3>
           <h5 class="center aligned">{{ note.intro }}</h5>
       </div>
@@ -129,14 +128,15 @@
         <div class="right floated">
 
           <!--<button class="ui left floated button delete" id='{{note.idnote}}'>delete</button>-->
-          {%ifequal note.permission '2'  %}
+          {%if note.permission == '2'  %}
             <i class="globe icon"></i>公開
+          {% elif note.permission == '0' %}
+            <i class="ban icon"></i>私人
           {% else %}
-            <i class="user icon"></i>私人
-          {% endifequal %}
+            <i class="user icon"></i>非公開
+          {% endif %}
         </div>
       </div>
   </div>
 </div>
-{% endif %}
 {% endfor %}

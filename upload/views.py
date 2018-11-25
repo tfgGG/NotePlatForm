@@ -15,7 +15,7 @@ from django.http import JsonResponse,HttpResponseRedirect
 from person.models import Group, Groupuser
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from person.models import Plandetail
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
@@ -55,7 +55,8 @@ def index(request):
     field = json.load(json_data)
 
     array = []
-    note = Note.objects.all().order_by('-idnote')
+    note = Note.objects.filter(permission='1')
+    note |= Note.objects.filter(permission='2')
     fav = Note.objects.filter(favorite__user_id = request.user.id).values('idnote')
     for f in fav:
         array.append(f['idnote'])
@@ -269,6 +270,8 @@ def deleteNote(request):
         print(idnote)
         data_list = NoteList.objects.filter(noteid=idnote)
         data_list.delete()
+        plandetail = Plandetail.objects.filter(note=idnote)
+        plandetail.delete()
         fav_note = Favorite.objects.filter(idnote=idnote)
         fav_note.delete()
         data= Note.objects.get(idnote=idnote)

@@ -36,7 +36,7 @@ hashids = Hashids()
 
 from django.conf import settings
 
-note_url = "http://localhost:3000"
+note_url = "http://140.136.150.93:3000"
 
 def hash(num):
     #hashids = Hashids()
@@ -65,14 +65,16 @@ def index(request):
         noteSearch = request.POST['searchNote']
         searchTags = request.POST['searchTags']
         note = Note.objects.none()
-        if searchTags != '':
-            noteTag = searchTags.split(",")
+        noteTag = searchTags.split(",")
+        if searchTags != '' and noteSearch != '':
             for n in noteTag:
-                tmp = Note.objects.filter(field__contains=n)
-                if tmp:
-                    note |= tmp
+                note |= Note.objects.filter(field__contains=n)
+            note = note.filter(title__contains=noteSearch)
         elif noteSearch != '':
-            note = Note.objects.filter(title__contains=noteSearch).order_by('-idnote')
+            note |= Note.objects.filter(title__contains=noteSearch).order_by('-idnote')
+        elif searchTags != '':
+            for n in noteTag:
+                note |= Note.objects.filter(field__contains=n)
         json_data.close()
         return render(request,'upload/index.html',{"note":note,"fav":array,"subject":field['subject']})#field改成subject
 

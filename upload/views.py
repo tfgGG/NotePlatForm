@@ -150,16 +150,18 @@ def create(request):
     if request.method == "POST":
         title = request.POST['title']
         field = request.POST['field']
-        subjects = request.POST['subjects']
+        #subjects = request.POST['subjects']
         intro = request.POST['introduction']
         permission = request.POST['permission']
         group = request.POST['group']
+        field = "#"+field
+        field = field.replace(",", " #")
         mark = " ' "
         data = {
             'user' : request.user.id,
             'title'  : title,
             'field'  : field,
-            'subjects': subjects,
+            #'subjects': subjects,
             'intro'  : intro,
             'permission': permission+' '+group
         }

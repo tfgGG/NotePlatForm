@@ -38,17 +38,17 @@
                       {% for s in subject %}
                         <div class="header">{{s.text}}</div>
                         {% for b in s.field %}
-                          <div class="item" data-value="{{b.value}}">{{b.text}}</div>
+                          <div class="item" data-value="{{b.text}}">{{b.text}}</div>
                         {% endfor %}
                       {% endfor %}
                     </div>
                 </div>
                 <!--    -->
            </div>
-            <div class="field">
+          <!--  <div class="field">
                 <label>Subjects:</label>
                 <input type="text" name="subjects">
-            </div>
+            </div>-->
             <div class="fields">
                 <div class="field">
                     <label>Permission</label>

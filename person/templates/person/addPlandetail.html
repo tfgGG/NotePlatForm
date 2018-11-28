@@ -26,7 +26,7 @@
             <div class="default text">assign</div>
             <div class="menu">
               {% for u in user%}
-              <div class="item" data-value="{{u.userid}}">{{u.userid}}</div>
+              <div class="item" data-value="{{u.userid}}">{{u.userid.username}}</div>
               {% endfor %}
             </div>
           </div>

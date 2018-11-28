@@ -29,7 +29,7 @@ class Group(models.Model):
 
 class Groupuser(models.Model):
     idgroup = models.AutoField(primary_key=True)
-    userid = models.IntegerField(blank=True, null=True)
+    userid = models.ForeignKey(User, models.DO_NOTHING, db_column='userid', blank=True, null=True)
     group = models.ForeignKey(Group, models.DO_NOTHING, db_column='group', blank=True, null=True)
 
     class Meta:

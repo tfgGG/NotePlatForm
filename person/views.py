@@ -166,6 +166,17 @@ def deletePlandetail(request):
         plandetail.delete()
         return HttpResponse(0)
 
+@csrf_exempt
+def deletePlan(request):
+    if request.method == 'POST':
+        planid = request.POST.get('idplan',None)
+        print(planid)
+        plandetail = Plandetail.objects.filter(plan = planid)
+        plandetail.delete()
+        plan = Plan.objects.get(idplan = planid)
+        plan.delete()
+        return HttpResponse(0)
+
 def GroupNote(request,teamid):
     if request.method == 'GET':
         note = Note.objects.all()

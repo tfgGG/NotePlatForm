@@ -20,5 +20,6 @@ urlpatterns = [
     path('Team/Note/<int:teamid>/',views.Team,name="GroupNote"),
     path('Team/Message/<int:teamid>/',views.Team,name="Plan"),
     path('deletePlandetail/',views.deletePlandetail,name="deletePlandetail"),
+    path('deletePlan/',views.deletePlan,name="deletePlan"),
     #path('updatePlandetail/',views.updatePlandetail,name="updatePlandetail")
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

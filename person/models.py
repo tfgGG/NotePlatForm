@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from upload.models import Note
+from oauth2_provider.models import AbstractApplication
 # Create your models here.
 class User(models.Model):
     password = models.CharField(max_length=128)
@@ -67,3 +68,7 @@ class Chat(models.Model):
     class Meta:
         managed = False
         db_table = 'chat'
+
+class MyApplication(AbstractApplication):
+    logo = models.ImageField()
+    agree = models.BooleanField()

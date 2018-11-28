@@ -281,3 +281,22 @@ def deleteNote(request):
         data= Note.objects.get(idnote=idnote)
         data.delete()
         return HttpResponse(0)
+
+
+@csrf_exempt
+@api_view(['PUT','PATCH'])
+def groupnote(request,noteid):
+    if request.method == 'PATCH':
+        N = Note.objects.get(pk = noteid)
+        data = json.loads(request.body.decode('utf-8'))
+        #for n in N:
+        print(N.permission)
+        data['permission'] = N.permission+" "+ str(data['permission'])
+        
+        serializer = noteRest(N, data=data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

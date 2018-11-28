@@ -23,7 +23,12 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from selenium import webdriver
 from rest_framework.decorators import api_view
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 #from snippets.models import Snippet
+from oauth2_provider import models
+#from oauth2_provider.models import AbstractApplication
 
 from login.serializers import SnippetSerializer
 from person.serializers import GroupRest,PlanRest,ChatRest
@@ -54,9 +59,23 @@ def index(request):
 
 def profile(request):
     if request.method == 'GET':
-        profile = Profile.objects.filter(user_id = request.user.id)
+        #print(request.META['HTTP_REFERER'])
+        #t  =request.META.get('HTTP_AUTHORIZATION')[:6:-1]
+        o = models.get_application_model()
+        g = o.objects.filter(client_id = 'gJzg99w4Trm42aN6R9GZbG9cyCxChnSMOehQw5sn').values_list('user_id',flat=True)
+        #a = AbstractApplication.serializable_value(client_id = 'gJzg99w4Trm42aN6R9GZbG9cyCxChnSMOehQw5sn' )
+        #print(type(g))
+        #print(g[0])
+        profile = Profile.objects.filter(user_id = g[0])
         serializer = SnippetSerializer(profile, many=True)
         return JsonResponse(serializer.data, safe=False)
+
+'''
+class UserList(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated, TokenHasReadWriteScope]
+    queryset = Profile.objects.filter(user_id = request.user.id)
+    serializer_class = SnippetSerializer
+'''
 
 def group(request,userid):
     if request.method == 'GET':

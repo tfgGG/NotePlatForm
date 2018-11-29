@@ -5,8 +5,8 @@ class Note(models.Model):
     idnote = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)     #更改文字長度
-    field = models.CharField(max_length=100)
-    subjects = models.CharField(max_length=100,null=True)
+    field = models.CharField(max_length=1000)
+    #subjects = models.CharField(max_length=100,null=True)
     textbook = models.CharField(max_length=100,null=True)
     intro = models.CharField(max_length=100, blank=True, null=True)
     permission = models.CharField(max_length=10, blank=True, null=True)

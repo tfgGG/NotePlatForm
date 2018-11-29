@@ -18,6 +18,16 @@
       </a>
       {%endif%}
 
+      {%if "/person/Team/Note/" in request.path %}
+      <a class="item active" href="/person/Team/Note/{{teamid}}">
+        Note
+      </a>
+      {%else%}
+      <a class="item" href="/person/Team/Note/{{teamid}}">
+        Note
+      </a>
+      {%endif%}
+
       {%if "/person/Team/Planner/" in request.path %}
       <a class="item active" href="/person/Team/Planner/{{teamid}}">
         Planner
@@ -27,7 +37,7 @@
         Planner
       </a>
       {%endif%}
-      
+
       {%if "/person/Team/Message/" in request.path %}
       <a class="item active" href="/person/Team/Message/{{teamid}}">
         Message
@@ -51,16 +61,23 @@
             Card
         </button>
       </div>
+      <div class="item">
+        <button class="tiny ui teal button" onclick="">
+           UPDATE
+        </button>
+      </div>
       {% endif %}
     </div>
 
-    <div class="ui segment"  >
+    <div class="ui segment">
       {%if "/person/Team/Calender/" in request.path %}
         {%include "person/Calender.html" %}
       {%elif "/person/Team/Planner/" in request.path %}
         {%include "person/Planner.html" %}
+      {%elif "/person/Team/Note/" in request.path %}
+        {%include "person/Note.html" %}
       {%else%}
-       <iframe src= 'http://localhost:3000/message/{{teamid}}' width="800px" height="500px"></iframe>
+         <iframe src= 'http://localhost:3000/message/{{teamid}}' width="800px" height="500px"></iframe>
       {%endif%}
     </div>
   </div>

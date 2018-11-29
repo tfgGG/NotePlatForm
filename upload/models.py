@@ -9,7 +9,7 @@ class Note(models.Model):
     subjects = models.CharField(max_length=100,null=True)
     textbook = models.CharField(max_length=100,null=True)
     intro = models.CharField(max_length=100, blank=True, null=True)
-    permission = models.IntegerField()
+    permission = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -41,8 +41,8 @@ class PollsDocument(models.Model):
 class Message(models.Model):
     id = models.AutoField(primary_key=True)
     message = models.CharField(max_length=100, blank=True, null=True)
-    note = models.ForeignKey(Note,models.DO_NOTHING , blank=True, null=True)
-    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    note = models.ForeignKey(Note,on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)
     username = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:

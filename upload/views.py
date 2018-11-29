@@ -12,10 +12,10 @@ from django.db.models import Avg, Max, Min
 from upload.models import Note,Message,Favorite
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse,HttpResponseRedirect
-
+from person.models import Group, Groupuser
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from person.models import Plandetail
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
@@ -55,7 +55,8 @@ def index(request):
     field = json.load(json_data)
 
     array = []
-    note = Note.objects.all().order_by('-idnote')
+    note = Note.objects.filter(permission='1')
+    note |= Note.objects.filter(permission='2')
     fav = Note.objects.filter(favorite__user_id = request.user.id).values('idnote')
     for f in fav:
         array.append(f['idnote'])
@@ -150,7 +151,7 @@ def create(request):
         subjects = request.POST['subjects']
         intro = request.POST['introduction']
         permission = request.POST['permission']
-
+        group = request.POST['group']
         mark = " ' "
         data = {
             'user' : request.user.id,
@@ -158,7 +159,7 @@ def create(request):
             'field'  : field,
             'subjects': subjects,
             'intro'  : intro,
-            'permission': permission
+            'permission': permission+' '+group
         }
         # Save to db via note rest
         unit = noteRest(data=data)
@@ -245,7 +246,7 @@ def DetailPut(request,id,num):
         else:
             print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     if request.method == 'PATCH':
         #print("Inside Patch"+ id +" "+num)
         notedetail = NoteList.objects.filter(noteid = id , list_num = num).first()
@@ -269,8 +270,36 @@ def deleteNote(request):
         print(idnote)
         data_list = NoteList.objects.filter(noteid=idnote)
         data_list.delete()
+        plandetail = Plandetail.objects.filter(note=idnote)
+        plandetail.delete()
         fav_note = Favorite.objects.filter(idnote=idnote)
         fav_note.delete()
         data= Note.objects.get(idnote=idnote)
         data.delete()
         return HttpResponse(0)
+
+
+@csrf_exempt
+@api_view(['PUT','PATCH'])
+def groupnote(request,noteid):
+    if request.method == 'PATCH':
+        N = Note.objects.get(pk = noteid)
+        data = json.loads(request.body.decode('utf-8'))
+        #for n in N:
+        print(N.permission)
+        data['permission'] = str(N.permission)+" "+ str(data['permission'])
+        
+        serializer = noteRest(N, data=data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+        

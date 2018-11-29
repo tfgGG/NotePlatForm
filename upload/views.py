@@ -25,8 +25,8 @@ from rest_framework.views import APIView
 #from snippets.models import Snippet
 from upload.serializers import noteRest,CommentRESTAPI,detailRest
 # Create your views here.
-
 from django.core.files.storage import FileSystemStorage
+from django.db.models import Q
 
 #from PIL import Image
 import redis
@@ -296,3 +296,18 @@ def groupnote(request,noteid):
         else:
             print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+def getnotedrop(request):
+    if request.method == 'GET':
+        note = Note.objects.filter(~Q(permission=1 ))
+        arr =[]
+        for n in note:
+            data= {}
+            data['noteid']  = hash(n.idnote)
+            data['notelistid'] = hash(n.idnote + 1 )
+            data['title'] = n.title
+            arr.append(data)
+        json_data = json.dumps(arr).encode('utf8')
+    return HttpResponse(json_data, content_type='application/json')

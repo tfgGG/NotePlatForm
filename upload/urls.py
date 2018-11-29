@@ -9,11 +9,13 @@ urlpatterns = [
     path('note/<int:note_id>/',views.note, name="note"),                      #GET note
     #path('create/',views.create, name="create"),
     path('ajaxpic/',views.ajaxpic, name="ajaxpic"),
+    #path('change/',views.change, name="ajaxpic"),
     path('cropphoto/',views.cropphoto, name="cropphoto"),
     path('create/',views.create, name="create"),   
     path('groupnote/<int:noteid>',views.groupnote, name="groupnote"),                                    #POST create note
     #path('update/index2/',views.snippet_list, name="note"),
     #path('ajaxpic/',views.ajaxpic, name="ajaxpic"),
+    path('GET/notedrop/',views.getnotedrop,name="getnotedrop"),
     path('comment/<int:note_id>/',views.comment, name="comment"),
     path('addComment/',views.addComment, name="addcomment"),
     path('addnotedetail/',views.DetailList.as_view()),

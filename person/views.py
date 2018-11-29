@@ -140,7 +140,6 @@ def Team(request,teamid):
                 if gp[1] == str(teamid):
                     GroupNote |= Note.objects.filter(permission=n.permission)
         GPN = Groupnote.objects.filter(group=teamid)
-        print(Gup)
         return render(request,'person/TeamIndex.html',{"plancard":plancard,
         "plan":plan,"teamid":teamid,"note":Allnote,"user":user,"teamuser":teamuser,"group":group,
         "subject":field['subject'],"Groupnote":GroupNote,"GPN":GPN })

@@ -68,11 +68,11 @@ OAUTH2_PROVIDER = {
 }
 '''
 REST_FRAMEWORK = {
-    
+
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     )
-    
+
 }
 '''
 
@@ -113,7 +113,7 @@ DATABASES = {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },                  # Or path to database file if using sqlite3.
         'USER': 'root',                       # Not used with sqlite3.
-        'PASSWORD': 'root',               # Not used with sqlite3.
+        'PASSWORD': '',               # Not used with sqlite3.
         'HOST': '',                           # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                           # Set to empty string for default. Not used with sqlite3.
     }

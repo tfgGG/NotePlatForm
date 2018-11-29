@@ -72,3 +72,8 @@ class Chat(models.Model):
 class MyApplication(AbstractApplication):
     logo = models.ImageField()
     agree = models.BooleanField()
+
+class Groupnote(models.Model):
+    idgroupnote = models.AutoField(primary_key=True)
+    note = models.ForeignKey(Note, models.DO_NOTHING, db_column='note',blank=True,null=True)
+    group = models.ForeignKey(Group, models.DO_NOTHING, db_column='group', blank=True, null=True)

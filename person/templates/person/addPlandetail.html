@@ -25,8 +25,8 @@
             <i class="dropdown icon"></i>
             <div class="default text">assign</div>
             <div class="menu">
-              {% for u in user%}
-              <div class="item" data-value="{{u.userid}}">{{u.userid.username}}</div>
+              {% for u in teamuser%}
+              <div class="item" data-value="{{u.userid.username}}">{{u.userid.username}}</div>
               {% endfor %}
             </div>
           </div>

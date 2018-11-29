@@ -15,7 +15,7 @@ from login.models import Profile
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from person.models import User,Group,Groupuser
-from person.models import Plandetail,Plan
+from person.models import Plandetail,Plan,Groupnote
 #from NotePlatForm.models import AuthUser
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -119,7 +119,8 @@ def CreateGroup(request):
 
 def Team(request,teamid):
     if request.method == 'GET':
-        user = Groupuser.objects.filter(group=teamid)
+        teamuser = Groupuser.objects.filter(group=teamid)
+        user = User.objects.filter(~Q(id = request.user.id))
         Allnote = Note.objects.all()
         plan = Plan.objects.filter(groupid=teamid)
         planteamdetail = Plandetail.objects.filter(plan__groupid = teamid).order_by('plan')
@@ -131,19 +132,18 @@ def Team(request,teamid):
         field = json.load(json_data)
         json_data.close()
 
-        Groupnote = Note.objects.none()
+        GroupNote = Note.objects.none()
         GN = Note.objects.all()
         for n in GN:
             if n.permission.isdigit() == 0:
                 gp = n.permission.split(' ')
-                print(gp[1])
                 if gp[1] == str(teamid):
-                    print("here")
-                    Groupnote |= Note.objects.filter(permission=n.permission)
-
+                    GroupNote |= Note.objects.filter(permission=n.permission)
+        GPN = Groupnote.objects.filter(group=teamid)
+        print(Gup)
         return render(request,'person/TeamIndex.html',{"plancard":plancard,
-        "plan":plan,"teamid":teamid,"note":Allnote,"user":user,"group":group,
-        "subject":field['subject'],"Groupnote":Groupnote })
+        "plan":plan,"teamid":teamid,"note":Allnote,"user":user,"teamuser":teamuser,"group":group,
+        "subject":field['subject'],"Groupnote":GroupNote,"GPN":GPN })
 
 def AddPlan(request,teamid):
     if request.method == 'POST':
@@ -161,7 +161,8 @@ def AddPlandetail(request,teamid):
         start = request.POST['startDate']
         end = request.POST['endDate']
         note = Note.objects.get(pk = noteid)
-        assign = User.objects.get(pk = userid)
+        print(userid)
+        assign = User.objects.get(username = userid)
         plan = Plan.objects.get(pk = planid)
         unit = Plandetail.objects.create(note=note,assign=assign,start=start,end=end,plan=plan)
         unit.save()

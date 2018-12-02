@@ -23,7 +23,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from selenium import webdriver
 from rest_framework.decorators import api_view
-from rest_framework import generics
+from rest_framework import generics,status
 from rest_framework.permissions import IsAuthenticated
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 #from snippets.models import Snippet
@@ -166,16 +166,16 @@ def AddPlandetail(request,teamid):
         unit = Plandetail.objects.create(note=note,assign=assign,start=start,end=end,plan=plan)
         unit.save()
         return redirect('/person/Team/Planner/'+str(teamid)+'/')
-
-@api_view(['GET', 'POST'])
+@csrf_exempt
 def chat(request,groupid):
     if request.method == 'POST':
+        print("CHAT POST")
+        print(json.loads(request.body.decode('utf-8')))
         serializer = ChatRest(data=json.loads(request.body.decode('utf-8')))
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return HttpResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return HttpResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 @csrf_exempt
 def deletePlandetail(request):
     if request.method == 'POST':

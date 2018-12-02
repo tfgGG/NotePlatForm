@@ -62,8 +62,8 @@ class Chat(models.Model):
     idchat = models.IntegerField(primary_key=True)
     time = models.CharField(max_length=45, blank=True, null=True)
     text = models.CharField(max_length=500, blank=True, null=True)
-    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid', blank=True, null=True)
-    teamid = models.ForeignKey('Group', models.DO_NOTHING, db_column='teamid', blank=True, null=True)
+    userid = models.ForeignKey(User, models.DO_NOTHING, db_column='userid', blank=True, null=True)
+    teamid = models.ForeignKey(Group, models.DO_NOTHING, db_column='teamid', blank=True, null=True)
 
     class Meta:
         managed = False

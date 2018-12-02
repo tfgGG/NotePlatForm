@@ -305,7 +305,7 @@ def groupnote(request,noteid):
 
 def getnotedrop(request):
     if request.method == 'GET':
-        note = Note.objects.filter(~Q(permission=1 ))
+        note = Note.objects.filter( Q(permission= 1) | Q(permission = 2))
         arr =[]
         for n in note:
             data= {}

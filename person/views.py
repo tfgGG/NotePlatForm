@@ -112,8 +112,10 @@ def CreateGroup(request):
         member = memberid.split(",")
         member.append(request.user.id)
         for m in member:
+            print("flag")
             id = User.objects.get(pk = m)
-            memberunit = Groupuser.objects.create(userid= m ,group=unit)
+            print(id)
+            memberunit = Groupuser.objects.create(userid= id ,group=unit)
             memberunit.save()
         return redirect('../Team/Calender/'+str(unit.idgroup)+'/')
 
@@ -121,7 +123,8 @@ def Team(request,teamid):
     if request.method == 'GET':
         teamuser = Groupuser.objects.filter(group=teamid)
         user = User.objects.filter(~Q(id = request.user.id))
-        Allnote = Note.objects.all()
+        Allnote = Note.objects.filter(permission=2)
+        Allnote |= Note.objects.filter(user_id=request.user.id)
         plan = Plan.objects.filter(groupid=teamid)
         planteamdetail = Plandetail.objects.filter(plan__groupid = teamid).order_by('plan')
         note = Note.objects.filter(plandetail__plan__groupid = teamid)

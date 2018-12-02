@@ -9,12 +9,13 @@
 {%else%}
 <script>
   $(document).ready(function(){
-    $('.delete').click(function(){
+
+    $('.deleteplandetail').click(function(){
       var idplandetail =$(this).attr("id");
-      $('.deletemodal').modal('toggle');
+      $('.deleteplandetailmodal').modal('toggle');
 
     //  alert(delid)
-      $('.deleteTag').click(function(){
+      $('.deleteplandetailTag').click(function(){
         var tag = $(this).attr("id");
         //alert(tag);
         if(tag==1){
@@ -22,6 +23,31 @@
             url: '/person/deletePlandetail/',
             type: "POST",
             data: {"id": idplandetail },
+            dataType: 'json',
+            success: function(data) {
+               location.reload();
+            }
+          })
+        }
+        else{
+          location.reload();
+        }
+      });
+    });
+
+    $('.deleteplan').click(function(){
+      var idplan =$(this).attr("id");
+      $('.deleteplanmodal').modal('toggle');
+
+    //  alert(delid)
+      $('.deleteplanTag').click(function(){
+        var tag = $(this).attr("id");
+        //alert(tag);
+        if(tag==1){
+          $.ajax({
+            url: '/person/deletePlan/',
+            type: "POST",
+            data: {"idplan": idplan },
             dataType: 'json',
             success: function(data) {
                location.reload();
@@ -42,17 +68,14 @@
         <div style="background-color: #D5DBDB;">
             <h2 class=" ui centered header" style="color: #34495E; background-color: dodgerblue; padding: 5px;">
               {{ p.name }}
+              {% include 'person/deletePlan_template.html' %}
             </h2>
-
             <div class="ui grid container sortable sortlist" style="min-height: 60px; ">
                 {% for pd,n in plancard %}
                     {%if p.idplan == pd.plan_id %}
                      <div name="{{n.title}}" style=" background: white; padding: 5px 0px 10px 0px; width:200px; margin: 0px;">
                         <div class="ui card StackedListItem--isDraggable">
                             <div class="content centered" style="overflow: hidden;">
-                              <div class="right floated" style="margin-left: 5px;" >
-                                {% include 'person/deleteDetail_template.html' %}
-                              </div>
                               <div class="header">{{n.title}}</div>
                               <div class="meta">{{n.intro}}</div>
                             </div>
@@ -74,6 +97,9 @@
                                         <i class="user icon"></i>
                                         yyu
                                 </span>
+                                <div class="left floated" style="margin-left: 5px;" >
+                                  {% include 'person/deleteDetail_template.html' %}
+                                </div>
                             </div>
                         </div>
                     </div>

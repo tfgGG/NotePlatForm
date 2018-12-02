@@ -1,6 +1,8 @@
-{% for note in Groupnote %}
+
 
 <div class="four wide column removecard">
+  {% include 'person/Groupnote.html' %}
+  {% for note in Groupnote %}
   <div class="note ui card" style="cursor:pointer;" >
       <div class="content">
         <script>
@@ -61,5 +63,5 @@
         </div>
       </div>-->
   </div>
+  {% endfor %}
 </div>
-{% endfor %}

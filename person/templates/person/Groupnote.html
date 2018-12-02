@@ -1,0 +1,39 @@
+{% for groupnote in GPN %}
+<div class="four wide column removecard">
+  <div class="note ui card" style="cursor:pointer;" >
+      <div class="content">
+        <script>
+          var imgName = "{{groupnote.note.user.first_name}}";
+          if (imgName == ""){
+            document.write('<img class="ui avatar image" src="https://semantic-ui.com/images/avatar/large/elliot.jpg">');
+          }
+          else{
+            document.write('<img class="ui avatar image" src="http://127.0.0.1:8000/media/{{groupnote.note.user.first_name}}">');
+          }
+        </script>
+
+          {{groupnote.note.user.username}}
+          <!-- 刪除筆記的button -->
+          <div class="right floated" style="margin-left: 5px;" >
+              {% include 'upload/delete_template.html' %}
+          </div>
+          <div class="right floated meta" style="margin-top: 4px;">
+            <span> 14h</span>
+          </div>
+
+      </div>
+      <div class="content" onclick="location.href='http://localhost:3000/note/{{groupnote.note.idnote}}/1/'">
+          <h3 class="center aligned">{{groupnote.note.title}}</h3>
+
+          <h5 class="center aligned">{{ groupnote.note.intro }}</h5>
+      </div>
+      <div class="content">
+        <div class="list">
+          <div class = "item">
+            {{groupnote.note.field}}
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+{% endfor %}

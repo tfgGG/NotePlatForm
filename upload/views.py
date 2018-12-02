@@ -25,8 +25,8 @@ from rest_framework.views import APIView
 #from snippets.models import Snippet
 from upload.serializers import noteRest,CommentRESTAPI,detailRest
 # Create your views here.
-
 from django.core.files.storage import FileSystemStorage
+from django.db.models import Q
 
 #from PIL import Image
 import redis
@@ -36,7 +36,7 @@ hashids = Hashids()
 
 from django.conf import settings
 
-note_url = "http://localhost:3000"
+note_url = "http://140.136.150.93:3000"
 
 def hash(num):
     #hashids = Hashids()
@@ -65,14 +65,16 @@ def index(request):
         noteSearch = request.POST['searchNote']
         searchTags = request.POST['searchTags']
         note = Note.objects.none()
-        if searchTags != '':
-            noteTag = searchTags.split(",")
+        noteTag = searchTags.split(",")
+        if searchTags != '' and noteSearch != '':
             for n in noteTag:
-                tmp = Note.objects.filter(field__contains=n)
-                if tmp:
-                    note |= tmp
+                note |= Note.objects.filter(field__contains=n)
+            note = note.filter(title__contains=noteSearch)
         elif noteSearch != '':
-            note = Note.objects.filter(title__contains=noteSearch).order_by('-idnote')
+            note |= Note.objects.filter(title__contains=noteSearch).order_by('-idnote')
+        elif searchTags != '':
+            for n in noteTag:
+                note |= Note.objects.filter(field__contains=n)
         json_data.close()
         return render(request,'upload/index.html',{"note":note,"fav":array,"subject":field['subject']})#field改成subject
 
@@ -148,16 +150,18 @@ def create(request):
     if request.method == "POST":
         title = request.POST['title']
         field = request.POST['field']
-        subjects = request.POST['subjects']
+        #subjects = request.POST['subjects']
         intro = request.POST['introduction']
         permission = request.POST['permission']
         group = request.POST['group']
+        field = "#"+field
+        field = field.replace(",", " #")
         mark = " ' "
         data = {
             'user' : request.user.id,
             'title'  : title,
             'field'  : field,
-            'subjects': subjects,
+            #'subjects': subjects,
             'intro'  : intro,
             'permission': permission+' '+group
         }
@@ -287,7 +291,7 @@ def groupnote(request,noteid):
         data = json.loads(request.body.decode('utf-8'))
         #for n in N:
         print(N.permission)
-        data['permission'] = str(N.permission)+" "+ str(data['permission'])
+        data['permission'] = N.permission+" "+ str(data['permission'])
         
         serializer = noteRest(N, data=data,partial=True)
         if serializer.is_valid():
@@ -299,7 +303,15 @@ def groupnote(request,noteid):
 
 
 
-
-
-
-        
+def getnotedrop(request):
+    if request.method == 'GET':
+        note = Note.objects.filter(~Q(permission=1 ))
+        arr =[]
+        for n in note:
+            data= {}
+            data['noteid']  = hash(n.idnote)
+            data['notelistid'] = hash(n.idnote + 1 )
+            data['title'] = n.title
+            arr.append(data)
+        json_data = json.dumps(arr).encode('utf8')
+    return HttpResponse(json_data, content_type='application/json')

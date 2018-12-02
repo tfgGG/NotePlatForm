@@ -56,7 +56,7 @@ MIDDLEWARE= [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'oauth2_provider.middleware.OAuth2TokenMiddleware',
+    #'oauth2_provider.middleware.OAuth2TokenMiddleware',
 ]
 
 
@@ -72,6 +72,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     )
     
+    'SCOPES': {'notifications':"nofications affirm", 'gist':'gists affirm'}
 }
 '''
 
@@ -137,7 +138,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 CORS_ORIGIN_ALLOW_ALL = True
+
 '''
 CORS_ORIGIN_WHITELIST = (
     'google.com',

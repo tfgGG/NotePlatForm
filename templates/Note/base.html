@@ -23,15 +23,14 @@
     </head>
 
     <body>
-        <div class="ui menu">
-            <div class="item">
-              <img src="">
+        <div class="ui menu" style="margin-bottom: 60px; ">
+            <div class="item" style="padding: 0px;">
+              
             </div>
-            <a class="item" href="https://140.136.150.93:3232/">
-                視訊
-            </a>
+            <img src="{% static 'Note/logo.png' %}" width="100px" height="65px">
             <a class="item" href="{% url 'person:index' %}">MyPage</a>
             <a class="item" href = "{% url 'upload:index'  %}">Notes</a>
+            <a class="item" href ="https://140.136.150.93.3232/">WebCam</a>
             {% if request.user.is_authenticated is False %}
             <a class="right item" href="/login/login/">
                 <button class="ui blue basic button"><i class="user icon"></i>Sign-in</button>

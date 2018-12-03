@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1','IP']
 INSTALLED_APPS = [
     'upload.apps.UploadConfig',
     'login.apps.LoginConfig',
+    'oauth.apps.OauthConfig',
     'person.apps.PersonConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'oauth2_provider',
+    'rest_framework',
     #'captcha',
 ]
 '''
@@ -57,7 +59,7 @@ MIDDLEWARE= [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    #'oauth2_provider.middleware.OAuth2TokenMiddleware',
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
 ]
 
 
@@ -114,7 +116,7 @@ DATABASES = {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },                  # Or path to database file if using sqlite3.
         'USER': 'root',                       # Not used with sqlite3.
-        'PASSWORD': '',               # Not used with sqlite3.
+        'PASSWORD': 'root',               # Not used with sqlite3.
         'HOST': '',                           # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                           # Set to empty string for default. Not used with sqlite3.
     }
@@ -140,16 +142,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
-
+#OAUTH2_PROVIDER_APPLICATION_MODEL='oauth.MyApplication'
 '''
+CORS_ORIGIN_ALLOW_ALL = True
+'''
+
 CORS_ORIGIN_WHITELIST = (
     'google.com',
     'hostname.example.com',
     'localhost:3000',
     '127.0.0.1:9000'
 )
-'''
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/

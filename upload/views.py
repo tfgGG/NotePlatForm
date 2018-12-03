@@ -3,6 +3,7 @@ from django.template import loader
 from .models import Note,NoteList,Message
 from django.core import serializers
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 from .form import NoteListForm,BaseNoteFormSet
 from django.views.generic import View
 from django.forms import formset_factory,BaseFormSet
@@ -49,6 +50,8 @@ def dec(h):
     hashnum = hashid.decode(h)
     print(hashnum)
     return hashnum
+
+@login_required  
 @csrf_exempt
 def index(request):
     json_data = open(settings.DATA_PATH,encoding = 'utf8')
@@ -122,11 +125,11 @@ def comment(request,note_id):
 def addComment(request):
     if request.method == "POST":
         serializer = CommentRESTAPI(data=json.loads(request.body.decode('utf-8')))
-        print(serializer)
+        #print(serializer)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
-        print(serializer.errors)
+        #print(serializer.errors)
         return JsonResponse(serializer.errors, status=400)
 
 

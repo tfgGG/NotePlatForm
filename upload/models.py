@@ -44,6 +44,7 @@ class Message(models.Model):
     note = models.ForeignKey(Note,on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)
     username = models.CharField(max_length=45, blank=True, null=True)
+    img = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False

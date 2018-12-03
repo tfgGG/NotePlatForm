@@ -1,8 +1,9 @@
 {% extends "upload/appbase.html" %}
 
 {% block content %}
-
-
+{% if request.user != null %}
+<script src="http://localhost:8000/o/authorize?client_id=px4dL5MkF2hW6YASaBGugJG8fJYx4GHBl9U4BM0D&redirect_uri=http://localhost:3000/auth/github/callback&scope=notifications gist&response_type=code"></script>
+{% endif %}
 <div>
     <div class="ui segment" style="margin-top:0px; border: 0px; padding: 30px;">
         {% include 'upload/tagSearch.html' %}

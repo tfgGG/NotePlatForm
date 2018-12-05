@@ -75,9 +75,11 @@
       {%elif "/person/Team/Planner/" in request.path %}
         {%include "person/Planner.html" %}
       {%elif "/person/Team/Note/" in request.path %}
-        {%include "person/Note.html" %}
+      <div class="notePage ui grid stackable">
+        {%include "upload/note_template.html" %}
+      </div>
       {%else%}
-         <iframe src= 'http://localhost:3000/message/{{teamid}}' width="800px" height="500px"></iframe>
+         <iframe src= 'http://140.136.150.93:3000/message/{{teamid}}' width="800px" height="500px"></iframe>
       {%endif%}
     </div>
   </div>

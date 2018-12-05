@@ -30,7 +30,7 @@
             <img src="http://140.136.150.93/media/logo.png" width="100px" height="65px">
             <a class="item" href="{% url 'person:index' %}">MyPage</a>
             <a class="item" href = "{% url 'upload:index'  %}">Notes</a>
-            <a class="item" href ="https://140.136.150.93.3232/">WebCam</a>
+            <a class="item" href ="https://140.136.150.93:3232/">WebCam</a>
             {% if request.user.is_authenticated is False %}
             <a class="right item" href="/login/login/">
                 <button class="ui blue basic button"><i class="user icon"></i>Sign-in</button>

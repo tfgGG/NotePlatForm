@@ -28,7 +28,7 @@ urlpatterns = [
     path('login/', include('login.urls')),
     path('upload/', include('upload.urls')),
     path('person/', include('person.urls')),
-    path('oauth/', include('oauth.urls')),
+    #path('oauth/', include('oauth.urls')),
     url(r'^api/hello/', ApiEndpoint.as_view()),
     url(r'^secret$', views.secret_page, name='secret'),
     #path('oauth/change/', views.change ),

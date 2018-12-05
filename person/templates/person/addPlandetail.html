@@ -12,7 +12,12 @@
             <i class="dropdown icon"></i>
             <div class="default text">Note</div>
             <div class="menu">
+              <div class="header">My group note</div>
               {% for n in note%}
+              <div class="item" data-value="{{n.idnote}}">{{n.title}}</div>
+              {% endfor %}
+              <div class="header">Other user's note</div>
+              {% for n in Allnote%}
               <div class="item" data-value="{{n.idnote}}">{{n.title}}</div>
               {% endfor %}
             </div>

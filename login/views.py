@@ -88,5 +88,8 @@ class LoginFormView(View):
         return render(request,self.template_name, {'form': form })
 
 def logout_view(request):
+    user = User.objects.get(pk = request.user.id)
+    user.last_name= 'N'
+    user.save()
     logout(request)
     return redirect('/login/login/')

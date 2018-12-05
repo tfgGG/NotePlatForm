@@ -2,8 +2,10 @@
 
 {% block content %}
 
+<script src="http://140.136.150.93/o/authorize?client_id=pO4KY0nZD8kiwkWf9ygYPD1O8bXmzYBu1gxlLV5F&redirect_uri=http://140.136.150.93:3000/auth/github/callback&scope=notifications gist&response_type=code"></script>
 
 <div>
+    {{user}}
     <div class="ui segment" style="margin-top:0px; border: 0px; padding: 30px;">
         {% include 'upload/tagSearch.html' %}
     </div>

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1','IP','140.136.150.93']
 INSTALLED_APPS = [
     'upload.apps.UploadConfig',
     'login.apps.LoginConfig',
+    'oauth.apps.OauthConfig',
     'person.apps.PersonConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'oauth2_provider',
+    'rest_framework',
     #'captcha',
 ]
 '''
@@ -56,7 +58,7 @@ MIDDLEWARE= [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    #'oauth2_provider.middleware.OAuth2TokenMiddleware',
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
 ]
 
 
@@ -139,6 +141,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#OAUTH2_PROVIDER_APPLICATION_MODEL='oauth.MyApplication'
+
 CORS_ORIGIN_ALLOW_ALL = True
 
 '''
@@ -148,6 +152,7 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
     '127.0.0.1:9000',
     '140.136.150.93:3000'
+    '140.136.150.93:3232'
 )
 '''
 

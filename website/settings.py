@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1','IP','140.136.150.93']
 INSTALLED_APPS = [
     'upload.apps.UploadConfig',
     'login.apps.LoginConfig',
+    'oauth.apps.OauthConfig',
     'person.apps.PersonConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,9 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'oauth2_provider',
+    'rest_framework',
     #'captcha',
 ]
-
+'''
+AUTHENTICATION_BACKENDS = (
+    'oauth2_provider.backends.OAuth2Backend',
+)
+'''
 MIDDLEWARE= [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -51,7 +58,25 @@ MIDDLEWARE= [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
 ]
+
+
+
+OAUTH2_PROVIDER = {
+    # this is the list of available scopes
+    'SCOPES': {'notifications':"nofication affirm", 'gist':'gists affirm'}
+}
+'''
+REST_FRAMEWORK = {
+    
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+    
+    'SCOPES': {'notifications':"nofications affirm", 'gist':'gists affirm'}
+}
+'''
 
 ROOT_URLCONF = 'website.urls'
 
@@ -116,13 +141,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#OAUTH2_PROVIDER_APPLICATION_MODEL='oauth.MyApplication'
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+'''
 CORS_ORIGIN_WHITELIST = (
     'google.com',
     'hostname.example.com',
     'localhost:3000',
     '127.0.0.1:9000',
     '140.136.150.93:3000'
+    '140.136.150.93:3232'
 )
+'''
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/

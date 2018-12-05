@@ -1,6 +1,6 @@
 from django.urls import re_path,path
-from .import views
 from django.conf.urls.static import static
+from .import views
 from django.conf import settings
 app_name = 'person'
 urlpatterns = [
@@ -9,7 +9,7 @@ urlpatterns = [
     path('profile/',views.profile, name="profile"),
     path('upload/',views.uploadImg, name="upload"),
     path('Group/<int:userid>/',views.group, name="upload"),
-    path('chat/<int:groupid>/',views.chat, name="upload"),
+    path('chat/<int:groupid>',views.chat, name="upload"),
     path('Plan/<int:groupid>/',views.plan, name="upload"),
     path('Myfavorite/',views.index, name="Myfavorite"),
     path('CreateGroup/',views.CreateGroup,name="CreateGroup"),
@@ -17,6 +17,10 @@ urlpatterns = [
     path('AddPlan/<int:teamid>',views.AddPlan,name="AddPlan"),
     path('Team/Calender/<int:teamid>/',views.Team,name="Team"),
     path('Team/Planner/<int:teamid>/',views.Team,name="Plan"),
+    path('Team/Note/<int:teamid>/',views.Team,name="GroupNote"),
+    path('Team/Message/<int:teamid>/',views.Team,name="Plan"),
     path('deletePlandetail/',views.deletePlandetail,name="deletePlandetail"),
+    path('deletePlan/',views.deletePlan,name="deletePlan"),
+    #path('updatePlandetail/',views.updatePlandetail,name="updatePlandetail")
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

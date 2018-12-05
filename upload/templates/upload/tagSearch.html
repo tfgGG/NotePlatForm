@@ -5,7 +5,7 @@
     <div class="fields">
       <label>關鍵字搜尋: </label>
       <div class="three wide field">
-        
+
         <div class="ui action input">
           <input type="text" placeholder="Search..." name='searchNote'>
           <button class="ui button">Search</button>
@@ -22,13 +22,12 @@
                 {% for s in subject %}
                   <div class="header">{{s.text}}</div>
                   {% for b in s.field %}
-                    <div class="item" data-value="{{b.value}}">{{b.text}}</div>
+                    <div class="item" data-value="{{b.text}}">{{b.text}}</div>
                   {% endfor %}
                 {% endfor %}
               </div>
           </div>
       </div>
     </div>
-    
-</form>
 
+</form>

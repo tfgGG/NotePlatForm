@@ -3,6 +3,7 @@ from django.template import loader
 from .models import Note,NoteList,Message
 from django.core import serializers
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 from .form import NoteListForm,BaseNoteFormSet
 from django.views.generic import View
 from django.forms import formset_factory,BaseFormSet
@@ -12,10 +13,10 @@ from django.db.models import Avg, Max, Min
 from upload.models import Note,Message,Favorite
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse,HttpResponseRedirect
-
+from person.models import Group, Groupuser,Groupnote
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from person.models import Plandetail
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
@@ -23,11 +24,11 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 #from snippets.models import Snippet
-from upload.serializers import noteRest,CommentRESTAPI,detailRest
+from upload.serializers import noteRest,CommentRESTAPI,detailRest,GroupnoteRest
 # Create your views here.
-
 from django.core.files.storage import FileSystemStorage
-
+from django.db.models import Q
+from django.contrib.auth.models import User
 #from PIL import Image
 import redis
 import json
@@ -36,7 +37,7 @@ hashids = Hashids()
 
 from django.conf import settings
 
-note_url = "http://localhost:3000"
+note_url = "http://140.136.150.93:3000"
 
 def hash(num):
     #hashids = Hashids()
@@ -49,13 +50,25 @@ def dec(h):
     hashnum = hashid.decode(h)
     print(hashnum)
     return hashnum
+
+@login_required  
 @csrf_exempt
 def index(request):
     json_data = open(settings.DATA_PATH,encoding = 'utf8')
     field = json.load(json_data)
-
+    # Determine how many times he login
+    flag=''
+    user = User.objects.get(pk = request.user.id)
+    if user.last_name == 'Y':
+        user.last_name = 'S'
+        flag='S'
+    if user.last_name == 'N':
+        user.last_name='Y'
+        flag='Y'
+    user.save()
     array = []
-    note = Note.objects.all().order_by('-idnote')
+    note = Note.objects.filter(permission='1')
+    note |= Note.objects.filter(permission='2')
     fav = Note.objects.filter(favorite__user_id = request.user.id).values('idnote')
     for f in fav:
         array.append(f['idnote'])
@@ -64,19 +77,21 @@ def index(request):
         noteSearch = request.POST['searchNote']
         searchTags = request.POST['searchTags']
         note = Note.objects.none()
-        if searchTags != '':
-            noteTag = searchTags.split(",")
+        noteTag = searchTags.split(",")
+        if searchTags != '' and noteSearch != '':
             for n in noteTag:
-                tmp = Note.objects.filter(field__contains=n)
-                if tmp:
-                    note |= tmp
+                note |= Note.objects.filter(field__contains=n)
+            note = note.filter(title__contains=noteSearch)
         elif noteSearch != '':
-            note = Note.objects.filter(title__contains=noteSearch).order_by('-idnote')
+            note |= Note.objects.filter(title__contains=noteSearch).order_by('-idnote')
+        elif searchTags != '':
+            for n in noteTag:
+                note |= Note.objects.filter(field__contains=n)
         json_data.close()
-        return render(request,'upload/index.html',{"note":note,"fav":array,"subject":field['subject']})#field改成subject
+        return render(request,'upload/index.html',{'user':flag,"note":note,"fav":array,"subject":field['subject']})#field改成subject
 
     json_data.close()
-    return render(request,'upload/index.html',{"note":note,"fav":array,"subject":field['subject']})
+    return render(request,'upload/index.html',{'user':flag,"note":note,"fav":array,"subject":field['subject']})
 
 @csrf_exempt
 def addLike(request):
@@ -119,11 +134,11 @@ def comment(request,note_id):
 def addComment(request):
     if request.method == "POST":
         serializer = CommentRESTAPI(data=json.loads(request.body.decode('utf-8')))
-        print(serializer)
+        #print(serializer)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
-        print(serializer.errors)
+        #print(serializer.errors)
         return JsonResponse(serializer.errors, status=400)
 
 
@@ -147,18 +162,20 @@ def create(request):
     if request.method == "POST":
         title = request.POST['title']
         field = request.POST['field']
-        subjects = request.POST['subjects']
+        #subjects = request.POST['subjects']
         intro = request.POST['introduction']
         permission = request.POST['permission']
-
+        group = request.POST['group']
+        field = "#"+field
+        field = field.replace(",", " #")
         mark = " ' "
         data = {
             'user' : request.user.id,
             'title'  : title,
             'field'  : field,
-            'subjects': subjects,
+            #'subjects': subjects,
             'intro'  : intro,
-            'permission': permission
+            'permission': permission+' '+group
         }
         # Save to db via note rest
         unit = noteRest(data=data)
@@ -245,7 +262,7 @@ def DetailPut(request,id,num):
         else:
             print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     if request.method == 'PATCH':
         #print("Inside Patch"+ id +" "+num)
         notedetail = NoteList.objects.filter(noteid = id , list_num = num).first()
@@ -267,10 +284,49 @@ def deleteNote(request):
         user_id = request.user.id
         idnote = request.POST.get('id',None)
         print(idnote)
+        data_groupnote = Groupnote.objects.filter(note=idnote)
+        data_groupnote.delete()
         data_list = NoteList.objects.filter(noteid=idnote)
         data_list.delete()
+        plandetail = Plandetail.objects.filter(note=idnote)
+        plandetail.delete()
         fav_note = Favorite.objects.filter(idnote=idnote)
         fav_note.delete()
         data= Note.objects.get(idnote=idnote)
         data.delete()
+        
         return HttpResponse(0)
+
+
+@csrf_exempt
+def groupnote(request):
+    if request.method == 'POST':
+        #N = Note.objects.get(pk = noteid)
+        data = json.loads(request.body.decode('utf-8'))
+        g = Groupnote.objects.filter(note = data['note'], group = data['group'])
+        print(g)
+        if g:
+            return HttpResponse({"message","It is add already"},status=status.HTTP_201_CREATED)
+            
+        #for n in N:
+        #data['permission'] = N.permission+" "+ str(data['permission'])
+        serializer = GroupnoteRest(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return HttpResponse(serializer.data,status=status.HTTP_201_CREATED)
+        return HttpResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+def getnotedrop(request):
+    if request.method == 'GET':
+        note = Note.objects.filter( Q(permission= 1) | Q(permission = 2))
+        arr =[]
+        for n in note:
+            data= {}
+            data['noteid']  = hash(n.idnote)
+            data['notelistid'] = hash(n.idnote + 1 )
+            data['title'] = n.title
+            arr.append(data)
+        json_data = json.dumps(arr).encode('utf8')
+    return HttpResponse(json_data, content_type='application/json')

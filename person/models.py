@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from upload.models import Note
+from oauth2_provider.models import AbstractApplication
 # Create your models here.
 class User(models.Model):
     password = models.CharField(max_length=128)
@@ -29,7 +30,7 @@ class Group(models.Model):
 
 class Groupuser(models.Model):
     idgroup = models.AutoField(primary_key=True)
-    userid = models.IntegerField(blank=True, null=True)
+    userid = models.ForeignKey(User, models.DO_NOTHING, db_column='userid', blank=True, null=True)
     group = models.ForeignKey(Group, models.DO_NOTHING, db_column='group', blank=True, null=True)
 
     class Meta:
@@ -40,7 +41,7 @@ class Plan(models.Model):
     idplan = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45,blank=True,null=True)
     groupid = models.ForeignKey(Group, models.DO_NOTHING, db_column='groupid',blank=True,null=True)
-    
+
     class Meta:
         managed = False
         db_table = 'plan'
@@ -49,8 +50,8 @@ class Plandetail(models.Model):
     idplandetail = models.AutoField(primary_key=True)
     note = models.ForeignKey(Note, models.DO_NOTHING, db_column='note',blank=True,null=True)
     assign = models.ForeignKey(User, models.DO_NOTHING, db_column='assign',blank=True,null=True)
-    start = models.DateField(blank=True,null=True)
-    end = models.DateField(blank=True,null=True)
+    start = models.CharField(max_length=50,blank=True,null=True)
+    end = models.CharField(max_length=50,blank=True,null=True)
     plan = models.ForeignKey(Plan,models.DO_NOTHING,db_column='plan',blank=True,null=True)
 
     class Meta:
@@ -58,12 +59,23 @@ class Plandetail(models.Model):
         db_table = 'plandetail'
 
 class Chat(models.Model):
-    idchat = models.IntegerField(primary_key=True)
+    idchat = models.AutoField(primary_key=True)
     time = models.CharField(max_length=45, blank=True, null=True)
     text = models.CharField(max_length=500, blank=True, null=True)
-    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid', blank=True, null=True)
-    teamid = models.ForeignKey('Group', models.DO_NOTHING, db_column='teamid', blank=True, null=True)
+    userid = models.ForeignKey(User, models.DO_NOTHING, db_column='userid', blank=True, null=True)
+    teamid = models.ForeignKey(Group, models.DO_NOTHING, db_column='teamid', blank=True, null=True)
+    username = models.CharField(max_length=45)
+    img = models.CharField(max_length=100)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'chat'
+
+
+class Groupnote(models.Model):
+    idgroupnote = models.AutoField(primary_key=True)
+    note = models.ForeignKey(Note, models.DO_NOTHING, db_column='note',blank=True,null=True)
+    group = models.ForeignKey(Group, models.DO_NOTHING, db_column='group', blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'person_groupnote'

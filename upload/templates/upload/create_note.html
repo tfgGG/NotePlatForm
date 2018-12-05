@@ -4,7 +4,7 @@
         <h3 class="ui blue header">Create Note</h3>
     </div>
     <div class="content">
-        <form action="../../upload/create/" method="POST" name="form1" class="ui form">
+        <form action="/upload/create/" method="POST" name="form1" class="ui form">
             {% csrf_token %}  <!-- 啟動CSRF防護，保護伺服器避免被攻擊 -->
             <div class="field">
                 <label>Title:</label>
@@ -38,23 +38,23 @@
                       {% for s in subject %}
                         <div class="header">{{s.text}}</div>
                         {% for b in s.field %}
-                          <div class="item" data-value="{{b.value}}">{{b.text}}</div>
+                          <div class="item" data-value="{{b.text}}">{{b.text}}</div>
                         {% endfor %}
                       {% endfor %}
                     </div>
                 </div>
                 <!--    -->
            </div>
-            <div class="field">
+          <!--  <div class="field">
                 <label>Subjects:</label>
                 <input type="text" name="subjects">
-            </div>
+            </div>-->
             <div class="fields">
                 <div class="field">
                     <label>Permission</label>
 
-                    <div class="ui selection dropdown" >
-                        <input type="hidden" name="permission">
+                    <div class="ui selection dropdown" onchange="PickGroupPermission()">
+                        <input type="hidden" name="permission" id="per" required>
                         <i class="dropdown icon"></i>
                         <div class="default text">Select Permission</div>
                         <div class="menu">
@@ -73,26 +73,42 @@
                         </div>
                     </div>
                 </div>
-                <div class="field">
-                    <label>Group</label>
-                    <select class="ui dropdown" name="permission">
-                            <option value="0">
-                                <i class="ban icon">i</i>Hide
-                            </option>
-                            <option value="1">
-                                    <i class="user icon" selected></i>Personal
-                            </option>
-                            <option value="2">
-                                    <i class="ban icon"></i>Public
-                            </option>
-                            <option value="3">
-                                    <i class="users icon"></i>Group
-                            </option>
-                    </select>
-                </div>
             </div>
+            <div class="field" id='group' style="display:none">
+                <label>Group</label>
+                <div class="ui fluid search selection dropdown">
+                  <input name="group" type="hidden">
+                  <i class="dropdown icon"></i>
+                  <div class="default text">Select Group</div>
+                    <div class="menu">
+                      {% for g in group %}
+                          <div class="item" data-value="{{g.idgroup}}">{{g.name}}</div>
+                      {% endfor %}
+                    </div>
+                </div>
+                <!--    -->
+           </div>
             <br>
             <button type="submit" class="ui blue basic button">Create</button>
         </form>
     </div>
  </div>
+<script>
+   $(document).ready(function(){
+     if ($('#per').text() == '3'){
+       $('#gro').show();
+     }
+   })
+</script>
+ <script language="javascript">
+   function PickGroupPermission(){
+       permission = document.getElementById("per").value;
+       if (permission == "3" ){
+         console.log(permission);
+         document.getElementById("group").style.display="inline";
+       }
+       else {
+         document.getElementById("group").style.display="none";
+       }
+   }
+ </script>

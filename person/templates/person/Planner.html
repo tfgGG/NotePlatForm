@@ -28,7 +28,7 @@
   })
 </script>
 {%if plan|length == 0 %}
-<h2 class="ui icon center aligned header" style="height: 80%; margin-top: 100px;">
+<h2 class="ui icon center aligned header" style="height: 70%; margin-top: 100px;">
         <i class="columns icon"></i>
         <div class="content">
           Oops! You dont have any plan
@@ -36,24 +36,76 @@
         </div>
 </h2>
 {%else%}
-<div style="overflow: scroll; width: auto; white-space: nowrap;">
 
+<script>
+  $(document).ready(function(){
+
+    $('.deleteplandetail').click(function(){
+      var idplandetail =$(this).attr("id");
+      $('.deleteplandetailmodal').modal('toggle');
+
+    //  alert(delid)
+      $('.deleteplandetailTag').click(function(){
+        var tag = $(this).attr("id");
+        //alert(tag);
+        if(tag==1){
+          $.ajax({
+            url: '/person/deletePlandetail/',
+            type: "POST",
+            data: {"id": idplandetail },
+            dataType: 'json',
+            success: function(data) {
+               location.reload();
+            }
+          })
+        }
+        else{
+          location.reload();
+        }
+      });
+    });
+
+    $('.deleteplan').click(function(){
+      var idplan =$(this).attr("id");
+      $('.deleteplanmodal').modal('toggle');
+
+    //  alert(delid)
+      $('.deleteplanTag').click(function(){
+        var tag = $(this).attr("id");
+        //alert(tag);
+        if(tag==1){
+          $.ajax({
+            url: '/person/deletePlan/',
+            type: "POST",
+            data: {"idplan": idplan },
+            dataType: 'json',
+            success: function(data) {
+               location.reload();
+            }
+          })
+        }
+        else{
+          location.reload();
+        }
+      });
+    });
+  })
+</script>
+<form action="/person/updatePlandetail/" method="post">
+<div style="overflow-x: scroll; width: auto; white-space: nowrap; overflow-y:hidden; height: 80%;">
     {% for p in plan %}
-    <div id="plan_{{p.idplan}}" name="plan_{{p.idplan}}" style="width: 200px; display: inline-block; vertical-align:top; margin: 5px;">
+    <div name="{{p.idplan}}" name="plan_{{p.idplan}}" style="width: 200px; display: inline-block; vertical-align:top; margin: 5px;">
         <div style="background-color: #D5DBDB;">
             <h2 class=" ui centered header" style="color: #34495E; background-color: dodgerblue; padding: 5px;">
               {{ p.name }}
+              {% include 'person/deletePlan_template.html' %}
             </h2>
-
             <div class="ui grid container sortable sortlist" style="min-height: 60px; ">
                 {% for pd,n in plancard %}
                     {%if p.idplan == pd.plan_id %}
                      <div id="sub{{pd.idplandetail}}" style=" background: white; padding: 5px 0px 10px 0px; width:200px; margin: 0px;">
                         <div class="ui card StackedListItem--isDraggable">
                             <div class="content centered">
-                              <div class="right floated" style="margin-left: 5px;" >
-                                {% include 'person/deleteDetail_template.html' %}
-                              </div>
                               <div class="header">{{n.title}}</div>
                               <div class="meta">{{n.intro}}</div>
                             </div>
@@ -73,8 +125,11 @@
                             <div class="extra content">
                                 <span class="right floated">
                                         <i class="user icon"></i>
-                                        yyu
+                                        {{pd.assign.username}}
                                 </span>
+                                <div class="left floated" style="margin-left: 5px;" >
+                                  {% include 'person/deleteDetail_template.html' %}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -87,3 +142,5 @@
     {% endfor %}
 </div>
 {%endif%}
+</form>
+

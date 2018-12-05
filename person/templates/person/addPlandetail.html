@@ -12,7 +12,12 @@
             <i class="dropdown icon"></i>
             <div class="default text">Note</div>
             <div class="menu">
+              <div class="header">My group note</div>
               {% for n in note%}
+              <div class="item" data-value="{{n.idnote}}">{{n.title}}</div>
+              {% endfor %}
+              <div class="header">Other user's note</div>
+              {% for n in Allnote%}
               <div class="item" data-value="{{n.idnote}}">{{n.title}}</div>
               {% endfor %}
             </div>
@@ -25,8 +30,8 @@
             <i class="dropdown icon"></i>
             <div class="default text">assign</div>
             <div class="menu">
-              {% for u in user%}
-              <div class="item" data-value="{{u.userid}}">{{u.userid}}</div>
+              {% for u in teamuser%}
+              <div class="item" data-value="{{u.userid.username}}">{{u.userid.username}}</div>
               {% endfor %}
             </div>
           </div>

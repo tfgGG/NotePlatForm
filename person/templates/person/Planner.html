@@ -1,3 +1,32 @@
+
+<script>
+  $(document).ready(function(){
+    $('.delete').click(function(){
+      var idplandetail =$(this).attr("id");
+      $('.deletemodal').modal('toggle');
+
+    //  alert(delid)
+      $('.deleteTag').click(function(){
+        var tag = $(this).attr("id");
+        //alert(tag);
+        if(tag==1){
+          $.ajax({
+            url: '/person/deletePlandetail/',
+            type: "POST",
+            data: {"id": idplandetail },
+            dataType: 'json',
+            success: function(data) {
+               location.reload();
+            }
+          })
+        }
+        else{
+          location.reload();
+        }
+      });
+    });
+  })
+</script>
 {%if plan|length == 0 %}
 <h2 class="ui icon center aligned header" style="height: 70%; margin-top: 100px;">
         <i class="columns icon"></i>
@@ -7,6 +36,7 @@
         </div>
 </h2>
 {%else%}
+
 <script>
   $(document).ready(function(){
     $('.deleteplandetail').click(function(){
@@ -80,10 +110,7 @@
                     {%if p.idplan == pd.plan_id %}
                      <div id="{{n.title}}" style=" background: white; padding: 5px 0px 10px 0px; width:200px; margin: 0px;">
                         <div class="ui card StackedListItem--isDraggable">
-                            <div class="content centered" style="overflow: hidden;">
-                              <div class="right floated" style="margin-left: 5px;" >
-                                {% include 'person/deleteDetail_template.html' %}
-                              </div>
+                            <div class="content centered">
                               <div class="header">{{n.title}}</div>
                               <div class="meta">{{n.intro}}</div>
                             </div>
@@ -105,6 +132,9 @@
                                         <i class="user icon"></i>
                                         {{pd.assign.username}}
                                 </span>
+                                <div class="left floated" style="margin-left: 5px;" >
+                                  {% include 'person/deleteDetail_template.html' %}
+                                </div>
                             </div>
                         </div>
                     </div>

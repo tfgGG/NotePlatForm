@@ -5,7 +5,7 @@
 	var data = [
   {% for pd,n in plancard %}
         {
-          title : '{{pd.name}}'+ '_{{n.title}}',
+          title : '{{pd.plan.name}}'+ '_{{n.title}}',
           start : '{{pd.start}}',
           end : '{{pd.end}}',
         },

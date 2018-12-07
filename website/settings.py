@@ -25,13 +25,13 @@ SECRET_KEY = 'l5=7_avx(#)4t#lv1%%)on4*vrzw@0feck9gb&+q#yde7173+0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','IP']
-
+ALLOWED_HOSTS = ['localhost','127.0.0.1','IP','140.136.150.93']
 # Application definition
 
 INSTALLED_APPS = [
     'upload.apps.UploadConfig',
     'login.apps.LoginConfig',
+    'oauth.apps.OauthConfig',
     'person.apps.PersonConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'oauth2_provider',
+    'rest_framework',
     #'captcha',
 ]
 '''
@@ -68,11 +69,12 @@ OAUTH2_PROVIDER = {
 }
 '''
 REST_FRAMEWORK = {
-
+    
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     )
-
+    
+    'SCOPES': {'notifications':"nofications affirm", 'gist':'gists affirm'}
 }
 '''
 
@@ -138,13 +140,19 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+#OAUTH2_PROVIDER_APPLICATION_MODEL='oauth.MyApplication'
+
 CORS_ORIGIN_ALLOW_ALL = True
+
 '''
 CORS_ORIGIN_WHITELIST = (
     'google.com',
     'hostname.example.com',
     'localhost:3000',
-    '127.0.0.1:9000'
+    '127.0.0.1:9000',
+    '140.136.150.93:3000'
+    '140.136.150.93:3232'
 )
 '''
 
@@ -176,4 +184,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL2 = '/media2/'
 MEDIA_ROOT2 = os.path.join(BASE_DIR, 'media2')
 
-DATA_PATH = os.path.join(BASE_DIR,'jsfile/cat.json')
+DATA_PATH = os.path.join(BASE_DIR,'jsonfile/cat.json')

@@ -97,11 +97,13 @@
       {%elif "/person/Team/Planner/" in request.path %}
         {%include "person/Planner.html" %}
       {%elif "/person/Team/Note/" in request.path %}
+      <div class="notePage ui grid stackable">
         {%include "person/Note.html" %}
+      </div>
       {%elif "/person/Team/Member/" in request.path %}
         {%include "person/Member.html" %}
       {%else%}
-         <iframe src= 'http://localhost:3000/message/{{teamid}}' width="800px" height="500px"></iframe>
+         <iframe src= 'http://140.136.150.93:3000/message/{{teamid}}' width="800px" height="500px"></iframe>
       {%endif%}
     </div>
   </div>

@@ -8,8 +8,8 @@ class Note(models.Model):
     field = models.CharField(max_length=1000)
     #subjects = models.CharField(max_length=100,null=True)
     textbook = models.CharField(max_length=100,null=True)
-    intro = models.CharField(max_length=100, blank=True, null=True)
-    permission = models.CharField(max_length=10, blank=True, null=True)
+    intro = models.CharField(max_length=1000, blank=True, null=True)
+    permission = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -21,7 +21,7 @@ class NoteList(models.Model):
     list_text = models.CharField(max_length=45, blank=True, null=True)
     list_num = models.PositiveIntegerField(blank=True, null=True)
     note = models.CharField(max_length=10000, blank=True, null=True)
-    noteid = models.PositiveIntegerField(blank=True, null=True)
+    noteid = models.PositiveIntegerField(blank=True, null=True) 
 
     class Meta:
         managed = False
@@ -44,6 +44,7 @@ class Message(models.Model):
     note = models.ForeignKey(Note,on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)
     username = models.CharField(max_length=45, blank=True, null=True)
+    img = models.CharField(max_length=200, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -54,7 +55,7 @@ class Favorite(models.Model):
     idnote = models.ForeignKey(Note, models.DO_NOTHING, db_column='idnote', blank=True, null=True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'upload_favorite'
 
 class Field(models.Model):

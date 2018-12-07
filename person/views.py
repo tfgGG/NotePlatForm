@@ -15,23 +15,25 @@ from login.models import Profile
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from person.models import User,Group,Groupuser
-from person.models import Plandetail,Plan,Groupnote
+from person.models import Plandetail,Plan,Groupnote,Chat
 #from NotePlatForm.models import AuthUser
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from selenium import webdriver
+
 from rest_framework.decorators import api_view
-from rest_framework import generics
+from rest_framework import generics,status
 from rest_framework.permissions import IsAuthenticated
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
+
 #from snippets.models import Snippet
 from oauth2_provider import models
 #from oauth2_provider.models import AbstractApplication
 
 from login.serializers import SnippetSerializer
-from person.serializers import GroupRest,PlanRest,ChatRest
+from person.serializers import GroupRest
 import json
 # Create your views here.
 
@@ -49,7 +51,7 @@ def index(request):
     if request.path == "/person/Myfavorite/":
         note = Note.objects.filter(favorite__user= request.user)
     else:
-        note = Note.objects.filter(user_id = request.user.id).order_by('-idnote')
+        note = Note.objects.filter(user_id = request.user.id)
 
     json_data = open(settings.DATA_PATH,encoding = 'utf8')
     field = json.load(json_data)
@@ -83,11 +85,6 @@ def group(request,userid):
         serializer = GroupRest(group,many = True)
         return JsonResponse(serializer.data,safe=False)
 
-def plan(requset,groupid):
-    if request.method == 'GET':
-        p = Plan.objects.filter(group = groupid)
-        serializer = PlanRest(p,many = True)
-        return JsonResponse(serializer.data,safe=False)
 
 def uploadImg(request): # 图片上传函数
     if request.method == 'POST':
@@ -112,16 +109,22 @@ def CreateGroup(request):
         member = memberid.split(",")
         member.append(request.user.id)
         for m in member:
+            print("flag")
             id = User.objects.get(pk = m)
+<<<<<<< HEAD
+=======
+            print(id)
+>>>>>>> f3847cd3a3012d68bd5d5259d7524f4da369e7a9
             memberunit = Groupuser.objects.create(userid= id ,group=unit)
             memberunit.save()
-        return redirect('../Team/Calender/'+str(unit.idgroup)+'/')
+        return redirect('../Team/'+str(unit.idgroup)+'/')
 
 def Team(request,teamid):
     if request.method == 'GET':
         teamuser = Groupuser.objects.filter(group=teamid)
         user = User.objects.filter(~Q(id = request.user.id))
-        Allnote = Note.objects.all()
+        Allnote = Note.objects.filter(permission=2)
+        Allnote |= Note.objects.filter(user_id=request.user.id)
         plan = Plan.objects.filter(groupid=teamid)
         planteamdetail = Plandetail.objects.filter(plan__groupid = teamid).order_by('plan')
         note = Note.objects.filter(plandetail__plan__groupid = teamid)
@@ -139,12 +142,21 @@ def Team(request,teamid):
         for n in GN:
             if n.permission.isdigit() == 0:
                 gp = n.permission.split(' ')
+                print(gp)
                 if gp[1] == str(teamid):
                     GroupNote |= Note.objects.filter(permission=n.permission)
         GPN = Groupnote.objects.filter(group=teamid)
+        for n in GPN:
+            if str(n.group.idgroup) == str(teamid):
+                GroupNote |= Note.objects.filter(groupnote__note=n.note)
         return render(request,'person/TeamIndex.html',{"plancard":plancard,
+<<<<<<< HEAD
         "plan":plan,"teamid":teamid,"note":Allnote,"user":user,"teamuser":teamuser,"group":group,
         "subject":field['subject'],"Groupnote":GroupNote,"GPN":GPN,"user_member":user_member,"user_all":user_all })
+=======
+        "plan":plan,"teamid":teamid,"Allnote":Allnote,"user":user,"teamuser":teamuser,"group":group,
+        "subject":field['subject'],"note":GroupNote,"GPN":GPN })
+>>>>>>> f3847cd3a3012d68bd5d5259d7524f4da369e7a9
 
 def AddPlan(request,teamid):
     if request.method == 'POST':
@@ -169,15 +181,20 @@ def AddPlandetail(request,teamid):
         unit.save()
         return redirect('/person/Team/Planner/'+str(teamid)+'/')
 
-@api_view(['GET', 'POST'])
+@csrf_exempt
 def chat(request,groupid):
     if request.method == 'POST':
+        print("CHAT POST")
+        print(json.loads(request.body.decode('utf-8')))
         serializer = ChatRest(data=json.loads(request.body.decode('utf-8')))
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return HttpResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return HttpResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method=='GET':
+         chat = Chat.objects.filter(teamid = groupid)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @csrf_exempt
 def deletePlandetail(request):
     if request.method == 'POST':
@@ -186,6 +203,7 @@ def deletePlandetail(request):
         plandetail = Plandetail.objects.get(idplandetail = planid)
         plandetail.delete()
         return HttpResponse(0)
+
 
 @csrf_exempt
 def deletePlan(request):

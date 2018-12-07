@@ -19,6 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url
 from django.views.static import serve
+from oauth import views
+from oauth.views import ApiEndpoint
 import oauth2_provider.views as oauth2_views
 
 urlpatterns = [
@@ -26,7 +28,10 @@ urlpatterns = [
     path('login/', include('login.urls')),
     path('upload/', include('upload.urls')),
     path('person/', include('person.urls')),
-    path('oauth/', include('oauth.urls')),
+    #path('oauth/', include('oauth.urls')),
+    url(r'^api/hello/', ApiEndpoint.as_view()),
+    url(r'^secret$', views.secret_page, name='secret'),
+    #path('oauth/change/', views.change ),
     #path('oauth/', include(('oauth.urls','oauth2_provider'), namespace='oauth2_provider')),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     
@@ -51,8 +56,8 @@ if settings.DEBUG:
         url(r'^applications/(?P<pk>\d+)/update/$', oauth2_views.ApplicationUpdate.as_view(), name="update"),
     ]
     # OAuth2 Token Management endpoints
-    oauth2_endpoint_views += [
-        url(r'^authorized-tokens/$', oauth2_views.AuthorizedTokensListView.as_view(), name="authorized-token-list"),
-        url(r'^authorized-tokens/(?P<pk>\d+)/delete/$', oauth2_views.AuthorizedTokenDeleteView.as_view(),
-            name="authorized-token-delete"),
-    ]
+oauth2_endpoint_views += [
+    url(r'^authorized-tokens/$', oauth2_views.AuthorizedTokensListView.as_view(), name="authorized-token-list"),
+    url(r'^authorized-tokens/(?P<pk>\d+)/delete/$', oauth2_views.AuthorizedTokenDeleteView.as_view(),
+        name="authorized-token-delete"),
+]

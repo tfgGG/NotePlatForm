@@ -111,10 +111,6 @@ def CreateGroup(request):
         for m in member:
             print("flag")
             id = User.objects.get(pk = m)
-<<<<<<< HEAD
-=======
-            print(id)
->>>>>>> f3847cd3a3012d68bd5d5259d7524f4da369e7a9
             memberunit = Groupuser.objects.create(userid= id ,group=unit)
             memberunit.save()
         return redirect('../Team/'+str(unit.idgroup)+'/')
@@ -150,13 +146,8 @@ def Team(request,teamid):
             if str(n.group.idgroup) == str(teamid):
                 GroupNote |= Note.objects.filter(groupnote__note=n.note)
         return render(request,'person/TeamIndex.html',{"plancard":plancard,
-<<<<<<< HEAD
-        "plan":plan,"teamid":teamid,"note":Allnote,"user":user,"teamuser":teamuser,"group":group,
-        "subject":field['subject'],"Groupnote":GroupNote,"GPN":GPN,"user_member":user_member,"user_all":user_all })
-=======
         "plan":plan,"teamid":teamid,"Allnote":Allnote,"user":user,"teamuser":teamuser,"group":group,
-        "subject":field['subject'],"note":GroupNote,"GPN":GPN })
->>>>>>> f3847cd3a3012d68bd5d5259d7524f4da369e7a9
+        "subject":field['subject'],"note":GroupNote,"user_member":user_member,"user_all":user_all })
 
 def AddPlan(request,teamid):
     if request.method == 'POST':

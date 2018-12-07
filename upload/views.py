@@ -296,7 +296,6 @@ def deleteNote(request):
         fav_note.delete()
         data= Note.objects.get(idnote=idnote)
         data.delete()
-
         return HttpResponse(0)
 
 

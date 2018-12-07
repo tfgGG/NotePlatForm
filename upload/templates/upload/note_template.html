@@ -45,8 +45,9 @@
         //  alert(delid)
           $('.deleteTag').click(function(){
             var tag = $(this).attr("id");
-            //alert(tag);
+          //  alert(tag);
             if(tag==1){
+              alert(delid);
               $.ajax({
                 url: '/upload/deleteNote/',
                 type: "POST",
@@ -86,7 +87,7 @@
           <div class="right floated" style="margin-left: 5px;" >
               {% include 'upload/delete_template.html' %}
           </div>
-          
+
 
       </div>
     {% if note.permission == '2' or note.user_id == request.user.id %}

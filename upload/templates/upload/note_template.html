@@ -130,10 +130,12 @@
           <!--<button class="ui left floated button delete" id='{{note.idnote}}'>delete</button>-->
           {%if note.permission == '2'  %}
             <i class="globe icon"></i>公開
+          {% elif note.permission == '1' %}
+            <i class="user icon"></i>非公開
           {% elif note.permission == '0' %}
             <i class="ban icon"></i>私人
           {% else %}
-            <i class="user icon"></i>非公開
+            <i class="users icon"></i>群組
           {% endif %}
         </div>
       </div>

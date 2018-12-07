@@ -113,7 +113,7 @@ def CreateGroup(request):
         member.append(request.user.id)
         for m in member:
             id = User.objects.get(pk = m)
-            memberunit = Groupuser.objects.create(userid= m ,group=unit)
+            memberunit = Groupuser.objects.create(userid= id ,group=unit)
             memberunit.save()
         return redirect('../Team/Calender/'+str(unit.idgroup)+'/')
 
@@ -127,6 +127,8 @@ def Team(request,teamid):
         note = Note.objects.filter(plandetail__plan__groupid = teamid)
         group = Group.objects.filter(groupuser__userid = request.user.id)
         plancard = list(zip(planteamdetail,note))
+        user_member = Groupuser.objects.filter(group=teamid)
+        user_all = User.objects.all()
 
         json_data = open(settings.DATA_PATH,encoding = 'utf8')
         field = json.load(json_data)
@@ -142,7 +144,7 @@ def Team(request,teamid):
         GPN = Groupnote.objects.filter(group=teamid)
         return render(request,'person/TeamIndex.html',{"plancard":plancard,
         "plan":plan,"teamid":teamid,"note":Allnote,"user":user,"teamuser":teamuser,"group":group,
-        "subject":field['subject'],"Groupnote":GroupNote,"GPN":GPN })
+        "subject":field['subject'],"Groupnote":GroupNote,"GPN":GPN,"user_member":user_member,"user_all":user_all })
 
 def AddPlan(request,teamid):
     if request.method == 'POST':
@@ -196,6 +198,27 @@ def deletePlan(request):
         plan.delete()
         return HttpResponse(0)
 
-def GroupNote(request,teamid):
-    if request.method == 'GET':
-        note = Note.objects.all()
+def AddMember(request,teamid):
+    if request.method == 'POST':
+        userName = request.POST['userName']
+        #tid = Group.objects.get(pk = teamid)
+        id = User.objects.get(pk=userName)
+        gid = Group.objects.get(pk=teamid)
+        unit = Groupuser.objects.create(userid=id,group=gid)
+        unit.save()
+        if Groupuser.objects.filter(userid=id,group=gid).count() > 1:
+            tmp = Groupuser.objects.filter(userid=id,group=gid)[1]
+            tmp.delete()
+        print(unit)
+        return redirect('../Team/Member/'+str(teamid)+'/')
+
+def MinusMember(request,teamid):
+    if request.method == 'POST':
+        userName = request.POST['userName']
+        id = User.objects.get(pk=userName)
+        gid = Group.objects.get(pk=teamid)
+        unit = Groupuser.objects.filter(userid=id,group=gid)
+        deleteplandetail = Plandetail.objects.filter(assign=id)
+        deleteplandetail.delete()
+        unit.delete()
+        return redirect('../Team/Member/'+str(teamid)+'/')

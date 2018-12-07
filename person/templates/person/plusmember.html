@@ -1,0 +1,51 @@
+<div class="ui small modal plusmembermodal">
+  <div class="header">
+    <h3 class="ui blue header">add member</h3>
+  </div>
+  <div class="content">
+      <form action="/person/AddMember/{{teamid}}" class="ui form" method="POST">
+        {% csrf_token %}
+        <label>Name:</label>
+        <div class="field">
+          <div class="ui fluid search selection dropdown">
+            <input name="userName" type="hidden">
+            <i class="dropdown icon"></i>
+            <div class="default text">assign</div>
+            <div class="menu">
+              {% for u in user_all%}
+              <div class="item" data-value="{{u.id}}">{{u.username}}</div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <br>
+        <button class="fluid ui blue button">Add</button>
+      </form>
+  </div>
+</div>
+
+<div class="ui small modal minusmembermodal">
+  <div class="header">
+    <h3 class="ui blue header">minus member</h3>
+  </div>
+  <div class="content">
+      <form action="/person/MinusMember/{{teamid}}" class="ui form" method="POST">
+        {% csrf_token %}
+        <label>Name:</label>
+        <div class="field">
+          <div class="ui fluid search selection dropdown">
+            <input name="userName" type="hidden">
+            <i class="dropdown icon"></i>
+            <div class="default text">assign</div>
+            <div class="menu">
+              {% for u in user_member%}
+              <div class="item" data-value="{{u.userid.id}}">{{u.userid.username}}</div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <br>
+        <button class="fluid ui blue button">Add</button>
+      </form>
+  </div>
+</div>

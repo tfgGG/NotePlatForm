@@ -9,15 +9,11 @@
 {%else%}
 <script>
   $(document).ready(function(){
-
     $('.deleteplandetail').click(function(){
       var idplandetail =$(this).attr("id");
       $('.deleteplandetailmodal').modal('toggle');
-
-    //  alert(delid)
       $('.deleteplandetailTag').click(function(){
         var tag = $(this).attr("id");
-        //alert(tag);
         if(tag==1){
           $.ajax({
             url: '/person/deletePlandetail/',
@@ -38,11 +34,8 @@
     $('.deleteplan').click(function(){
       var idplan =$(this).attr("id");
       $('.deleteplanmodal').modal('toggle');
-
-    //  alert(delid)
       $('.deleteplanTag').click(function(){
         var tag = $(this).attr("id");
-        //alert(tag);
         if(tag==1){
           $.ajax({
             url: '/person/deletePlan/',
@@ -59,21 +52,33 @@
         }
       });
     });
+    $(document).ready(function(){
+      $('.update').click(function(){
+        var name = [];
+        {% for p in plan %}
+          {% for pd,n in plancard %}
+              test=$("#"+"{{p.name}}").attr('id');
+              console.log(test);
+            {% endfor %}
+        {% endfor %}
+      });
+    })
   })
 </script>
+
 <form action="/person/updatePlandetail/" method="post">
 <div style="overflow-x: scroll; width: auto; white-space: nowrap; overflow-y:hidden; height: 80%;">
     {% for p in plan %}
-    <div name="{{p.idplan}}" style="width: 200px; display: inline-block; vertical-align:top; margin: 5px;">
+    <div id="{{p.name}}" style="width: 200px; display: inline-block; vertical-align:top; margin: 5px;">
         <div style="background-color: #D5DBDB;">
             <h2 class=" ui centered header" style="color: #34495E; background-color: dodgerblue; padding: 5px;">
-              {{ p.name }}
+              <div>{{ p.name }}</div>
               {% include 'person/deletePlan_template.html' %}
             </h2>
             <div class="ui grid container sortable sortlist" style="min-height: 60px; ">
                 {% for pd,n in plancard %}
                     {%if p.idplan == pd.plan_id %}
-                     <div name="{{n.title}}" style=" background: white; padding: 5px 0px 10px 0px; width:200px; margin: 0px;">
+                     <div id="{{n.title}}" style=" background: white; padding: 5px 0px 10px 0px; width:200px; margin: 0px;">
                         <div class="ui card StackedListItem--isDraggable">
                             <div class="content centered" style="overflow: hidden;">
                               <div class="right floated" style="margin-left: 5px;" >
@@ -98,12 +103,13 @@
                             <div class="extra content">
                                 <span class="right floated">
                                         <i class="user icon"></i>
-                                        yyu
+                                        {{pd.assign.username}}
                                 </span>
                             </div>
                         </div>
                     </div>
                     {% endif %}
+
                 {% endfor %}
             </div>
         </div>

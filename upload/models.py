@@ -56,3 +56,10 @@ class Favorite(models.Model):
     class Meta:
         managed = False
         db_table = 'upload_favorite'
+
+class Field(models.Model):
+    id = models.AutoField(primary_key=True)
+    field = models.CharField(max_length=45, blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'field'

@@ -9,7 +9,7 @@ from django.forms import formset_factory,BaseFormSet
 from django.contrib import messages
 from django.db import IntegrityError,transaction
 from django.db.models import Avg, Max, Min
-from upload.models import Note,Message,Favorite
+from upload.models import Note,Message,Favorite,Field
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse,HttpResponseRedirect
 from person.models import Group, Groupuser
@@ -165,6 +165,8 @@ def create(request):
             'intro'  : intro,
             'permission': permission+' '+group
         }
+        field_save = Field.objects.create(field=field)
+        field_save.save()
         # Save to db via note rest
         unit = noteRest(data=data)
         if unit.is_valid():
@@ -292,7 +294,7 @@ def groupnote(request,noteid):
         #for n in N:
         print(N.permission)
         data['permission'] = N.permission+" "+ str(data['permission'])
-        
+
         serializer = noteRest(N, data=data,partial=True)
         if serializer.is_valid():
             serializer.save()

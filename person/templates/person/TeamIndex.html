@@ -47,6 +47,15 @@
         Message
       </a>
       {%endif%}
+      {%if "/person/Team/Member/" in request.path %}
+      <a class="item active" href="/person/Team/Member/{{teamid}}">
+        Member
+      </a>
+      {%else%}
+      <a class="item" href="/person/Team/Member/{{teamid}}">
+        Member
+      </a>
+      {%endif%}
 
       {%if "/person/Team/Planner/" in request.path %}
       <div class="right floated item">
@@ -62,8 +71,21 @@
         </button>
       </div>
       <div class="item">
-        <button class="tiny ui teal button" onclick="">
+        <button class="tiny ui teal button update" >
            UPDATE
+        </button>
+      </div>
+      {% elif "/person/Team/Member/" in request.path %}
+      <div class="right floated item">
+          <button class="tiny ui teal basic button centered" onclick="$('.plusmembermodal').modal('show');" >
+          <i class="plus icon"></i>
+           Member
+          </button>
+      </div>
+      <div class="item">
+        <button class="tiny ui teal basic button" onclick="$('.minusmembermodal').modal('show');">
+          <i class="minus icon"></i>
+            Member
         </button>
       </div>
       {% endif %}
@@ -76,6 +98,8 @@
         {%include "person/Planner.html" %}
       {%elif "/person/Team/Note/" in request.path %}
         {%include "person/Note.html" %}
+      {%elif "/person/Team/Member/" in request.path %}
+        {%include "person/Member.html" %}
       {%else%}
          <iframe src= 'http://localhost:3000/message/{{teamid}}' width="800px" height="500px"></iframe>
       {%endif%}
@@ -85,6 +109,7 @@
 </div>
 {% include 'upload/create_note.html' %}
 {% include 'person/addPlan.html' %}
+{% include 'person/plusmember.html' %}
 {% include 'person/addPlandetail.html' %}
 {% include 'person/create_group.html' %}
 {% include 'person/uploadImg.html' %}
